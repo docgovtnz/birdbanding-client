@@ -1,0 +1,145 @@
+<div *ngIf="loaded; else loading" class="m-5">
+  <h1 class="page-heading mb-4">Transfers</h1>
+
+  <div *ngIf="person.isAdmin; else noAdmin" class="card">
+    <div class="card-body-table">
+      <div class="d-flex justify-content-between align-items-center table-header">
+        <div class="flex-table-row-20">Transfer from</div>
+        <div class="flex-table-row-10">Max cert. level</div>
+        <div class="flex-table-row-10">Amount</div>
+        <div class="flex-table-row-20">When</div>
+        <div class="flex-table-row-5"></div>
+        <div class="flex-table-row-20">Transfer to</div>
+        <div class="flex-table-row-10">Max cert. level</div>
+        <div class="flex-table-row-5"></div>
+      </div>
+      <div *ngFor="let tfr of transfers.transfers; index as i">
+        <div class="d-flex justify-content-between align-items-center table-row on-hover">
+          <div class="flex-table-row-20 mt-3 mb-3">
+            <div>
+              <a routerLink="/people-view/{{ tfr.transferFromUserId }}" aria-disabled="true" routerLinkActive="active">{{
+                tfr.transferFromUserName
+              }}</a>
+            </div>
+          </div>
+
+          <div class="flex-table-row-10 mt-3 mb-3">
+            <div class="text-regular-11">
+              <span
+                *ngIf="tfr.transferFromMaxCert !== 'UNCERTIFIED'"
+                [ngClass]="getBallColourClass(tfr.transferFromMaxCert)"
+                class="pl-3 mr-2"
+              >
+              </span>
+              <span class="text-regular-15">{{ tfr.transferFromMaxCert }} bander</span>
+            </div>
+          </div>
+
+          <div class="flex-table-row-10 mt-3 mb-3">
+            <div class="text-regular-15">{{ tfr.amount }} bands</div>
+          </div>
+
+          <div class="flex-table-row-20 mt-3 mb-3">
+            <div class="text-regular-13">{{ tfr.transferDate | date: 'dd MMM yyyy @ HH:mm' }}</div>
+          </div>
+
+          <div class="flex-table-row-5 mt-3 mb-3">
+            <i class="material-icons-round green-arrow">arrow_forward</i>
+          </div>
+
+          <div class="flex-table-row-20 mt-3 mb-3">
+            <div>
+              <a routerLink="/people-view/{{ tfr.transferToUserId }}" aria-disabled="true" routerLinkActive="active">{{
+                tfr.transferToUserName
+              }}</a>
+            </div>
+          </div>
+
+          <div class="flex-table-row-10 mt-3 mb-3">
+            <div class="text-regular-11">
+              <span *ngIf="tfr.transferToMaxCert !== 'UNCERTIFIED'" [ngClass]="getBallColourClass(tfr.transferToMaxCert)" class="pl-3 mr-2">
+              </span>
+              <span class="text-regular-15">{{ tfr.transferToMaxCert }} bander</span>
+            </div>
+          </div>
+
+          <div class="flex-table-row-5">
+            <div class="pointer" (click)="toggleViewMode(i)">
+              <div class="hiddenDiv" [class.inViewMode]="tfr.isTransferView">
+                <span class="text-blue-regular-17 mr-2">View</span>
+                <i *ngIf="tfr.isTransferView" class="material-icons-round text-blue-regular-24">expand_less</i>
+                <i *ngIf="!tfr.isTransferView" class="material-icons-round text-blue-regular-24">expand_more</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="tfr.isTransferView" class="band-edit">
+          <div class="d-flex justify-content-between">
+            <div class="align-self-end pl-3">
+              <a class="text-regular-us-16 pointer" tabindex="10" (click)="setViewMode(i, false)">Cancel</a>
+            </div>
+            <div class="d-flex flex-column">
+              <div *ngFor="let tfrBands of tfr.transferred" class="d-flex justify-content-between align-items-center nested-table-row">
+                <div>
+                  <span>{{ getFormattedRange(tfrBands)}}</span>
+                </div>
+                <div>
+                  <span>{{ tfrBands.amount }} </span>
+                  <span *ngIf="tfrBands.amount > 1">bands</span>
+                  <span *ngIf="tfrBands.amount <= 1">band</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end total-bands">
+                <div>
+                  <b>Total bands: {{ tfr.amount }} bands</b>
+                </div>
+              </div>
+            </div>
+            <div style="width: 5%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination -->
+    <div *ngIf="transfers.transfers.length !== 0" class="mt-4 d-flex justify-content-between">
+      <div class="pagination-text ml-4">
+        <label for="limit" class="pr-2">RESULTS PER PAGE</label>
+        <select id="limit" name="limit" [value]="limitPerPage" (change)="onLimitChanged($event)" class="pagination-input">
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+      <!-- API can't deliver total count of rows :( -->
+      <!--      <div class="pagination-main">-->
+      <!--        <pagination [totalItems]="2000"-->
+      <!--                    [maxSize]="8"-->
+      <!--                    [rotate]="false"-->
+      <!--                    [itemsPerPage]="limitPerPage"-->
+      <!--                    [(ngModel)]="currentPage"-->
+      <!--                    (pageChanged)="onPageChanged($event)"-->
+      <!--                    previousText="&lsaquo;"-->
+      <!--                    nextText="&rsaquo;"></pagination>-->
+      <!--      </div>-->
+      <div class="mb-4">
+        <button class="blue-button mr-4" [disabled]="isFirstPage" [ngClass]="{ isDisabled: isFirstPage }" (click)="onPreviousPage()">
+          Previous
+        </button>
+        <button class="blue-button" [disabled]="isLastPage" [ngClass]="{ isDisabled: isLastPage }" (click)="onNextPage()">
+          Next
+        </button>
+      </div>
+      <div class="pagination-text mr-4">
+        <label for="jump" class="pr-2">JUMP TO PAGE</label>
+        <input id="jump" name="jump" [(ngModel)]="jumpToPage" (blur)="onJumpTo()" (keyup.enter)="onJumpTo()" class="pagination-input" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading-spinner loadingText="Loading data..."></app-loading-spinner>
+</ng-template>
+
+<ng-template #noAdmin>
+  Sorry, this page can only be viewed by an administrator.
+</ng-template>

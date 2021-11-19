@@ -1,0 +1,173 @@
+<form (ngSubmit)="searchEvents()" class="p-3">
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-3">
+          <div class="search-group">
+            <label for="data-project-name" class="input-caption">PROJECT NAME</label>
+            <app-typeahead-multi-select
+              [optionList]="projects"
+              [optionField]="'name'"
+              id="data-project-name"
+              placeholder="Start typing a project name…"
+              [(selectedItems)]="filterOptions.projects"
+              [clearValue$]="clearTypeahead$"
+              inputId="project-name-typeahead"
+            >
+            </app-typeahead-multi-select>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="search-group">
+            <label for="data-uploaded-by" class="input-caption">PERSON</label>
+            <app-typeahead-multi-select
+              [optionList]="people"
+              [optionField]="'display'"
+              id="data-uploaded-by"
+              placeholder="Start typing a person's name…"
+              [(selectedItems)]="filterOptions.uploadedBy"
+              [clearValue$]="clearTypeahead$"
+              inputId="person-typeahead"
+            ></app-typeahead-multi-select>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="search-group">
+            <label for="data-species-code" class="input-caption">SPECIES</label>
+            <app-typeahead-multi-select
+              [optionList]="species"
+              id="data-species-code"
+              placeholder="Start typing a species name…"
+              [optionField]="'description'"
+              [(selectedItems)]="filterOptions.species"
+              [customItemTemplate]="speciesTemplate"
+              inputId="species-typeahead"
+              [clearValue$]="clearTypeahead$"
+            ></app-typeahead-multi-select>
+          </div>
+          <ng-template #speciesTemplate let-model="item" let-index="index">
+            <div class="d-flex flex-row">
+              <div class="d-flex flex-column">
+                <span> {{ model.species_code_nznbbs }} -&nbsp; </span>
+              </div>
+              <div class="d-flex flex-column">
+                <span>
+                  {{ model.common_name_nznbbs }}
+                </span>
+                <span>
+                  <small
+                    ><i>{{ model.scientific_name_nznbbs }}</i></small
+                  ></span
+                >
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div class="col-3">
+          <div class="search-group">
+            <label for="data-species-group" class="input-caption">SPECIES GROUP</label>
+            <app-typeahead-multi-select
+              [optionList]="speciesGroups"
+              [optionField]="'name'"
+              id="data-species-group"
+              placeholder="Select a species group…"
+              [(selectedItems)]="filterOptions.speciesGroups"
+              [clearValue$]="clearTypeahead$"
+              inputId="species-group-typeahead"
+            ></app-typeahead-multi-select>
+          </div>
+        </div>
+      </div>
+      <div class="row mr-3">
+        <div class="col-3">
+          <div class="search-group">
+            <label for="data-date" class="input-caption">DATE OF EVENT</label>
+            <input
+              type="text"
+              [(ngModel)]="filterOptions.eventDates"
+              name="eventDates"
+              id="data-date"
+              placeholder="Choose a date"
+              (keydown.enter)="searchEvents()"
+              bsDaterangepicker
+              autocomplete="off"
+              data-lpignore="true"
+              placement="right"
+              class="input-flex"
+              [bsConfig]="{
+                dateInputFormat: 'DD MMM YYYY',
+                rangeInputFormat: 'DD MMM YYYY',
+                containerClass: 'theme-dark-blue',
+                showWeekNumbers: false
+              }"
+            />
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="search-group d-flex flex-column">
+            <label for="data-banding-code" class="input-caption">EVENT CODE</label>
+            <app-multi-select
+              id="data-banding-code"
+              [optionList]="viewDataEnums?.birdEventCodes"
+              optionField="display"
+              placeholder="Select an event code..."
+              [(selectedItems)]="filterOptions.bandCodes"
+            ></app-multi-select>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="search-group d-flex flex-column">
+            <label for="banding-scheme" class="input-caption">BANDING SCHEME</label>
+            <app-multi-select
+              id="banding-scheme"
+              [optionList]="viewDataEnums?.bandingSchemes"
+              optionField="display"
+              placeholder="Select a banding scheme..."
+              [(selectedItems)]="filterOptions.bandingSchemes"
+            ></app-multi-select>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="search-group d-flex flex-column">
+            <label for="data-location-description" class="input-caption">LOCATION DESCRIPTION</label>
+            <input
+              id="data-location-description"
+              (keydown.enter)="searchEvents()"
+              [(ngModel)]="filterOptions.locationDescription"
+              name="locationDescription"
+              autocomplete="off"
+              placeholder="Location description..."
+              data-lpignore="true"
+              class="input-flex"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="button-row" class="row">
+    <div id="hide-section" class="col-2">
+      <button type="button" class="btn btn-link d-flex flex-row align-items-center" (click)="hideSearch()">
+        <i class="material-icons-round mr-1">keyboard_arrow_up</i> HIDE SEARCH
+      </button>
+    </div>
+    <div class="col-10">
+      <div class="row">
+        <div class="col-8"></div>
+
+        <div class="col-2">
+          <button type="button" class="btn btn-link" (click)="clearSearch()">Clear this search</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="flex-blue-button" *ngIf="!isLoading; else loadingButton">
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<ng-template #loadingButton>
+  <app-loading-button></app-loading-button>
+</ng-template>

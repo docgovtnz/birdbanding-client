@@ -1,0 +1,19 @@
+@import 'src/palate';
+@import 'src/text-styles';
+
+.popup-header {
+  background-color: $DOC_GREEN;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border: solid 2px $DOC_GREEN;
+}
+
+.btn-link {
+  color: $WHITE;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.popup-body {
+  width: 200px;
+}

@@ -1,0 +1,185 @@
+<div *ngIf="loading === true">
+  <div class="d-flex flex-column align-items-center">
+    <span class="big-blue-spinner m-3"></span>
+  </div>
+</div>
+
+
+<div *ngIf="loading === false" class="d-flex flex-column mx-5 pt-5">
+  <div class="d-flex flex-direction-row justify-content-between w-100 mb-5">
+    <div class="d-flex flex-direction-row justify-content-start">
+      <div id="back" class="back-button mr-4 align-items-center d-flex">
+        <div role="button" (click)="goBack()" class="align-items-center d-flex pointer">
+          <i class="material-icons-round feedback-icon mr-1">arrow_back</i><span>Back</span>
+        </div>
+      </div>
+      <div class="d-flex flex-column left-border divider">
+        <span class="small-top-header">SPREADSHEET</span>
+        <h2>{{ssDetail.project_name}}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && deleted; else body" class="d-flex flex-column align-items-center">
+    <i class="material-icons-outlined icon very-large-icon delete-icon">delete</i>
+    <span class="text-regular-17 mt-4">Spreadsheet deleted</span>
+  </div>
+
+  <ng-template #body>
+    <div *ngIf="!loading && !deleted" id="main-content" class="row">
+    <div class="col-6">
+      <div id="description" class="card card-body-table">
+        <div id="description-head" class="border-bottom d-flex justify-content-between align-items-center">
+          <h3 class="card-heading ml-4">Spreadsheet details</h3>
+        </div>
+        <div class="row mt-4 mb-4 ml-2">
+          <div class="col-4">
+            <div class="d-flex flex-column m-2">
+              <label class="input-caption" for="project-name">PROJECT</label>
+              <span id="project-name">
+                <a [routerLink]="['/projects/details', ssDetail.project_id]"> {{ ssDetail.project_name }} </a>
+              </span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column m-2">
+              <label class="input-caption" for="bander-name">UPLOADER</label>
+                <a *ngIf="isUserAdmin" [routerLink]="['/people-view/', ssDetail.bander_id]"><span>{{ ssDetail.bander_name }}</span></a>
+                <span *ngIf="!isUserAdmin" id="bander-name">{{ssDetail.bander_name}}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column m-2">
+              <label class="input-caption" for="no-of-rows">NUMBER OF ROWS</label>
+              <span id="no-of-rows">{{ssDetail.no_of_rows}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4 mb-4 ml-2">
+          <div class="col-4">
+            <div class="d-flex flex-column m-2">
+              <label class="input-caption" for="date-uploaded">DATE UPLOADED</label>
+              <span id="date-uploaded">{{ ssDetail.created_datetime | date:'dd MMM yyyy @ HH:mm'}}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column m-2">
+              <label class="input-caption" for="download-link">DOWNLOAD SPREADSHEET</label>
+              <span id="download-link"><a href="{{ssDetail.url}}">spreadsheet.xlsx</a></span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column m-2">
+              <label class="input-caption" for="bander-name">ERRORS</label>
+              <span id="bander-name">{{ssDetail.criticals_count}} errors, {{ssDetail.warnings_count}} warnings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div id="team" class="card card-body-table">
+        <div id="team-head" class="border-bottom d-flex flex-row justify-content-between align-items-center">
+          <h3 class="card-heading ml-4">
+            Status
+            <span *ngIf="!updatingStatus" class="{{uploadService.statusClasses[ssDetail.upload_status]}} ml-2" > {{uploadService.getReadableState(ssDetail.upload_status)}} </span>
+            <span *ngIf="updatingStatus" class="medium-blue-spinner"></span>
+          </h3>
+        </div>
+
+        <div class="ml-5 mr-5 mt-3 mb-3">
+          <div id="progress-spheres" class="d-flex flex-row justify-content-between progress-spheres-background mt-5 mr-4 pr-1 ml-3">
+            <span [ngClass]="getValidationClass()" class="progress-sphere">
+              <i class="material-icons-round">check</i>
+            </span>
+            <span [ngClass]="getApprovalClass()" class="progress-sphere">
+                <i class="material-icons-round">check</i>
+            </span>
+            <span [ngClass]="getAddedClass()" class="progress-sphere">
+              <i class="material-icons-round">check</i>
+            </span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-row justify-content-between mb-2 mr-3 ml-4 p-3">
+          <span class="bread-crumb-text w3">Validate</span>
+          <span class="bread-crumb-text ml-5">Submit for approval</span>
+          <span class="bread-crumb-text">Add to database</span>
+        </div>
+
+        <div *ngIf="!updatingStatus && 'PUSHED_TO_DATABASE' !== ssDetail.upload_status" class="border-top d-flex flex-row justify-content-end align-items-end mt-5 pt-4 pl-3 pr-3">
+          <button class="md-red-button mr-3" *ngIf="isUserDeleter" (click)="delete()">Delete</button>
+          <button class="md-clear-button mr-3" (click)="changeStatus('PENDING_RESULT')">Revalidate</button>
+          <button class="md-blue-button mr-3" *ngIf="uploadService.isSubmittableState(ssDetail)" (click)="changeStatus('REQUEST_FOR_APPROVAL')">Submit for approval</button>
+          <button class="md-clear-button mr-3" *ngIf="uploadService.isApprovableState(ssDetail) && isUserAdmin" (click)="changeStatus('ADMIN_REJECTED')">Reject sheet</button>
+          <button class="md-blue-button mr-3" *ngIf="uploadService.isApprovableState(ssDetail) && isUserAdmin" (click)="changeStatus('ADMIN_APPROVED')">Add to database</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+    <div class="col-12">
+      <div id="details" class="card card-body-table mt-5">
+        <div id="details-head" class="border-bottom d-flex">
+          <h3 class="card-heading ml-4">
+            Spreadsheet errors
+            <a *ngIf="ssDetail.errors.length" [routerLink]="" (click)="downloadCSV(ssDetail.errors)" class="btn btn-link download-csv-link">Download errors and warnings as csv</a>
+          </h3>
+        </div>
+          <div class="row">
+            <div *ngIf="!loading" class="col-12">
+              <table *ngIf="processedErrors.size && !processedErrors.has(-1)" class="table">
+                <thead>
+                  <tr class="error-table-line">
+                    <th class="pl-4">Row number</th>
+                    <th>Column name</th>
+                    <th> Severity<i [tooltip]="severityHelp" containerClass="white-tooltip" class="material-icons-round inline-question-tooltip ml-1">help_outline</i> </th>
+                    <th> Type<i [tooltip]="typeHelp" containerClass="white-tooltip" class="material-icons-round inline-question-tooltip ml-1">help_outline</i></th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <ng-template ngFor let-line [ngForOf]="processedErrors | keyvalue" >
+                  <tr *ngFor="let error of line.value; let i = index" [ngClass]="i === line.value.length - 1 ? 'error-table-line': 'error-table-no-line'">
+                    <td class="pl-4">{{i === 0 ? line.key : ''}}</td>
+                    <td>{{error.field}}</td>
+                    <td>{{error.severity === 'CRITICAL' ? 'Critical': 'Warning'}}</td>
+                    <td>{{error.type}}</td>
+                    <td>{{error.message}}</td>
+                  </tr>
+                </ng-template>
+              </table>
+              <ng-template [ngIf]="processedErrors.size && processedErrors.has(-1)">
+                <div class="p-4 d-flex justify-content-center">
+                  <i class="material-icons-round large">error_outline</i>{{processedErrors.get(-1)[0].message}}
+                </div>
+              </ng-template>
+              <ng-template [ngIf]="!processedErrors.size">
+                <div class="p-4 d-flex justify-content-center">
+                  <i class="material-icons-round large">check</i>Error free
+                </div>
+              </ng-template>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </ng-template>
+</div>
+
+<ng-template #severityHelp>
+  <div class="help-tip-inner"> 
+      <b>WARNING</b>. Please review. You can still submit your spreadsheet for approval if you accept all
+    warnings in the spreadsheet; otherwise resubmit a corrected spreadsheet.<br/>
+      <b>CRITICAL</b>. You cannot submit your spreadsheet for approval. Please delete
+    the current spreadsheet, fix the errors in your original copy (your own Data BOX), and resubmit.
+  </div>
+</ng-template>
+
+<ng-template #typeHelp>
+  <div class="help-tip-inner"> 
+      <b>BUSINESS</b>. This checks for "dirty data" and needs to be fixed on a per-row basis<br/>
+      <b>FORMAT</b>. This likely applies to an entire column's formatting in your spreadsheet
+  </div>
+</ng-template>
+

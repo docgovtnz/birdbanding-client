@@ -1,0 +1,62 @@
+<div class="background d-flex flex-column">
+  <div class="head">
+    <h2 class="head-two ml-3">Your details</h2>
+    <h5 class="head-five ml-3">All fields are required unless stated</h5>
+  </div>
+  <form autocomplete="off" [formGroup]="detailsForm" class="px-2 px-md-3">
+    <h4 class="text-bold-20 mt-3">Add your contact details</h4>
+    <div class="question d-flex row mx-0">
+      <div class="d-flex flex-column col-12 col-md-6 pl-0">
+        <label for="detail-name" class="input-caption ">YOUR NAME</label>
+        <input autocomplete="off" type="text" id="detail-name" name="detail-name" class="flex-input" formControlName="detailName" />
+        <div *ngIf="f.detailName.invalid && (f.detailName.dirty || f.detailName.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.detailName.errors.required">
+            This field is required
+          </div>
+          <div class="error-inline" *ngIf="f.detailName.errors.maxlength">
+            Maximum length is {{ f.detailName.errors.maxlength.requiredLength }}
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column col-12 mt-3 mt-md-0 col-md-6 pl-0 pl-md-2">
+        <label for="detail-email" class="input-caption ">YOUR EMAIL</label>
+        <input autocomplete="off" type="text" id="detail-email" name="detail-email" class="flex-input" formControlName="detailEmail" />
+        <div *ngIf="f.detailEmail.invalid && (f.detailEmail.dirty || f.detailEmail.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.detailEmail.errors.required">
+            This field is required
+          </div>
+          <div class="error-inline" *ngIf="f.detailEmail.errors.maxlength">
+            Maximum length is {{ f.detailEmail.errors.maxlength.requiredLength }}
+          </div>
+          <div class="error-inline" *ngIf="f.detailEmail.errors.pattern">
+            Enter a valid email address
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="text-bold-20 mt-3">Would you like to receive an email of the banded bird’s history?</h4>
+    <div class="mt-1">
+      <input type="checkbox" id="details-contact" formControlName="detailContact" name="details-contact" (click)="detailContact = !detailContact" />
+      <label for="details-contact">
+        Yes, send me an email
+      </label>
+    </div>
+    <p class="tiny-text">
+      Privacy disclosure: To process your request, we need to collect personal information about you. We’ll only use your information for
+      this purpose and we’ll follow the principles of the Privacy Act 1993. See our
+      <a rel="”noreferrer”" target="_blank" href="https://www.doc.govt.nz/footer-links/privacy-and-security/">privacy and security </a>
+      statement
+    </p>
+  </form>
+  <div class="d-flex white-background justify-content-between row mt-3 px-3 mx-0">
+    <button (click)="previous()" class="clear-green-button col-5 col-md-2"><i class="material-icons-round">arrow_back</i> Back</button>
+
+    <button *ngIf="!isSubmitting; else loading" (click)="submit()" class=" col-5 col-md-2 big-green-button">
+      Submit <i class="material-icons-round">arrow_forward</i>
+    </button>
+  </div>
+</div>
+<ng-template #loading>
+  <app-loading-button class="col-5 col-md-2 px-0"></app-loading-button>
+</ng-template>

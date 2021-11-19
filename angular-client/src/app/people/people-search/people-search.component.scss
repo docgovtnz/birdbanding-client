@@ -1,0 +1,139 @@
+@import 'src/palate';
+
+input#search:focus {
+  background-image: none;
+}
+
+.search-name {
+  width: 411px;
+}
+
+.input-caption,
+.input-box {
+  display: block;
+}
+
+.input-caption,
+.status-group {
+  display: block;
+}
+
+.status-group {
+  list-style-type: none;
+  font-size: 16px;
+  padding: 0;
+}
+
+.status-group input {
+  display: none !important;
+}
+
+.status-group li {
+  float: left;
+  height: 40px;
+  position: relative;
+  font-size: 16px;
+}
+
+.status-group label,
+.status-group input {
+  background: $WHITE;
+  color: #66727f;
+  height: 48px;
+}
+
+.status-group input[type='radio'] {
+  /*opacity: 0.01;*/
+  /*z-index: 100;*/
+}
+
+.status-group input[type='radio']:checked + label,
+.Checked + label {
+  background: $ACCENT_BLUE;
+  color: #ffffff;
+  border: 1px solid $ACCENT_BLUE;
+}
+
+.status-group label {
+  display: block;
+  padding: 12px 10px 12px;
+  border: 1px solid #c0c5cb;
+  cursor: pointer;
+  z-index: 90;
+}
+
+.status-group label:hover {
+  background: #ddd;
+}
+
+.status-group li:first-child {
+  border-radius: 3px 0 0 3px;
+}
+
+/* Some of the following css doesn't work when in styles.css possibly because of ::ng-deep */
+.pagination-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6b7786;
+}
+
+.pagination-input {
+  border: 1px solid #d6d9dd;
+  background: #ffffff;
+  height: 48px;
+  width: 92px;
+}
+
+:host ::ng-deep .pagination-main .page-link {
+  border: none;
+  font-size: 18px;
+  color: #4d4d4d;
+  background: #f4f5f7;
+}
+
+:host ::ng-deep .pagination-main .page-item.active .page-link {
+  border: 1px solid $ACCENT_BLUE;
+  border-radius: 3px;
+  font-size: 18px;
+  color: $WHITE;
+  background: $ACCENT_BLUE;
+}
+
+:host ::ng-deep .dropdown-item.active {
+  background-color: $ACCENT_BLUE;
+}
+
+.hidden-icon {
+  font-size: 18px;
+  padding: 3px;
+  color: #ffffff;
+  background: #e2a709;
+  border-radius: 2px;
+}
+
+.as-link {
+  cursor: pointer;
+  color: $ACCENT_BLUE;
+  font-weight: bold;
+  font-size: 15px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.normal-input {
+  flex: 2 1 auto;
+}
+
+.large-input {
+  flex: 4 1 auto;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-5 {
+  flex: 5;
+}

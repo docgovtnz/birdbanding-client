@@ -1,0 +1,16 @@
+<div class="d-flex flex-row">
+  <input
+    [readOnly]="isSelected"
+    (typeaheadOnSelect)="onSelect($event)"
+    [(ngModel)]="selected"
+    [typeahead]="optionList"
+    [typeaheadOptionField]="optionField"
+    autocomplete="off"
+    data-lpignore="true"
+    [placeholder]="placeholder"
+    class="input-flex"
+  />
+  <button *ngIf="isSelected" class="btn btn-link reset-button" type="button" (click)="clearSelection()">
+    <i class="material-icons-round ">close</i>
+  </button>
+</div>

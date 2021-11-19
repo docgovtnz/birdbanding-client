@@ -1,0 +1,69 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">EXPORT DATA</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div [ngSwitch]="exportState">
+    <div *ngSwitchCase="0">
+      <div id="loading-spin" class="py-5 d-flex align-items-center justify-content-center">
+        <span class="big-blue-spinner"></span>
+      </div>
+      <div class="mx-3">
+        <h5 class="text-bold-18 text-center py-3">Preparing export…</h5>
+      </div>
+    </div>
+    <div *ngSwitchCase="1">
+      <div class="m-3">
+        <div class="display-row py-2">
+          <span>Data rows to be exported</span>
+          <span>{{ rowsToExport | number }}</span>
+        </div>
+        <div class="display-row py-2">
+          <span>Contains data under moratorium</span>
+          <span>
+            <i *ngIf="isMoratorium" class="material-icons-round green-ball">check</i>
+          </span>
+        </div>
+      </div>
+      <div class="warning-box p-3 m-3">
+        <span class="pr-1"><i class="material-icons-round orange-circle">priority_high</i></span
+        ><span class="pr-1"
+          >Want more data in CSV? Contact the <a href="mailto:bandingoffice@doc.govt.nz">banding office</a> with your query</span
+        >
+      </div>
+      <div class="d-flex flex-row justify-content-between">
+        <button (click)="modalRef.hide()" class="big-clear-button m-3">Cancel</button>
+        <button
+          (click)="startDownload()"
+          [disabled]="!readyToExport"
+          class="big-blue-button m-3 d-flex align-items-center justify-content-around"
+        >
+          <i class="material-icons-round ">download</i> Export
+        </button>
+      </div>
+    </div>
+    <div id="in-progress" *ngSwitchCase="2">
+      <div id="spin" class="py-5 d-flex align-items-center justify-content-center">
+        <span class="big-blue-spinner"></span>
+      </div>
+      <div id="text" class="mx-3">
+        <h5 class="text-bold-18 text-center py-3">Your export is being created and may take several minutes.</h5>
+        <p class="text-regular-17 text-center py-3">Your export will be available on View data screen > My exports tab when available.</p>
+      </div>
+      <div id="buttons-begin" class="d-flex justify-content-center mb-5">
+        <button (click)="navigateToExports()" class="big-clear-button">My Exports</button>
+      </div>
+    </div>
+    <div *ngSwitchCase="3">
+      <div class="d-flex flex-column align-items-center">
+        <h5 class="text-bold-18 text-center red-text py-3">
+          An error has occurred, please try again. If the problem persists please contact the
+          <a href="mailto:bandingoffice@doc.govt.nz">Banding Office</a>
+        </h5>
+        <button (click)="modalRef.hide()" class="md-clear-button">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

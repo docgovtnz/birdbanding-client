@@ -1,0 +1,91 @@
+<div class="timeout-alert">
+  <div class="d-flex flex-column" *ngFor="let alert of alerts">
+    <alert [type]="alert.type" [dismissible]="true" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i class="material-icons-round alert-ok">priority_high</i>
+      <div class="d-flex flex-column align-items-start">
+        <span style="white-space: normal;">{{ alert.msg }}</span>
+
+        <span class="text-regular-16-white"> {{ alert.sub }}</span>
+      </div>
+    </alert>
+  </div>
+</div>
+<div class="result-table mb-5" *ngIf="hasResultsToDisplay && !isLoading">
+  <div class="d-flex justify-content-between align-items-center">
+    <button class="md-clear-button d-flex align-items-center ml-3" [routerLink]="['/view-data', 'map']">
+      <span class="material-icons-round mr-2"> place </span>View map
+    </button>
+    <div id="result-buttons">
+      <button *ngIf="!isAdvancedSearch" (click)="exportSearchData()" class="md-clear-button mr-3">Count/Export</button>
+      <button *ngIf="isAdvancedSearch" (click)="exportAdvancedSearchData()" class="md-clear-button mr-3">Count/Export</button>
+      <button *ngIf="isAdvancedSearch && this.person?.isAdmin" (click)="linkToProject()" class="md-clear-button mr-3">
+        Link to project
+      </button>
+    </div>
+  </div>
+  <div class="mt-3">
+    <table class="table">
+      <thead class="table-header-text">
+        <tr>
+          <th>Bird</th>
+          <th>Band prefix</th>
+          <th>Band #</th>
+          <th>Other mark</th>
+          <th>Date of event</th>
+          <th>Project name</th>
+          <th>Bander #</th>
+          <th>Event code</th>
+          <th>Common name</th>
+          <th>Location description</th>
+          <th class="pr-4">Date Uploaded</th>
+        </tr>
+      </thead>
+      <tbody class="table-row-text">
+        <tr class="pointer" *ngFor="let e of events" [routerLink]="['/view-data', 'event', e.eventId]">
+          <td class="icon-column">
+            <div *ngIf="e.isBird">
+              <a class="bird-link d-flex flex-row" routerLink="{{ '/view-data/bird/' + e.birdId }}" *ngIf="e.hasBird; else noLink"
+                ><svg-icon src="assets/icons/bird-icon.svg"></svg-icon><span class="ml-2">View bird</span></a
+              >
+              <ng-template #noLink>
+                <span><svg-icon src="assets/icons/bird-icon-disabled.svg"></svg-icon></span>
+              </ng-template>
+            </div>
+          </td>
+          <td>{{ e.bandPrefix }}</td>
+          <td>{{ e.bandNumber }}</td>
+          <td>{{ e.colourBand }}</td>
+          <td>{{ e.dateOfEvent | date: 'dd MMM yyyy' }}</td>
+          <td>{{ e.projectName }}</td>
+          <td>{{ e.banderNumber }}</td>
+          <td>{{ e.bbsCode }}</td>
+          <td>{{ e.commonName }}</td>
+          <td>{{ e.region | truncate: [20, '...'] }}</td>
+          <td>{{ e.dateUploaded | date: 'dd MMM yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-4 d-flex  align-items-center">
+    <div class="pagination-text ml-4 col-3">
+      <label for="limit" class="pr-2">RESULTS PER PAGE</label>
+      <select id="limit" name="limit" [disabled]="isLoadingPage" [(ngModel)]="limitPerPage" (change)="onLimitChanged($event)" class="pagination-input">
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+    <div class="row col-6 justify-content-center">
+      <div class="col-4"><button *ngIf="!isLoadingPage; else loadingButton" class="flex-blue-button" [disabled]="isFirstPage" (click)="previousPage()">Prev</button></div>
+      <div class="col-4"><button *ngIf="!isLoadingPage; else loadingButton" class="flex-blue-button" [disabled]="isLastPage" (click)="nextPage()">Next</button></div>
+    </div>
+  </div>
+  <button class="scroll-button" (click)="scrollToTop()">
+    <i class="material-icons-round">
+      arrow_upward
+    </i>
+  </button>
+</div>
+<ng-template #loadingButton>
+  <app-loading-button useClass="flex-blue-button"></app-loading-button>
+</ng-template>

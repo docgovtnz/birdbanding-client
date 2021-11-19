@@ -1,0 +1,50 @@
+Choose a new 
+<select id="characteristics" name="ancillaryCharacteristics" class="input-flex w-30" (change)="newCharacteristicValue($event)">
+  <option id="0">Add a detail...</option>
+  <option [value]="c.id" *ngFor="let c of availableCharacteristics">{{ c.display }}</option>
+</select>
+
+<div [formGroup]="additionalFieldsForm">
+  <div formArrayName="characteristicValues" class="characteristic-container">
+    <div *ngFor="let char of characteristicValuesForm.controls; index as i" class="characteristic-record">
+      <ng-container [formGroupName]="i">
+          <label for="dateOfEvent" class="input-caption">{{getLabel(char) | uppercase}}</label>
+          <div [ngSwitch]="char.controls.dataType.value" class="value-container">
+            <div *ngSwitchCase ="'NUMERIC'">
+              <input formControlName="value" class="input-flex-100" />
+              <div class="text-danger" *ngIf="getValue(i).hasError('required') && getValue(i).dirty">Please enter a value</div>
+              <div class="text-danger" *ngIf="getValue(i).errors?.pattern && getValue(i).dirty">Must be a number</div>
+            </div>
+            <div *ngSwitchCase="'TEXT'" >
+              <input formControlName="value" class="input-flex-100" />
+              <div class="text-danger" *ngIf="getValue(i).errors && getValue(i).dirty">Please enter a number</div>
+            </div>
+            <div *ngSwitchCase="'DATETIME'">
+              <input 
+                   formControlName="value"
+                   class="input-flex-100"
+                   placeholder="Choose a date"
+                   bsDatepicker
+                   autocomplete="off"
+                   placement="bottom"
+                   data-lpignore="true"
+                   [bsConfig]="{
+                    dateInputFormat: 'DD/MM/YYYY',
+                    containerClass: 'theme-dark-blue',
+                    showWeekNumbers: false
+                   }" />
+              <div class="text-danger" *ngIf="getValue(i).errors && getValue(i).dirty">Please enter a date</div>
+            </div>
+            <div *ngSwitchCase="'ARRAY'" >
+              <input formControlName="value" class="input-flex-100" />
+              <div class="text-danger" *ngIf="getValue(i).errors && getValue(i).dirty">Please enter a date</div>
+            </div>
+          <div class="remove-button-container">
+            <i class="material-icons-round remove-button" (click)="removeCharacteristicValue(i)">close</i>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+

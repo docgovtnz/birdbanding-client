@@ -1,0 +1,19 @@
+@import 'src/palate';
+.small-blue-spinner {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border-left: solid 2px $ACCENT_BLUE;
+  border-top: solid 2px $ACCENT_BLUE;
+  animation: roll 1s infinite;
+  transform: rotate(30deg);
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

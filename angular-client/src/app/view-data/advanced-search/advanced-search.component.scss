@@ -1,0 +1,21 @@
+@import 'src/palate';
+
+.btn-link {
+  color: $ACCENT_BLUE;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
+.margin-large-screen {
+  width: 100%;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    width: 75%;
+  }
+}
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}

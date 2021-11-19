@@ -1,0 +1,219 @@
+<div class="background d-flex flex-column">
+  <div class="row mx-0 d-flex align-items-center">
+    <label class="big-label pr-2 col-6 col-md-2">{{ isLegBand ? legPrefix + ' leg' : 'Other' }} </label>
+    <select class="col-3 col-md-1 input-flex px-1 px-xl-3" [formControl]="numberOfBands">
+      <option *ngFor="let n of bandNumbers" [ngValue]="n">{{ n }}</option>
+    </select>
+  </div>
+  <div *ngIf="isLegBand" [hidden]="bandInformation.length == 0" [formGroup]="parentFromGroup" class="mt-3">
+    <form autocomplete="off" [formArrayName]="bandInformationName">
+      <div class="row  mx-0 top-border py-2 d-none d-md-flex">
+        <div class="col-1"><span></span></div>
+        <div class="col-2"><label class="input-caption">BAND TYPE</label></div>
+        <div class="col-2"><label class="input-caption">BAND FORM</label></div>
+        <div class="col-2"><label class="input-caption">BAND COLOUR</label></div>
+        <div class="col-3"><label class="input-caption">NUMBER/LETTER ID</label></div>
+        <div class="col-2"><label class="input-caption">TEXT COLOUR</label></div>
+      </div>
+      <div
+        *ngFor="let bandDetails of bandInformation.controls; let bandIndex = index"
+        [formGroupName]="bandIndex"
+        class="row mx-0 top-border py-3"
+      >
+        <div class="col-12 col-md-1 d-flex flex-row justify-content-center align-items-start mx-0 mt-2">
+          <span class="big-grey-ball mr-2">{{ bandIndex + 1 }}</span>
+        </div>
+
+        <div class="col-12 col-md-2 d-flex flex-column">
+          <label class="input-caption d-block d-md-none">BAND TYPE</label>
+          <select autocomplete="off" data-lpignore="true" class="flex-input" name="bandType" formControlName="bandType">
+            <option [ngValue]="type.value" *ngFor="let type of bandType">
+              {{ type.display }}
+            </option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2 d-flex flex-column">
+          <label class="input-caption d-block d-md-none">BAND FORM</label>
+          <select autocomplete="off" data-lpignore="true" class="flex-input" name="bandForm" formControlName="bandForm">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="form.id" *ngFor="let form of uploadEnums.bandForms">
+              {{ form.display }}
+            </option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2 d-flex flex-column">
+          <label class="input-caption d-block d-md-none">BAND COLOUR</label>
+          <select autocomplete="off" data-lpignore="true" class="flex-input" name="bandColor" formControlName="bandColor">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="c.id" *ngFor="let c of uploadEnums.bandColours">{{ c.display }}</option>
+          </select>
+          <div
+            *ngIf="bandDetails.get('bandColor').invalid && (bandDetails.get('bandColor').dirty || bandDetails.get('bandColor').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('bandColor').errors.maxlength">
+              Maximum length is {{ bandDetails.get('bandColor').errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-column">
+          <label class="input-caption d-block d-md-none">NUMBER/LETTER ID</label>
+          <div class="d-flex flex-column align-items-end">
+            <input autocomplete="off" data-lpignore="true" class="flex-input" name="bandId" formControlName="bandId" />
+            <button *ngIf="showPrimaryMarkButton && !hasPrimaryMark" class="btn btn-link mark-button" (click)="addPrimaryMark(bandIndex)">
+              Add primary mark
+            </button>
+            <button
+              *ngIf="showPrimaryMarkButton && hasPrimaryMark && bandDetails.get('primaryMark').value"
+              (click)="undoPrimaryMark(bandIndex)"
+              class="btn btn-link undo-mark-button  d-flex align-items-center"
+            >
+              <i class="material-icons-round green">check</i> Undo primary mark
+            </button>
+          </div>
+          <div
+            *ngIf="bandDetails.get('bandId').invalid && (bandDetails.get('bandId').dirty || bandDetails.get('bandId').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('bandId').errors.maxlength">
+              Maximum length is {{ bandDetails.get('bandId').errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-2 d-flex flex-column">
+          <label class="input-caption d-block d-md-none">TEXT COLOUR</label>
+          <select autocomplete="off" data-lpignore="true" class="flex-input" name="textColor" formControlName="textColor">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="c.id" *ngFor="let c of uploadEnums.bandColours">{{ c.display }}</option>
+          </select>
+          <div
+            *ngIf="bandDetails.get('textColor').invalid && (bandDetails.get('textColor').dirty || bandDetails.get('textColor').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('textColor').errors.maxlength">
+              Maximum length is {{ bandDetails.get('textColor').errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="!isLegBand" [hidden]="bandInformation.length == 0" [formGroup]="parentFromGroup" class="mt-3">
+    <form autocomplete="off" [formArrayName]="bandInformationName">
+      <div class="d-md-flex flex-row justify-content-around top-border py-2 d-none ">
+        <div><label class="input-caption">MARK SIDE</label></div>
+        <div><label class="input-caption">MARK POSITION</label></div>
+        <div><label class="input-caption">MARK TYPE</label></div>
+        <div><label class="input-caption">MARK FORM</label></div>
+        <div><label class="input-caption">MARK COLOUR</label></div>
+        <div><label class="input-caption">NUMBER/LETTER ID</label></div>
+        <div><label class="input-caption">TEXT COLOUR</label></div>
+      </div>
+      <div
+        *ngFor="let bandDetails of bandInformation.controls; let bandIndex = index"
+        [formGroupName]="bandIndex"
+        class="d-flex flex-column flex-md-row justify-content-between top-border py-3"
+      >
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">MARK SIDE</label>
+          <select class="flex-input" name="side" formControlName="side">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="side.id" *ngFor="let side of bandSideValues">
+              {{ side.display }}
+            </option>
+          </select>
+        </div>
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">MARK POSITION</label>
+          <select class="flex-input" name="position" formControlName="position">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="position.id" *ngFor="let position of bandPosition">
+              {{ position.display }}
+            </option>
+          </select>
+        </div>
+
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">MARK TYPE</label>
+          <select class="flex-input" name="markType" formControlName="markType">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="type.id" *ngFor="let type of viewDataEnums.markTypes">
+              {{ type.display }}
+            </option>
+          </select>
+          <div
+            *ngIf="bandDetails.get('markType').invalid && (bandDetails.get('markType').dirty || bandDetails.get('markType').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('markType').errors.required">
+              Please select a mark type
+            </div>
+          </div>
+        </div>
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">MARK FORM</label>
+          <select class="flex-input" name="bandForm" formControlName="bandForm">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="form.id" *ngFor="let form of uploadEnums.bandForms">
+              {{ form.display }}
+            </option>
+          </select>
+        </div>
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">MARK COLOUR</label>
+          <select class="flex-input" name="bandColor" formControlName="bandColor">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="c.id" *ngFor="let c of uploadEnums.bandColours">{{ c.display }}</option>
+          </select>
+          <div
+            *ngIf="bandDetails.get('bandColor').invalid && (bandDetails.get('bandColor').dirty || bandDetails.get('bandColor').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('bandColor').errors.maxlength">
+              Maximum length is {{ bandDetails.get('bandColor').errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">NUMBER/LETTER ID</label>
+          <div class="d-flex flex-column">
+            <input class="flex-input" name="bandId" formControlName="bandId" />
+            <button *ngIf="showPrimaryMarkButton && !hasPrimaryMark" class="btn btn-link mark-button" (click)="addPrimaryMark(bandIndex)">
+              Add primary mark
+            </button>
+            <button
+              *ngIf="showPrimaryMarkButton && hasPrimaryMark && bandDetails.get('primaryMark').value"
+              (click)="undoPrimaryMark(bandIndex)"
+              class="btn btn-link undo-mark-button  d-flex align-items-center"
+            >
+              <i class="material-icons-round green">check</i> Undo primary mark
+            </button>
+          </div>
+          <div
+            *ngIf="bandDetails.get('bandId').invalid && (bandDetails.get('bandId').dirty || bandDetails.get('bandId').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('bandId').errors.maxlength">
+              Maximum length is {{ bandDetails.get('bandId').errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+        <div class="small-col">
+          <label class="input-caption d-block d-md-none">TEXT COLOUR</label>
+          <select class="flex-input" name="textColor" formControlName="textColor">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="c.id" *ngFor="let c of uploadEnums.bandColours">{{ c.display }}</option>
+          </select>
+          <div
+            *ngIf="bandDetails.get('textColor').invalid && (bandDetails.get('textColor').dirty || bandDetails.get('textColor').touched)"
+            class="p-1"
+          >
+            <div class="error-inline" *ngIf="bandDetails.get('textColor').errors.maxlength">
+              Maximum length is {{ bandDetails.get('textColor').errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

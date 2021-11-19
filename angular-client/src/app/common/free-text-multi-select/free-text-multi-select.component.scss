@@ -1,0 +1,61 @@
+@import '../../../palate';
+
+.controls{
+    display: flex;
+}
+
+.text-field {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+  height: 48px;
+  background: white;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  padding: 0 1em;
+  flex: 1 0 auto;
+}
+
+.add-button{
+  border: none;
+  height: 48px;
+}
+
+.close-button{
+  line-height: 48px;
+
+}
+
+.disabled{
+  color: $DISABLED_GREY;
+}
+
+
+.clear-delete-button {
+  cursor: pointer;
+  color: $TEXT;
+  height:48px;
+  line-height:48px;
+  vertical-align: sub;
+}
+
+.pill {
+  cursor: pointer;
+  color: $WHITE;
+}
+
+.btn-link {
+  color: $ACCENT_BLUE;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
+

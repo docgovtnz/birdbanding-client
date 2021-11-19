@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "49459322-49fa-4575-8995-1839ec925497",
+		"name": "DOC Birds",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Species All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/species",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"species"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Species by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/species/102",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"species",
+						"102"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Species groups",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/species-groups",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"species-groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Species groups by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/species/102",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"species",
+						"102"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Birds All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/birds",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"birds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Birds by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/birds/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"birds",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get characteristics All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/characteristics",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"characteristics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get characteristics by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/characteristics/39",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"characteristics",
+						"39"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Projects All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/projects",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Projects by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/projects/00000000-0000-0000-0000-000000000002",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"projects",
+						"00000000-0000-0000-0000-000000000002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Marks All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/marks",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"marks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Marks By id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/marks/d71d7701-94d6-4341-958e-63bf299e853e",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"marks",
+						"d71d7701-94d6-4341-958e-63bf299e853e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Events All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/events",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Events by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/events/e5306efb-615a-4dda-ac68-4755623afc9b",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"events",
+						"e5306efb-615a-4dda-ac68-4755623afc9b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Banders All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/dev/birdbanding/banders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"dev",
+						"birdbanding",
+						"banders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

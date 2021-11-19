@@ -1,0 +1,66 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Choose data to duplicate</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div>
+    <form [formGroup]="duplicateForm" class="d-flex flex-column p-4">
+      <div class="row mx-0 bottom-line py-3 mb-3">
+        <div
+          role="checkbox"
+          [ngClass]="{
+            'none-selected': allCheckState === 'NONE',
+            selected: allCheckState === 'SOME' || allCheckState === 'ALL'
+          }"
+          (click)="toggleAllCheckBoxes()"
+          id="check-all"
+        >
+          {{ allCheckState === 'ALL' ? '&#x2713;' : allCheckState === 'SOME' ? '‒' : '' }}
+        </div>
+        <label class="ml-2" for="check-all">All</label>
+      </div>
+      <div *ngIf="isFirstMarking" class="row justify-content-between align-items-center mx-0">
+        <input formControlName="primaryMark" id="primary-mark" type="checkbox" />
+        <label for="primary-mark">Increment primary mark by +1</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="date" id="date" type="checkbox" />
+        <label for="date">Date</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="registeredProject" id="registered-project" type="checkbox" />
+        <label for="registered-project">Registered Project</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="captureCode" id="capture-code" type="checkbox" />
+        <label for="capture-code">Capture Code, Wild/Captive</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="species" id="species" type="checkbox" />
+        <label for="species">Species</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="age" id="age" type="checkbox" />
+        <label for="age">Age</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="sex" id="sex" type="checkbox" />
+        <label for="sex">Sex</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="peopleInvolved" id="people-involved" type="checkbox" />
+        <label for="people-involved">People involved (all fields)</label>
+      </div>
+      <div class="row justify-content-between align-items-center mx-0">
+        <input formControlName="eventLocation" id="event-location" type="checkbox" />
+        <label for="event-location">Location (all fields)</label>
+      </div>
+    </form>
+  </div>
+  <div class="p-3 row mx-0 justify-content-sm-between">
+    <button (click)="modalRef.hide()" class="flex-clear-button col-4">Cancel</button>
+    <button (click)="duplicateEvent()" class="flex-blue-button col-4">Duplicate</button>
+  </div>
+</div>

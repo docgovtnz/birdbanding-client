@@ -1,0 +1,115 @@
+@import '../../../palate';
+
+
+.delete-icon {
+  font-size: 20px;
+  font-weight: normal;
+  color: $TEXT;
+  cursor: pointer;
+  vertical-align: bottom;
+  text-decoration: none;
+}
+
+.delete-icon:hover{
+    color: $TABLE_TEXT;
+}
+
+.new-event{
+  font-size: 34px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+  cursor: pointer;
+}
+
+.new-event-pane {
+  width: 100%;
+  padding: 1rem 1rem;
+  margin: 0rem 0rem;
+  border-bottom: 1px solid $BORDER_GREY;
+  vertical-align:middle;
+}
+
+.new-event-text {
+  color: $ACCENT_BLUE;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.event-row {
+  padding: 1rem;
+  border-bottom: 1px solid $BORDER_GREY;
+  box-sizing:padding-box;
+}
+
+.event-row-hover:hover {
+  background-color: #F7F9FC;
+  cursor: pointer;
+}
+
+.is-selected{
+  background-color: #F7F9FC;
+}
+
+.text-regular-us-15 {
+  font-size: 15px;
+  font-weight: normal;
+  text-decoration: underline;
+  color: $LIGHT_TEXT;
+}
+
+.error-msg {
+  margin-top:20px;
+  font-size: 15px;
+  color: #f8495d;
+}
+
+.not-allowed{
+    cursor: not-allowed;
+}
+
+.text-field{
+  line-height: 48px;
+}
+
+.sort-icon-down {
+    &:hover{
+        color: $TEXT;
+    }
+  font-size: 30px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+  cursor: pointer;
+  vertical-align: bottom;
+  text-decoration: none;
+  user-select: none;
+}
+
+.sort-icon-up{
+  @extend .sort-icon-down;
+  transform: rotate(180deg);
+}
+
+.info-icon{
+    border: 1px solid $BORDER_GREY;
+}
+
+.link-button{
+  cursor:pointer;
+}
+
+.sort-label{
+  color: $TEXT;
+  font-size: 14px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.lhs-pane{
+    flex-basis: 600px;
+    flex-grow:1;
+}
+
+.rhs-pane{
+    flex-basis: 600px;
+    flex-grow: 1;
+}

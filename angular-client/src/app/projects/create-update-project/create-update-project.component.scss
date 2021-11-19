@@ -1,0 +1,39 @@
+@import 'src/app/projects/projects-styles';
+@import 'src/palate';
+
+div i,
+span {
+  cursor: pointer;
+}
+
+.band-image {
+  width: 100%;
+}
+
+.create-project-form {
+  background-color: $WHITE;
+}
+
+.flex-textarea {
+  @extend .flexible-input;
+  height: 130px;
+  width: 100%;
+}
+
+.ng-dirty.ng-invalid:not(form) {
+  border-color: $DANGER_RED;
+}
+
+.no-wrap {
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  float: left;
+}
+
+.form-error {
+  @extend .error-inline;
+  font-weight: bolder;
+  font-size: 20px;
+}

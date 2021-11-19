@@ -1,0 +1,22 @@
+@import '../../palate.scss';
+
+.text {
+  font-size: 14px;
+  color: $LABEL;
+}
+
+.nav-link {
+  color: $TABLE_TEXT;
+
+  &:hover {
+    color: $TEXT;
+  }
+}
+
+.version {
+}
+
+.version-text {
+  font-weight: bold;
+  color: $LABEL;
+}

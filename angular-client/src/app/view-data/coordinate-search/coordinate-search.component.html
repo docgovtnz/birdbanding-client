@@ -1,0 +1,88 @@
+<div [formGroup]="coordinateForm">
+  <div class="row">
+    <div class="col-6 flex-column">
+      <label class="input-caption">Minimum latitude</label>
+      <input
+        formControlName="minLat"
+        placeholder="Latitude decimal..."
+        id="gt-lat"
+        autocomplete="off"
+        data-lpignore="true"
+        class="input-flex-100"
+      />
+      <div *ngIf="minLat.invalid && (minLat.touched || minLat.dirty)">
+        <div class="warning-inline">Invalid values will not be used in search</div>
+        <div class="warning-inline" *ngIf="minLat.errors.min">Minimum value is {{ minLat.errors.min.min }}</div>
+        <div class="warning-inline" *ngIf="minLat.errors.max">Maximum value is {{ minLat.errors.max.max }}</div>
+        <div class="warning-inline" *ngIf="minLat.errors.pattern">
+          Should be a valid latitude eg. -43.5908
+        </div>
+      </div>
+    </div>
+    <div class="col-6 flex-column">
+      <label class="input-caption">Maximum latitude</label>
+      <input
+        formControlName="maxLat"
+        placeholder="Latitude decimal.."
+        id="lt-lat"
+        autocomplete="off"
+        data-lpignore="true"
+        class="input-flex-100"
+      />
+      <div *ngIf="maxLat.invalid && (maxLat.touched || maxLat.dirty)">
+        <div class="warning-inline">Invalid values will not be used in search</div>
+        <div class="warning-inline" *ngIf="maxLat.errors.min">Minimum value is {{ maxLat.errors.min.min }}</div>
+        <div class="warning-inline" *ngIf="maxLat.errors.max">Maximum value is {{ maxLat.errors.max.max }}</div>
+        <div class="warning-inline" *ngIf="maxLat.errors.pattern">
+          Should be a valid latitude eg. -43.5908
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="warning-inline" *ngIf="coordinateForm.invalid && coordinateForm.errors && coordinateForm.errors.minLatGreaterThanMaxLat">
+    Minimum latitude should be less than maximum latitude.
+  </div>
+  <div class="row pt-3 ">
+    <div class="col-6 flex-column">
+      <label class="input-caption">Minimum longitude</label>
+      <input
+        formControlName="minLng"
+        placeholder="Longitude decimal..."
+        id="gt-lng"
+        autocomplete="off"
+        data-lpignore="true"
+        class="input-flex-100"
+      />
+      <div *ngIf="minLng.invalid && (minLng.touched || minLng.dirty)">
+        <div class="warning-inline">Invalid values will not be used in search</div>
+        <div class="warning-inline" *ngIf="minLng.errors.min">Minimum value is {{ minLng.errors.min.min }}</div>
+        <div class="warning-inline" *ngIf="minLng.errors.max">Maximum value is {{ minLng.errors.max.max }}</div>
+        <div class="warning-inline" *ngIf="minLng.errors.pattern">
+          Should be a valid longitude eg. 175.4332
+        </div>
+      </div>
+    </div>
+    <div class="col-6 flex-column">
+      <label class="input-caption">Maximum longitude</label>
+      <input
+        formControlName="maxLng"
+        placeholder="Longitude decimal.."
+        id="lt-lng"
+        autocomplete="off"
+        data-lpignore="true"
+        class="input-flex-100"
+      />
+      <div *ngIf="maxLng.invalid && (maxLng.touched || maxLng.dirty)">
+        <div class="warning-inline">Invalid values will not be used in search</div>
+        <div class="warning-inline" *ngIf="maxLng.errors.min">Minimum value is {{ maxLng.errors.min.min }}</div>
+        <div class="warning-inline" *ngIf="maxLng.errors.max">Maximum value is {{ maxLng.errors.max.max }}</div>
+        <div class="warning-inline" *ngIf="maxLng.errors.pattern">
+          Should be a valid longitude eg. 175.4332
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="warning-inline" *ngIf="coordinateForm.invalid && coordinateForm.errors && coordinateForm.errors.minLngGreaterThanMaxLng">
+    Minimum longitude should be less than maximum longitude.
+  </div>
+</div>

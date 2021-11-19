@@ -1,0 +1,75 @@
+@import 'src/palate';
+@import 'src/text-styles';
+
+.adjust-circle {
+  line-height: 24px;
+  text-align: center;
+}
+
+.max-level-text {
+  font-size: 14px;
+  font-weight: normal;
+  color: $PLACE_HOLDER;
+  margin-right: 1rem;
+}
+
+.restrictions {
+  margin-left: 2rem;
+}
+
+.lvl-banding {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 10px;
+  color: $WHITE;
+}
+
+.lvl-banding-lg {
+  width: 40px;
+  height: 40px;
+}
+
+.lvl1-banding {
+  background: $LIME_GREEN;
+}
+
+.lvl2-banding {
+  background: $DOC_GOLD;
+}
+
+.lvl3-banding {
+  background: $DANGER_RED;
+}
+
+.lvl-banding-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lvl-banding-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(32%, -35%);
+}
+
+.circle-small {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.green {
+  color: $LIME_GREEN;
+}
+
+.yellow {
+  color: $DOC_GOLD;
+}
+
+.red {
+  color: $DANGER_RED;
+}

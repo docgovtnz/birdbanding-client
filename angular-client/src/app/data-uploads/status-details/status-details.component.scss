@@ -1,0 +1,20 @@
+.status-detail-row{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.status-detail-remove{
+  cursor: pointer;
+  
+}
+
+.status-detail-name{
+  width:90%;
+}
+
+.status-detail-values{
+  margin-top: 1rem;
+}
+
+

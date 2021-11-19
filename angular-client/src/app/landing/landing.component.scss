@@ -1,0 +1,53 @@
+@import 'src/palate';
+
+.hero {
+  background-image: url('/assets/images/BlackStallionPhotography_FALCON_background.jpg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  min-width: 768px;
+  min-height: 300px;
+  padding: 66px;
+  padding-top: 430px;
+}
+
+.page-heading-landing {
+  font-family: 'Zilla Slab', serif;
+  font-size: 32px;
+  color: #194036;
+  opacity: 0.85;
+  background: #ffffff;
+  margin-bottom: 15px;
+  padding: 20px 30px;
+}
+
+.sub-heading-panel {
+  color: white;
+  padding: 30px;
+}
+
+.sub-heading-panel-left {
+  background: #487d2c;
+  margin-right: 14px;
+}
+
+.sub-heading-panel-right {
+  background: #194036;
+  margin-left: 14px;
+}
+
+.colophon {
+  color: #4d4d4d;
+  white-space: normal;
+  font-style: italic;
+  font-size: smaller;
+}
+
+.attribution-text {
+  transform: translate(62%, -1153%) rotate(-90deg);
+  background-color: $OTHER_TEXT;
+  color: white;
+  width: fit-content;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: normal;
+}

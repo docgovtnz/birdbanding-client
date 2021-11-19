@@ -1,0 +1,63 @@
+@import 'src/palate';
+@import 'src/text-styles';
+@import '../nav-styles';
+
+.navbar {
+  background-color: $DOC_GREEN;
+  min-height: 100px;
+  padding-bottom: 0px;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.banding-logo {
+  @extend %logo;
+  background-image: url('../../../assets/images/BandingLogo.svg');
+  width: 81px;
+  height: 40px;
+}
+
+.nav-height {
+  min-height: 100px;
+}
+
+.nav-link {
+  color: $WHITE;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 18px;
+  align-items: center;
+  display: flex;
+  border-bottom: solid 3px transparent;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 0.5em;
+  @media (min-width: $LARGE_SCREEN) {
+    font-size: 12px;
+    margin: 0 0.3em;
+  }
+  @media (min-width: $EXTRA_LARGE_SCREEN) {
+    font-size: 16px;
+    margin: 0 0.4em;
+  }
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    font-size: 18px;
+  }
+  &:hover {
+    color: $WHITE;
+    border-bottom: solid 3px $WHITE;
+  }
+  &.active {
+    border-bottom: solid 3px $WHITE;
+  }
+}
+
+.falcon-title {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.feedback-icon {
+  color: #c0c5cb;
+}

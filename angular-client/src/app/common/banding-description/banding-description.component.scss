@@ -1,0 +1,69 @@
+@import 'src/palate';
+@import 'src/text-styles';
+@import 'src/app/sightings/sightings-styles';
+
+.background {
+  background-color: $INTERACTIVE_GREY;
+  @media (min-width: $MEDIUM_SCREEN) {
+    padding: 1em;
+  }
+  padding: 0.1em;
+}
+
+.mark-button {
+  color: $ACCENT_BLUE;
+  text-decoration: none;
+  font-size: 14px;
+  margin: 0;
+}
+
+.undo-mark-button {
+  @extend .mark-button;
+}
+
+.green {
+  color: $LIME_GREEN;
+}
+
+.big-label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.smaller-label {
+  font-size: 17px;
+}
+
+.big-grey-ball {
+  background-color: #9ea6b1;
+  border-radius: 50%;
+  color: $WHITE;
+  height: 29px;
+  width: 29px;
+  min-width: 29px;
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+}
+
+.top-border {
+  border-top: solid 1px $BORDER_GREY;
+}
+
+.small-col {
+  @media (min-width: $MEDIUM_SCREEN) {
+    width: 12%;
+  }
+  width: 100%;
+}
+
+.flex-input {
+  @extend %flexible-input;
+  width: 100%;
+}

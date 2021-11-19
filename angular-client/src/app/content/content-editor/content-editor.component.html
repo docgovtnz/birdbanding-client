@@ -1,0 +1,45 @@
+<div class="child-page">
+  <div class="row" *ngIf="content">
+    <div class="col-md-8">
+      <div class="alert-box">
+        <div>
+          <h2 class="page-heading">Content Editor</h2>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <label class="input-caption" for="label">
+              <span>LABEL</span>
+            </label>
+            <input class="edit-input-box form-control" type="text" id="label" name="label" tabindex="1" [(ngModel)]="content.link_label" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <editor #editorComponent [init]="tinyMceSettings" name="contentHtml" [(ngModel)]="content.html"></editor>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-2">
+          <!-- Warning: don't make this a submit button because inserting an image seems to trigger an automatic submit -->
+          <button class="flex-blue-button" (click)="onUpdate()">Update</button>
+        </div>
+        <div class="col-2">
+          <button class="flex-clear-button" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <h2 class="page-heading">Attachments</h2>
+
+      <app-attachment-upload (fileUploadEvent)="onFileUploaded()"></app-attachment-upload>
+      <app-attachment-list #attachmentListComponent [editorComponent]="editorComponent"></app-attachment-list>
+    </div>
+  </div>
+</div>

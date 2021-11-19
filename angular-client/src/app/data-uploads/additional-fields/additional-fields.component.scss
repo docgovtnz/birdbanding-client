@@ -1,0 +1,28 @@
+.characteristic-container{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.characteristic-record{
+    width: 200px;
+    margin-right: 30px;
+}
+
+.value-container{
+  display: flex;
+  width: 200px;
+  input{
+    width: 180px;
+  }
+
+  .remove-button-container{
+    width: 20px;
+  }
+}
+
+.remove-button{
+  line-height: 48px;
+  cursor: pointer;
+}
+

@@ -1,0 +1,58 @@
+<div [formGroup]="peopleForm">
+  <div class="row">
+    <div class="col-4">
+      <label for="primary" class="input-caption">L3/Provider (ID & Name)<sup class="required-star">*</sup></label>
+      <app-wrapped-typeahead
+        [selectedItem]="primaryControl"
+        [optionList]="people"
+        optionField="display"
+        id="primary"
+        placeholder="Start typing a bander name..."
+      ></app-wrapped-typeahead>
+      <div *ngIf="primaryControl.invalid && (primaryControl.dirty || primaryControl.touched)" class="p-1">
+        <div class="error-inline" *ngIf="primaryControl.errors.required">
+          L3 is required
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <label for="reporter" class="input-caption">Bander/Reporter (ID & Name)<sup class="required-star">*</sup></label>
+      <app-wrapped-typeahead
+        [selectedItem]="reporterControl"
+        [optionList]="people"
+        optionField="display"
+        id="reporter"
+        placeholder="Start typing a bander name..."
+      ></app-wrapped-typeahead>
+      <div *ngIf="reporterControl.invalid && (reporterControl.dirty || reporterControl.touched)" class="p-1">
+        <div class="error-inline" *ngIf="reporterControl.errors.required">
+          Reporter is required
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-4">
+      <label for="otherName" class="input-caption">Other name</label>
+      <input autocomplete="off" data-lpignore="true" id="otherName" formControlName="otherName" class="input-flex-100" />
+      <div *ngIf="otherName.invalid && (otherName.dirty || otherName.touched)" class="p-1">
+        <div class="error-inline" *ngIf="otherName.errors.maxlength">
+          Maximum length is {{ otherName.errors.maxlength.requiredLength }} characters
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <label for="otherContact" class="input-caption">Other contact (Email)</label>
+      <input id="otherContact" formControlName="otherContact" class="input-flex-100" />
+      <div *ngIf="otherContact.invalid && (otherContact.dirty || otherContact.touched)" class="p-1">
+        <div class="error-inline" *ngIf="otherContact.errors.maxlength">
+          Maximum length is {{ otherContact.errors.maxlength.requiredLength }} characters
+        </div>
+        <div class="error-inline" *ngIf="otherContact.errors.pattern">
+          Must be a valid email
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

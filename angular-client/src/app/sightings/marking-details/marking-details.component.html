@@ -1,0 +1,91 @@
+<div class="background d-flex flex-column">
+  <div class="head">
+    <h2 class="head-two ml-3">Marking details</h2>
+    <h5 class="head-five ml-3">All fields are required unless stated</h5>
+  </div>
+  <form autocomplete="off" [formGroup]="markingFrom" class="d-flex flex-column px-2 px-md-3">
+    <div class="question d-flex flex-column mx-0 px-0">
+      <div class="row mx-0">
+        <div class="col-12 col-md-6 d-flex flex-column">
+          <h4 class="text-bold-20">Did you identify any bird bands? <span class="text-regular-20">optional</span></h4>
+          <p class="mt-3">
+            If you can see details like the colour or even the position and ID number please fill out the details below.
+          </p>
+          <p class="mt-3">
+            There may be bands on the upper (tibia) or lower (tarsus) part of the leg. Select how many bands you saw on each part of the
+            leg, ensuring you are referring to the bird’s left and right leg.
+          </p>
+          <p>
+            If the mark is not on a leg, or you are unsure of band type/colour, please use the fields in the "Other" category. Only enter
+            known fields.
+          </p>
+        </div>
+        <div class="d-flex justify-content-center col-12 px-0 col-md-6">
+          <img alt="example of a bird with bands" src="../../../assets/images/leg-bands.png" />
+        </div>
+      </div>
+      <h4 class="text-bold-20">How many bands did you see?</h4>
+      <app-banding-description
+        class="my-3"
+        [bandSide]="'left'"
+        [legPart]="'Upper'"
+        bandInformationName="upperLeftBands"
+        [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+        [parentFromGroup]="markingFrom"
+        [showPrimaryMarkButton]="false"
+      ></app-banding-description>
+      <app-banding-description
+        class="my-3"
+        [bandSide]="'left'"
+        [legPart]="'Lower'"
+        bandInformationName="lowerLeftBands"
+        [parentFromGroup]="markingFrom"
+        [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+        [showPrimaryMarkButton]="false"
+      ></app-banding-description>
+      <app-banding-description
+        class="my-3"
+        [bandSide]="'right'"
+        [legPart]="'Upper'"
+        bandInformationName="upperRightBands"
+        [parentFromGroup]="markingFrom"
+        [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+        [showPrimaryMarkButton]="false"
+      ></app-banding-description>
+      <app-banding-description
+        class="my-3"
+        [bandSide]="'right'"
+        [legPart]="'Lower'"
+        bandInformationName="lowerRightBands"
+        [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+        [parentFromGroup]="markingFrom"
+        [showPrimaryMarkButton]="false"
+      ></app-banding-description>
+      <app-banding-description
+        class="my-3"
+        [isLegBand]="false"
+        bandInformationName="unknownBands"
+        [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+        [parentFromGroup]="markingFrom"
+        [showPrimaryMarkButton]="false"
+      ></app-banding-description>
+    </div>
+    <div class="question d-flex flex-column">
+      <h4 class="text-bold-20">Comments: additional information - optional</h4>
+      <label for="additional-information"
+        >Did the bird have any other type of marking? Please provide any additional information regarding this sighting.</label
+      >
+
+      <textarea id="additional-information" formControlName="additionalInformation" class="text-area"></textarea>
+      <div *ngIf="f.additionalInformation.invalid && (f.additionalInformation.dirty || f.additionalInformation.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.additionalInformation.errors.maxlength">
+          Maximum length is {{ f.additionalInformation.errors.maxlength.requiredLength }}
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="d-flex white-background flex-row justify-content-between mt-3 row px-3 mx-0">
+    <button (click)="previous()" class="clear-green-button col-5 col-md-2"><i class="material-icons-round">arrow_back</i> Back</button>
+    <button (click)="next()" class="big-green-button col-5 col-md-2">Continue <i class="material-icons-round">arrow_forward</i></button>
+  </div>
+</div>

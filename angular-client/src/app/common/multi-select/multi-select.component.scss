@@ -1,0 +1,28 @@
+@import '../../../palate';
+
+.styled-select {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+  height: 48px;
+  background: white;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 1em;
+}
+
+.clear-delete-button {
+  cursor: pointer;
+  color: $TEXT;
+}
+
+.pill {
+  cursor: pointer;
+  color: $WHITE;
+}
+
+

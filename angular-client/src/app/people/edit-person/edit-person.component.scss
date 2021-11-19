@@ -1,0 +1,55 @@
+.input-caption {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6b7785;
+}
+
+.edit-input-box {
+  background: #ffffff;
+  border: 1px solid #c0c5cb;
+  border-radius: 4px;
+  font-size: 16px;
+  height: 48px;
+}
+
+.edit-check-box {
+  background: #ffffff;
+  border: 1px solid #9ea6b1;
+  border-radius: 4px;
+  transform: scale(2);
+}
+
+.required {
+  font-size: 15px;
+  font-weight: bold;
+  color: #f8495d;
+  margin-left: 10px;
+}
+
+.input-text {
+  font-size: 15px;
+  color: #6b7785;
+}
+
+.card-column {
+  width: 50%;
+  margin: 1rem;
+}
+
+.is-invalid {
+  border-color: #f8495d;
+}
+
+.error-text {
+  font-size: 15px;
+  color: #f8495d;
+}
+
+/* hack to get rid of this pesky LastPass field*/
+form[autocomplete='off'] input[type='text'] {
+  background-position: 150% 50% !important;
+}
+
+.modal-footer {
+  margin-bottom: 0;
+}

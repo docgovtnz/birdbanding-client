@@ -1,0 +1,49 @@
+<div class="popup-body w-100">
+  <div *ngIf="events.length > 1; else singleEvent" class="d-flex flex-row justify-content-between popup-header align-items-center p-2">
+    <button class="my-0 ml-3 mr-0 p-0  btn btn-link" (click)="previousEvent()">
+      <span class="material-icons-round">
+        navigate_before
+      </span>
+    </button>
+    <span class="text-bold-17-white">{{ selectedEventIndex + 1 }} of {{ events?.length }}</span>
+    <button class="my-0 ml-0 mr-3 p-0  btn btn-link" (click)="nextEvent()">
+      <span class="material-icons-round">
+        navigate_next
+      </span>
+    </button>
+  </div>
+  <ng-template #singleEvent>
+    <div class="d-flex flex-row justify-content-center popup-header p-2">
+      <span *ngIf="events[selectedEventIndex] as selectedEvent" class="text-bold-17-white text-center"
+        >{{ selectedEvent.bandPrefix }}-{{ selectedEvent.bandNumber }}</span
+      >
+    </div>
+  </ng-template>
+  <div *ngIf="events[selectedEventIndex] as selectedEvent" class="d-flex flex-column py-1 px-3">
+    <div class="row mx-0 align-items-start pt-3 pb-2 bottom-line">
+      <span class="col-4 px-0 mx-0 text-regular-12-grey">PRIMARY MARK</span
+      ><span class="text-bold-14 px-0 mx-0 col-8">{{ selectedEvent.bandPrefix }}-{{ selectedEvent.bandNumber }}</span>
+    </div>
+    <div class="row mx-0 align-items-start py-1 bottom-line">
+      <span class="col-4 px-0 mx-0 text-regular-12-grey">EVENT TYPE</span
+      ><span class="text-bold-14 px-0 mx-0 col-8">{{ selectedEvent.bbsCode }}</span>
+    </div>
+    <div class="row mx-0  align-items-start py-2 bottom-line">
+      <span class="col-4 px-0 mx-0 text-regular-12-grey">NAME</span>
+
+      <div class=" px-0 mx-0 col-8 d-flex flex-column">
+        <span class="text-bold-14 ">{{ selectedEvent.speciesCode }} - {{ selectedEvent.commonName }}</span>
+        <span class="text-italic-14-grey">{{ selectedEvent.scientificName }}</span>
+      </div>
+    </div>
+    <div class="row mx-0 align-items-start py-2 bottom-line">
+      <span class="col-4 px-0 mx-0 text-regular-12-grey">WHEN</span
+      ><span class="text-bold-14 px-0 mx-0 col-8">{{ selectedEvent.dateOfEvent | date: 'dd MMM yyyy @ HH:mm' }}</span>
+    </div>
+    <div class="d-flex justify-content-center py-3">
+      <button class="flex-clear-button-sm" [routerLink]="['/view-data', 'bird', selectedEvent.birdId]">
+        <svg-icon class="pr-2" src="assets/icons/icon-bluebird-sm.svg"></svg-icon>View bird
+      </button>
+    </div>
+  </div>
+</div>

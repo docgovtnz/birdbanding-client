@@ -1,0 +1,125 @@
+<div [formGroup]="markingForm" class="d-flex flex-column">
+  <div *ngIf="markingType === 'REMARKING'" class="d-flex flex-column mb-5">
+    <h4 class="text-bold-18">Markings at capture <sup class="required-star">*</sup> (all marks on bird before re-marking event)</h4>
+    <app-banding-description
+      class="my-3"
+      [bandSide]="'left'"
+      [legPart]="'Upper'"
+      bandInformationName="upperLeftBands"
+      [primaryMarkControl]="primaryMarkControl"
+      [parentFromGroup]="captureForm"
+      [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+      [showPrimaryMarkButton]="true"
+    ></app-banding-description>
+    <app-banding-description
+      class="my-3"
+      [bandSide]="'left'"
+      [legPart]="'Lower'"
+      bandInformationName="lowerLeftBands"
+      [primaryMarkControl]="primaryMarkControl"
+      [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+      [parentFromGroup]="captureForm"
+      [showPrimaryMarkButton]="true"
+    ></app-banding-description>
+    <app-banding-description
+      class="my-3"
+      [bandSide]="'right'"
+      [legPart]="'Upper'"
+      bandInformationName="upperRightBands"
+      [primaryMarkControl]="primaryMarkControl"
+      [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+      [parentFromGroup]="captureForm"
+      [showPrimaryMarkButton]="true"
+    ></app-banding-description>
+    <app-banding-description
+      class="my-3"
+      [bandSide]="'right'"
+      [legPart]="'Lower'"
+      bandInformationName="lowerRightBands"
+      [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+      [primaryMarkControl]="primaryMarkControl"
+      [parentFromGroup]="captureForm"
+      [showPrimaryMarkButton]="true"
+    ></app-banding-description>
+    <app-banding-description
+      class="my-3"
+      [isLegBand]="false"
+      bandInformationName="unknownBands"
+      [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+      [primaryMarkControl]="primaryMarkControl"
+      [parentFromGroup]="captureForm"
+      [showPrimaryMarkButton]="true"
+    ></app-banding-description>
+    <div *ngIf="captureForm.invalid && (captureForm.touched || captureForm.dirty)">
+      <div class="error-inline" *ngIf="captureForm.errors && captureForm.errors.markingRequired">At least one marking is required</div>
+    </div>
+  </div>
+  <h4 class="text-bold-18" [ngSwitch]="markingType">
+    <span *ngSwitchCase="'FIRST_MARKING'"
+      >For First marking add primary mark and/or any other markings <sup class="required-star">*</sup></span
+    >
+    <span *ngSwitchCase="'PRE_CHANGE'">Markings at capture <sup class="required-star">*</sup></span>
+    <span *ngSwitchCase="'POST_CHANGE'">Markings at release <sup class="required-star">*</sup></span>
+    <span *ngSwitchCase="'REMARKING'">Markings at release (all marks on bird after re-marking event)</span>
+    <span *ngSwitchCase="'RESIGHTING'"
+      >Resighting/recovery: add primary mark and/or any other markings <sup class="required-star">*</sup></span
+    >
+    <span *ngSwitchDefault>{{ markingType }}</span>
+  </h4>
+  <app-banding-description
+    class="my-3"
+    [bandSide]="'left'"
+    [legPart]="'Upper'"
+    bandInformationName="upperLeftBands"
+    [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+    [primaryMarkControl]="primaryMarkControl"
+    [parentFromGroup]="releaseForm"
+    [showPrimaryMarkButton]="true"
+  ></app-banding-description>
+  <app-banding-description
+    class="my-3"
+    [bandSide]="'left'"
+    [legPart]="'Lower'"
+    bandInformationName="lowerLeftBands"
+    [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+    [primaryMarkControl]="primaryMarkControl"
+    [parentFromGroup]="releaseForm"
+    [showPrimaryMarkButton]="true"
+  ></app-banding-description>
+  <app-banding-description
+    class="my-3"
+    [bandSide]="'right'"
+    [legPart]="'Upper'"
+    bandInformationName="upperRightBands"
+    [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+    [parentFromGroup]="releaseForm"
+    [primaryMarkControl]="primaryMarkControl"
+    [showPrimaryMarkButton]="true"
+  ></app-banding-description>
+  <app-banding-description
+    class="my-3"
+    [bandSide]="'right'"
+    [legPart]="'Lower'"
+    bandInformationName="lowerRightBands"
+    [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+    [parentFromGroup]="releaseForm"
+    [primaryMarkControl]="primaryMarkControl"
+    [showPrimaryMarkButton]="true"
+  ></app-banding-description>
+  <app-banding-description
+    class="my-3"
+    [isLegBand]="false"
+    bandInformationName="unknownBands"
+    [hasPrimaryMarkSet]="hasPrimaryMarkSet"
+    [primaryMarkControl]="primaryMarkControl"
+    [parentFromGroup]="releaseForm"
+    [showPrimaryMarkButton]="true"
+  ></app-banding-description>
+
+  <div *ngIf="releaseForm.invalid && (releaseForm.touched || releaseForm.dirty)">
+    <div class="error-inline" *ngIf="releaseForm.errors && releaseForm.errors.markingRequired">At least one marking is required</div>
+    <div class="error-inline" *ngIf="releaseForm.errors && releaseForm.errors.primaryMarkRequired">
+      At least one mark must be selected as the primary mark
+    </div>
+  </div>
+</div>

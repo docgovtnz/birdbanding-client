@@ -1,0 +1,164 @@
+<div class="alert-div">
+  <div *ngFor="let alert of alerts">
+    <alert type="md-color" [dismissible]="dismissible" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i class="material-icons-round alert-ok">check_circle_outline</i>
+      <span>{{ alert.msg }}</span>
+    </alert>
+  </div>
+</div>
+<div class="child-page">
+  <div class="alert-box">
+    <div>
+      <h2 class="page-heading">Manage people</h2>
+    </div>
+  </div>
+
+  <!-- Search box -->
+  <div class="search-box flex-column flex-xl-row d-flex mt-4">
+    <div class="flex-1 mb-xl-0 mb-3 ml-xl-0 ml-1 ml-lg-3">
+      <span class="search-text">Search user</span>
+    </div>
+    <div class="d-flex flex-row justify-content-between flex-5">
+      <div class="normal-input mx-1 mx-lg-3">
+        <label class="input-caption" for="search"><b>FIND PERSON</b> -OR - <b>USERNAME</b></label>
+        <input
+          id="search"
+          [(ngModel)]="selected"
+          [typeahead]="people"
+          typeaheadOptionField="display"
+          autocomplete="off"
+          (typeaheadOnSelect)="onSelectPeople($event.item)"
+          [typeaheadLatinize]="true"
+          placeholder="Find person..."
+          class="input-flex-100 form-control"
+        />
+      </div>
+      <div class="normal-input mx-1 mx-lg-3">
+        <label class="input-caption" for="level"><b>BANDING LEVEL</b></label>
+        <select id="level" name="level" [value]="selectedBandingLevel" (change)="onBandingLevelChange($event)" class="input-flex-100">
+          <option *ngFor="let lvl of bandingLevel">{{ lvl }}</option>
+        </select>
+      </div>
+      <div class="large-input mx-1 mx-lg-3">
+        <span class="input-caption"><b>STATUS</b></span>
+        <ul class="status-group">
+          <li>
+            <input type="radio" id="all" name="status" (click)="onStatusChanged('all')" [checked]="currentStatus === 'ALL'" />
+            <label for="all">All</label>
+          </li>
+          <li>
+            <input type="radio" id="active" name="status" (click)="onStatusChanged('active')" [checked]="currentStatus === 'ACTIVE'" />
+            <label for="active">Active ({{ activePeople }})</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="suspended"
+              name="status"
+              (click)="onStatusChanged('suspended')"
+              [checked]="currentStatus === 'SUSPENDED'"
+            />
+            <label for="suspended">Suspended ({{ suspendedPeople }})</label>
+          </li>
+          <li>
+            <input type="radio" id="locked" name="status" (click)="onStatusChanged('locked')" [checked]="currentStatus === 'LOCKED'" />
+            <label for="locked">Locked ({{ lockedPeople }})</label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result table -->
+  <div class="result-table">
+    <div class="d-flex justify-content-between">
+      <span class="table-top-text ml-3">Showing {{ peopleStart + 1 }} - {{ peopleEnd }} of {{ numberOfPeople }}</span>
+      <div>
+        <button [disabled]="exporting" *ngIf="person?.isAdmin" (click)="exportContactDetails()" class="md-clear-button mr-3">
+          Export details
+        </button>
+        <button *ngIf="person?.isAdmin" class="blue-button mr-3" (click)="onAddPerson()">Add new person</button>
+      </div>
+    </div>
+    <div class="mt-2">
+      <table class="table">
+        <thead class="table-header-text">
+          <tr>
+            <th scope="col">Person name</th>
+            <th scope="col">User name</th>
+            <th scope="col">Company</th>
+            <th scope="col">Bander#</th>
+            <th scope="col">Joined date</th>
+            <th scope="col">Last login</th>
+            <th scope="col">Max banding level</th>
+            <th scope="col">Status</th>
+            <th scope="col">Hidden</th>
+          </tr>
+        </thead>
+        <tbody class="table-row-text">
+          <tr *ngFor="let pp of displayPeople; index as i">
+            <td class="as-link">
+              <a (click)="onSelectPeople(pp)">{{ pp.firstName }} {{ pp.lastName }}</a>
+            </td>
+            <td>{{ pp.userName }}</td>
+            <td>{{ pp.company }}</td>
+            <td>{{ pp.banderNumber }}</td>
+            <td>{{ pp.jointDate ? (pp.jointDate | date: 'dd MMM yyyy') : '-' }}</td>
+            <td>{{ pp.lastLogin ? (pp.lastLogin | date: 'dd MMM yyyy') : '-' }}</td>
+            <td>
+              <div
+                [class.lvl1-banding]="pp.maxBandingLevel === 'L1'"
+                [class.lvl2-banding]="pp.maxBandingLevel === 'L2'"
+                [class.lvl3-banding]="pp.maxBandingLevel === 'L3'"
+                class="lvl-banding"
+              >
+                <span class="lvl-banding-text">{{ getMaxBandingLevel(pp.maxBandingLevel) }}</span>
+              </div>
+            </td>
+            <td>
+              <span
+                [class.status-green]="pp.status.toUpperCase() === 'ACTIVE'"
+                [class.status-gray]="pp.status.toUpperCase() === 'INACTIVE'"
+                [class.status-orange]="pp.status.toUpperCase() === 'SUSPENDED'"
+                [class.status-red]="pp.status.toUpperCase() === 'LOCKED'"
+                class="status"
+              >
+                {{ pp.status }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="pp.hidden" class="material-icons-round hidden-icon">visibility_off</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-4 d-flex justify-content-between">
+    <div class="pagination-text ml-4">
+      <label for="limit" class="pr-2">RESULTS PER PAGE</label>
+      <select id="limit" name="limit" [value]="limitPerPage" (change)="onLimitChanged($event)" class="pagination-input">
+        <option [value]="20">20</option>
+        <option [value]="50">50</option>
+      </select>
+    </div>
+    <div class="pagination-main">
+      <pagination
+        [totalItems]="numberOfPeople"
+        [maxSize]="8"
+        [rotate]="false"
+        [itemsPerPage]="limitPerPage"
+        [(ngModel)]="currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+      ></pagination>
+    </div>
+    <div class="pagination-text mr-4">
+      <label for="jump" class="pr-2">JUMP TO PAGE</label>
+      <input id="jump" name="jump" [(ngModel)]="jumpToPage" (blur)="onJumpTo()" (keyup.enter)="onJumpTo()" class="pagination-input" />
+    </div>
+  </div>
+</div>

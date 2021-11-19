@@ -1,0 +1,16 @@
+<div id="search-top-bar" class="top-bar">
+  <div class="d-flex flex-row h-100">
+    <a
+      class="d-flex ml-5 align-items-center search-nav"
+      routerLinkActive="active"
+      routerLink="/view-data"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ><i class="material-icons-round pr-2">search</i><span>Search events</span></a
+    >
+    <a class="d-flex ml-5 align-items-center search-nav" routerLinkActive="active" routerLink="/view-data/view-exports"
+      ><i class="material-icons-round pr-2">cloud_download</i><span>My exports </span>
+      <span *ngIf="numberOfDownloads" class="pl-1">({{ numberOfDownloads }})</span>
+    </a>
+  </div>
+</div>
+<router-outlet></router-outlet>

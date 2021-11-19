@@ -1,0 +1,241 @@
+@import 'src/palate';
+
+
+.save-bar{
+  font-size:0.95em;
+}
+
+.save-bar td{
+  padding: 10px;
+}
+
+.emphasized-row-bottom td, .emphasized-row-top td, .save-bar td {
+  border: 0px;
+  background-color: $ROW_HOVER;
+}
+
+.emphasized-row-top{
+  border-top: 1px solid $ROW_DIVIDER;
+}
+
+.emphasized-row-bottom td{
+  padding-bottom: 5px;
+}
+
+.spreadsheet-to-db-button {
+  height: 36px;
+  padding: 5px 10px;
+  margin-top: 22px;
+  margin-right: 10px;
+  float:right;
+  line-height: 21px;
+}
+
+.hide-button {
+  float: right;
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-top: 22px;
+  padding: 10px;
+  line-height: 15px;
+  text-decoration: underline;
+}
+
+.list-button{
+  margin: 0px;
+  vertical-align: middle;
+}
+
+.error-button{
+  vertical-align: baseline;
+  margin-bottom: 0px;
+  font-size:0.9em;
+}
+
+.hidden{
+  visibility:hidden;
+}
+
+.add-to-db{
+  text-align: center;
+  width: 100%;
+}
+
+.spreadsheet-list-header{
+  background-color: $BACKGROUND_GREY;
+  border: 0px;
+  width:100%;
+}
+
+.search-heading {
+  padding-top: 39px;
+  color: $TEXT;
+  font-size: 20px;
+  margin: 0px
+
+  
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  padding: 0;
+
+  input {
+    display: none;
+    background: #ffffff;
+    color: $ROW_HOVER;
+    height: 48px;
+
+    &:checked + label {
+      background: $ACCENT_BLUE;
+      color: $WHITE;
+      border: 1px solid $ACCENT_BLUE;
+    }
+  }
+
+  label {
+    background: $WHITE;
+    color: $ACCENT_BLUE;
+    height: 48px;
+    display: flex;
+    padding: 0 2em;
+    margin: auto;
+    align-items: center;
+    border: 1px solid $ACCENT_BLUE;
+    cursor: pointer;
+    z-index: 90;
+
+    &:hover {
+      background: #ddd;
+    }
+  }
+}
+
+.flexible-input {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+  padding: 0.75em;
+  height: 48px;
+  width: 100%;
+}
+
+.spreadsheet-search-box{
+  background: $WHITE;
+  border: 1px solid $ROW_DIVIDER;
+  border-radius: 4px 4px 0px 0px;
+  width: 100%;
+  padding: 5px;
+}
+
+.results-header th, .results-body td {
+}
+
+.table thead th{
+  border-bottom: 0px;
+  border-top: 0px;
+}
+
+.table {
+  border-left: 1px solid $ROW_DIVIDER;
+  border-right: 1px solid $ROW_DIVIDER;
+  border-bottom: 1px solid $ROW_DIVIDER;
+  width:99%;
+  background-color: $WHITE;
+}
+
+.table td{
+  vertical-align: middle;
+}
+
+
+.sheet-byline{
+  font-size: 0.8em;
+  color: $LABEL;
+}
+
+.centered-col{
+  text-align: center;
+}
+
+.right-aligned-col{
+  text-align: right;
+}
+
+.empty-results {
+  background-color: $WHITE;
+  height: 35vh;
+  padding: calc(20vh/2);
+}
+
+
+.warning{
+  vertical-align: middle;
+  padding-bottom: 2px;
+  font-size: 20px;
+  color: orange;
+}
+
+.empty-results{
+  height: 35vh;
+  padding: calc(20vh/2);
+  color: $BORDER_GREY;
+}
+
+.empty-results span{
+  color: $LABEL;
+}
+
+.very-large-icon {
+  font-size: 100px;
+  text-align: center;
+  width:100px
+}
+
+.small-blue-spinner {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border-left: solid 2px $ACCENT_BLUE;
+  border-top: solid 2px $ACCENT_BLUE;
+  animation: roll 1s infinite;
+  transform: rotate(30deg);
+}
+
+.warning-row{
+  width: 100%;
+  height: 50%;
+}
+
+.warning-icon{
+  font-size: 0.95rem;
+}
+
+.warning-icon btn{
+  padding: 0px 0px;
+}
+
+.download-icon {
+  font-size: 20px;
+  display: inline;
+  vertical-align: text-top;
+}
+
+.sheet-link{
+    &:hover{
+        text-decoration:none;
+    }
+
+    i:hover {
+        text-decoration:none;
+    }
+
+    span:hover{
+        text-decoration:underline;
+    }
+
+}

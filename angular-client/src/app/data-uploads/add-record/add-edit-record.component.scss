@@ -1,0 +1,101 @@
+@import 'src/palate';
+@import 'src/text-styles';
+@import 'src/app/data-uploads/data-upload-styles';
+
+.form-height {
+  min-height: 500px;
+}
+
+.sightings-type-display {
+  @extend .text-bold-20;
+  width: fit-content;
+  display: flex;
+  padding: 0 2em;
+  margin: auto;
+  align-items: center;
+}
+
+.form-ball {
+  height: 30px;
+  min-width: 30px;
+  max-width: 30px;
+  border-radius: 50%;
+  background-color: $TEXT;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-nav {
+  position: fixed;
+  @media (min-width: $LARGE_SCREEN) {
+    display: flex;
+  }
+  @media (min-width: $EXTRA_LARGE_SCREEN) {
+    margin-top: 1em;
+  }
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    display: flex;
+    margin-top: 5em;
+  }
+
+
+
+}
+
+.circle {
+  display: flex;
+  height: 25px;
+  width: 25px;
+  min-width: 25px;
+  min-height: 25px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.blue-circle {
+  @extend .circle;
+  border: solid 5px $ACCENT_BLUE;
+  background-color: $BACKGROUND_GREY;
+}
+
+.red-circle {
+  @extend .circle;
+  background-color: $DANGER_RED;
+  color: $WHITE;
+}
+
+.green-circle {
+  @extend .circle;
+  background-color: $LIME_GREEN;
+  color: $WHITE;
+}
+
+.background-line {
+  background-image: linear-gradient($BORDER_GREY, $BORDER_GREY);
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  z-index: -1;
+}
+
+.point {
+  cursor: pointer;
+}
+
+.grey-cover {
+  width: 98%;
+  height: 90.5%;
+  background-color: $BORDER_GREY;
+  opacity: 0.3;
+  position: absolute;
+  z-index: 100;
+}
+
+.break-long-words {
+  word-break: break-word;
+}

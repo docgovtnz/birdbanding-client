@@ -1,0 +1,50 @@
+@import 'src/text-styles';
+@import 'src/palate';
+@import 'src/app/data-uploads/data-upload-styles';
+
+
+
+.btn {
+  color: $ACCENT_BLUE;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  max-width: fit-content;
+  vertical-align: center;
+}
+
+.none {
+  display: none;
+}
+
+.file-input-label {
+}
+.dropzone {
+  border: dashed 3px $BORDER_GREY;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  color: $BORDER_GREY;
+}
+
+.file-over {
+  border: dotted 3px $ACCENT_BLUE;
+  color: $ACCENT_BLUE;
+}
+
+.upload-error-modal {
+  max-width: 754px;
+}
+
+.content-box > *, .content-box h3 {
+  padding: 1rem;
+  margin-bottom: 0px;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

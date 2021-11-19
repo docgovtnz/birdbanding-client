@@ -1,0 +1,12 @@
+@import 'src/text-styles';
+@import 'src/palate';
+@import 'src/app/data-uploads/data-upload-styles';
+
+.btn {
+  color: $ACCENT_BLUE;
+}
+
+.top-border {
+  border-top: solid 1px $BORDER_GREY;
+}
+

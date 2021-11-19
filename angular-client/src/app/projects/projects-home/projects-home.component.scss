@@ -1,0 +1,42 @@
+@import 'src/palate';
+@import 'src/app/projects/projects-styles';
+
+td,
+th {
+  padding-left: 1em;
+}
+
+th {
+  cursor: pointer;
+}
+
+table a {
+  color: $ACCENT_BLUE;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.centered {
+  display: inline-block;
+  text-align: center;
+}
+
+.sorted-selected {
+  color: $DOC_GOLD;
+}
+
+:host ::ng-deep .pagination-main .page-item.active .page-link {
+  border: 1px solid $ACCENT_BLUE;
+  border-radius: 3px;
+  font-size: 18px;
+  color: $WHITE;
+  background: $ACCENT_BLUE;
+}
+
+:host ::ng-deep .dropdown-item.active {
+  background-color: $ACCENT_BLUE;
+}
+
+.search-term-group{
+  height: 100px;
+}

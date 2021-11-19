@@ -1,0 +1,141 @@
+<div *ngIf="loading == true">
+  <div class="d-flex flex-column align-items-center">
+    <span class="big-blue-spinner m-3"></span>
+  </div>
+</div>
+
+
+<ng-template [ngIf]="loading == false && spreadsheets.length">
+  <div class="spreadsheet-search-box p-3 pt-5 pb-5">
+    <div class="row">
+      <div class="col-2">
+        <h3 class="search-heading">Upload summary
+          <i [tooltip]="listHelp" containerClass="white-tooltip" class="material-icons-round inline-question-tooltip ml-2">help_outline</i>
+        </h3>
+      </div>
+      <div class="col-2">
+        <label class="input-caption" for="find-project">SEARCH</label>
+        <input placeholder="Filter spreadsheets..."
+               class="flexible-input"
+               id="find-spreadsheet"
+               [(ngModel)]="searchTerm" />
+      </div>
+      <div class="col-2">
+        <label class="input-caption" for="upload-status">UPLOAD STATUS</label>
+        <app-multi-select id="upload-status"
+                          [optionList]="statusOptions"
+                          optionField="display"
+                          placeholder="Select statuses"
+                          [(selectedItems)]="statusFilters">
+
+        </app-multi-select>
+      </div>
+      <div class="col-2">
+        <label for="date-from" class="input-caption">DATE FROM</label>
+        <input type="text"
+               [(ngModel)]="beforeDate"
+               name="eventDates"
+               bsDatepicker
+               autocomplete="off"
+               data-lpignore="true"
+               placement="bottom"
+               class="flexible-input"
+               minView="date"
+               format="yyy-MM-dd"
+               [bsConfig]="{
+                dateInputFormat: 'DD MMM YYYY',
+                rangeInputFormat: 'DD MMM YYYY',
+                containerClass: 'theme-dark-blue',
+                showWeekNumbers: false
+
+               }"
+               data-datetimepicker-config="{ dropdownSelector: '#date-from', minView: 'date' }"
+               id="date-from"
+               placeholder="From..." />
+      </div>
+      <div class="col-2">
+        <label for="date-to" class="input-caption">DATE TO</label>
+        <input type="text"
+               [(ngModel)]="afterDate"
+               name="eventDates"
+               bsDatepicker
+               autocomplete="off"
+               data-lpignore="true"
+               placement="bottom"
+               class="flexible-input"
+               [bsConfig]="{
+                dateInputFormat: 'DD MMM YYYY',
+                rangeInputFormat: 'DD MMM YYYY',
+                containerClass: 'theme-dark-blue',
+                showWeekNumbers: false
+               }"
+               id="date-to"
+               placeholder="To..." />
+
+      </div>
+    </div>
+  </div>
+
+  <table class="table" style="width:100%">
+    <thead class="results-header">
+      <tr>
+        <th>Spreadsheet</th>
+        <th>Submitter</th>
+        <th class="centered-col">Rows</th>
+        <th class="centered-col">Errors/warnings</th>
+        <th>Status</th>
+        <th>
+          <div class="small-blue-spinner hidden"></div>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="results-body">
+      <ng-template ngFor let-ss [ngForOf]="spreadsheets">
+        <tr class="pointer" *ngIf="isVisible(ss)" [@listAdd]="ss.isNew ? 'added': ''" (@listAdd.done)="ss.isNew = false" [routerLink]="['/data-uploads', 'spreadsheet-detail', ss.ssDetail.id]">
+          <td>
+            <a href="{{ss.ssDetail.url}}" (click)="$event.stopPropagation()" class="sheet-link">
+              <i class="material-icons-round pr-1 download-icon">save_alt</i><span>{{ss.ssDetail.project_name}}.xlsx</span>
+            </a>
+            <div class="sheet-byline">{{ ss.ssDetail.created_datetime | date:'dd MMM yyyy @ HH:mm'}}</div>
+          </td>
+          <td>{{ ss.ssDetail.bander_name }}</td>
+          <td class="centered-col">{{ ss.ssDetail.no_of_rows }}</td>
+          <td class="centered-col">
+            <ng-container *ngIf="ss.ssDetail.upload_status !== 'PENDING_RESULT'; then done; else pending"></ng-container>
+            <ng-template #done>
+              {{ formatErrorCount(ss)}}
+            </ng-template>
+            <ng-template #pending>
+              Pending...
+            </ng-template>
+          </td>
+
+          <td>
+            <span [ngClass]="getStatusClass(ss.ssDetail.upload_status)">{{getReadableState(ss.ssDetail.upload_status)}}</span>
+          </td>
+          <td>
+            <div *ngIf="ss.updating == true" class="small-blue-spinner"></div>
+          </td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>
+</ng-template>
+
+<div *ngIf="!loading && !spreadsheets.length" class="empty-results">
+  <div class="d-flex flex-column align-items-center">
+    <i class="material-icons-outlined icon very-large-icon">description_outline</i>
+    <span class="text-regular-17 mt-4">No spreadsheets exist for your projects</span>
+  </div>
+</div>
+
+<ng-template #listHelp>
+  <div class="help-tip-inner">
+    Click on a row to view spreadsheet details; click on the spreadsheet name to download it.
+    Spreadsheets can be viewed, downloaded, revalidated and submitted by all Project Team Members.
+    Only  Admin and the original submitter can delete a spreadsheet.
+    All spreadsheets will be automatically deleted 3 months after upload
+  </div>
+</ng-template>
+
+

@@ -1,0 +1,54 @@
+<div *ngIf="!loading; else spin" class="card-body-table w-100 py-0">
+  <div *ngIf="certifications.length > 0; else noCerts">
+    <div *ngFor="let cert of certifications; index as i">
+      <div class="d-flex justify-content-between align-items-center table-row">
+        <div>
+          <img src="assets/icons/icon-blackbird.svg" class="mr-2" />
+          <span class="text-regular-17">{{ cert.certificationType === 'SPECIES_GROUP' ? cert.speciesGroup.name : cert.endorsement }}</span>
+          <div *ngIf="cert.comment" class="restrictions">
+            <i class="material-icons-round circle-small green mr-2">panorama_fish_eye</i>
+            <span class="text-regular-14 ">{{ cert.comment }}</span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <span class="max-level-text">Max Level</span>
+          <div
+            *ngIf="cert.bandingLevel === 'L1'"
+            class="lvl-banding lvl1-banding"
+            popover="Must band under the direct supervision of a Level 3 bander, and keep a detailed training log signed by L3 certified for the species."
+            triggers="mouseenter:mouseleave"
+            popoverTitle="L1: Trainee"
+          >
+            <span class="lvl-banding-text">1<span *ngIf="cert.comment" class="lvl-banding-star">*</span></span>
+          </div>
+          <div
+            *ngIf="cert.bandingLevel === 'L2'"
+            class="lvl-banding lvl2-banding"
+            popover="Can band independently, but still operate under a Level 3 bander in whose name the bands will be issued and who retains the responsibility for all the banding and Data."
+            triggers="mouseenter:mouseleave"
+            popoverTitle="L2: Intermediate, competent"
+          >
+            <span class="lvl-banding-text">2<span *ngIf="cert.comment" class="lvl-banding-star">*</span></span>
+          </div>
+          <div
+            *ngIf="cert.bandingLevel === 'L3'"
+            class="lvl-banding lvl3-banding"
+            popover="Has extensive experience for the species listed and is authorised to train and supervise L1 and L2 banders. Responsibilities including signing training logs, ordering bands, submitting banding schedules, overseeing projects, and ensuring the necessary Wildlife Act Authorisation permits are in place."
+            triggers="mouseenter:mouseleave"
+            popoverTitle="L3: Expert, supervisor, trainer"
+          >
+            <span class="lvl-banding-text">3<span *ngIf="cert.comment" class="lvl-banding-star">*</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #noCerts>
+  <span class="text-regular-17 mx-3">No certifications to display</span>
+</ng-template>
+<ng-template #spin>
+  <div id="spin" class="py-5 d-flex align-items-center justify-content-center">
+    <span class="big-blue-spinner"></span>
+  </div>
+</ng-template>

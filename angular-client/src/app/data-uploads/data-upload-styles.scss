@@ -1,0 +1,64 @@
+@import 'src/palate';
+
+textarea {
+  height: 75px;
+}
+
+.content-box {
+  background-color: $WHITE;
+}
+
+.required-star {
+  color: $DANGER_RED;
+}
+
+.generic-search-box {
+  background: $WHITE;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 4px;
+  padding: 2em 0.5em;
+  margin: 2em 0;
+}
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}
+
+.warning-inline {
+  font-size: 15px;
+  color: $ERROR_BACKGROUND;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: row;
+
+  font-size: 16px;
+  padding: 0;
+  input {
+    display: none;
+    background: #ffffff;
+    color: $ROW_HOVER;
+    height: 48px;
+    &:checked + label {
+      background: $ACCENT_BLUE;
+      color: $WHITE;
+      border: 1px solid $ACCENT_BLUE;
+    }
+  }
+  label {
+    background: $WHITE;
+    color: $ACCENT_BLUE;
+    height: 48px;
+    display: flex;
+    padding: 0 2em;
+    margin: auto;
+    align-items: center;
+    border: 1px solid $ACCENT_BLUE;
+    cursor: pointer;
+    &:hover {
+      background: #ddd;
+    }
+  }
+}

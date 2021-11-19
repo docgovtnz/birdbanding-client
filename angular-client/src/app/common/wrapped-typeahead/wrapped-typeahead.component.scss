@@ -1,0 +1,18 @@
+@import 'src/palate';
+
+.input-flex {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+  height: 48px;
+  width: 100%;
+  padding: 0 1em;
+}
+
+.reset-button {
+  color: $TEXT;
+  margin: 0;
+  padding: 0;
+}

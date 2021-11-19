@@ -1,0 +1,174 @@
+<div [formGroup]="birdForm">
+  <div class="row">
+    <div class="col-5">
+      <label for="species" class="input-caption">Common name - or - Species code<sup class="required-star">*</sup></label>
+      <app-wrapped-typeahead [selectedItem]="speciesControl"
+                             [optionList]="species"
+                             optionField="description"
+                             id="species"
+                             placeholder="Start typing species name or code…"></app-wrapped-typeahead>
+      <div *ngIf="f.species.invalid && (f.species.dirty || f.species.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.species.errors.required">
+          Species is required
+        </div>
+      </div>
+    </div>
+    <div class="col-5"  *ngIf="isEdit && person?.isAdmin">
+      <label for="birdId" class="input-caption">Bird Id</label>
+      <input id="birdId" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="birdId" />
+      <div *ngIf="birdId.invalid && (birdId.dirty || birdId.touched)" class="p-1">
+        <div class="error-inline" *ngIf="birdId.errors.pattern">
+          Must be a valid UUID V4
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-1">
+      <label for="age" class="input-caption">AGE</label>
+      <input [typeahead]="uploadEnums.birdAge" formControlName="age" name="age" id="age" class="input-flex-100" />
+    </div>
+    <div class="col-2">
+      <label for="sex" class="input-caption">SEX</label>
+      <select id="sex" autocomplete="off" data-lpignore="true" name="sex" formControlName="sex" class="input-flex-100">
+        <option [ngValue]="s.code" *ngFor="let s of birdSexes">{{ s.description }} ({{ s.code }})</option>
+        <option [ngValue]="null">Choose a sex... </option>
+      </select>
+    </div>
+    <div class="col-1">
+      <label for="mass" class="input-caption">MASS (g)</label>
+      <input id="mass" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.mass" />
+      <div *ngIf="f.mass.invalid && (f.mass.dirty || f.mass.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.mass.errors.pattern">
+          Must be a number
+        </div>
+      </div>
+    </div>
+    <div class="col-1">
+      <label for="wingLength" class="input-caption">WING LEN. (mm)</label>
+      <input id="wingLength" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.wingLength" />
+      <div *ngIf="f.wingLength.invalid && (f.wingLength.dirty || f.wingLength.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.wingLength.errors.pattern">
+          Must be a number
+        </div>
+      </div>
+    </div>
+    <div class="col-1">
+      <label for="billLength" class="input-caption">BILL LEN. (mm)</label>
+      <input id="billLength" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.billLength" />
+      <div *ngIf="f.billLength.invalid && (f.billLength.dirty || f.billLength.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.billLength.errors.pattern">
+          Must be a number
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <label for="bodyCondition" class="input-caption">BODY CONDITION</label>
+      <input id="bodyCondition" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.bodyCondition" />
+    </div>
+  </div>
+  <div class="row mt-3">
+      </div>
+    <div class="row mt-3">
+      <div class="col-6">
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-1">
+        <label for="moultScore1" class="input-caption">MOULT SCORE 1</label>
+        <input id="moultScore1" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore1" />
+        <div *ngIf="f.moultScore1.invalid && (f.moultScore1.dirty || f.moultScore1.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore1.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore2" class="input-caption">MOULT SCORE 2</label>
+        <input id="moultScore2" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore2" />
+        <div *ngIf="f.moultScore2.invalid && (f.moultScore2.dirty || f.moultScore2.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore2.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore3" class="input-caption">MOULT SCORE 3</label>
+        <input id="moultScore3" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore3" />
+        <div *ngIf="f.moultScore3.invalid && (f.moultScore3.dirty || f.moultScore3.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore2.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore4" class="input-caption">MOULT SCORE 4</label>
+        <input id="moultScore4" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore4" />
+        <div *ngIf="f.moultScore4.invalid && (f.moultScore4.dirty || f.moultScore4.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore4.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore5" class="input-caption">MOULT SCORE 5</label>
+        <input id="moultScore5" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore5" />
+        <div *ngIf="f.moultScore5.invalid && (f.moultScore5.dirty || f.moultScore5.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore5.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore6" class="input-caption">MOULT SCORE 6</label>
+        <input id="moultScore6" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore6" />
+        <div *ngIf="f.moultScore6.invalid && (f.moultScore6.dirty || f.moultScore6.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore6.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore7" class="input-caption">MOULT SCORE 7</label>
+        <input id="moultScore7" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore7" />
+        <div *ngIf="f.moultScore7.invalid && (f.moultScore7.dirty || f.moultScore7.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore7.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore8" class="input-caption">MOULT SCORE 8</label>
+        <input id="moultScore8" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore8" />
+        <div *ngIf="f.moultScore8.invalid && (f.moultScore8.dirty || f.moultScore8.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore8.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore9" class="input-caption">MOULT SCORE 9</label>
+        <input id="moultScore9" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore9" />
+        <div *ngIf="f.moultScore9.invalid && (f.moultScore9.dirty || f.moultScore9.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore9.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <label for="moultScore10" class="input-caption">MOULT SCORE 10</label>
+        <input id="moultScore10" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultScore10" />
+        <div *ngIf="f.moultScore10.invalid && (f.moultScore10.dirty || f.moultScore10.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.moultScore10.errors.pattern">
+            Must be a number
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-10">
+        <label for="moultNotes" class="input-caption">MOULT DESCRIPTION</label>
+        <input id="moultNotes" autocomplete="off" data-lpignore="true" class="input-flex-100" [formControl]="f.moultNotes" />
+      </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+@import 'src/palate';
+@import 'src/text-styles';
+
+.data-block {
+  background-color: $WHITE;
+}
+
+.created-card {
+  background-color: $WHITE;
+  border-top: $BORDER_GREY solid 1px;
+  border-bottom: $BORDER_GREY solid 1px;
+  border-right: $BORDER_GREY solid 1px;
+  border-left: $LIME_GREEN solid 6px;
+}
+
+.point {
+  cursor: pointer;
+}
+
+.create-icon {
+  color: $LIME_GREEN;
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+}
+
+.detail-row{
+    .status-detail{
+        width: 100%;
+    }
+
+}
+
+.detail-row {
+  div {
+      width:20%;
+  }
+}
+
+.input-caption{
+  display:block;
+  margin: 3px 0;
+}
+
+.characteristic-text {
+  word-wrap: break-word;
+}

@@ -1,0 +1,48 @@
+<div [formGroup]="markGroup">
+  <div class="row">
+    <div class="col-4">
+      <select id="leg" class="input-flex-100" formControlName="leg">
+        <option [ngValue]="null">Choose a leg...</option>
+        <option ngValue="LEFT">Left</option>
+        <option ngValue="RIGHT">Right</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <select id="band-colour" class="input-flex-100" formControlName="bandColour">
+        <option [ngValue]="null">Mark colour</option>
+        <option [ngValue]="colour.id" *ngFor="let colour of uploadEnums.bandColours">{{ colour.display }}</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <select id="position" class="input-flex-100" formControlName="position">
+        <option [ngValue]="null">Position</option>
+        <option ngValue="TIBIA">Upper</option>
+        <option ngValue="TARSUS">Lower</option>
+      </select>
+    </div>
+  </div>
+  <div class="row pt-3">
+    <div class="col-4">
+      <select id="type" class="input-flex-100" formControlName="type">
+        <option [ngValue]="null">Mark type</option>
+        <option [ngValue]="type.id" *ngFor="let type of viewDataEnums.markTypes">{{ type.display }}</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <select id="form" class="input-flex-100" formControlName="form">
+        <option [ngValue]="null">Mark form</option>
+        <option [ngValue]="markForm.id" *ngFor="let markForm of uploadEnums.bandForms">{{ markForm.display }}</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <input
+        formControlName="alphaNumericText"
+        placeholder="Enter alpha numeric text..."
+        id="alpha-text"
+        autocomplete="off"
+        data-lpignore="true"
+        class="input-flex-100"
+      />
+    </div>
+  </div>
+</div>

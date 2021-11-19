@@ -1,0 +1,161 @@
+@import "palate";
+
+.text-regular-12-grey {
+  font-size: 12px;
+  font-weight: normal;
+  color: $TABLE_TEXT;
+}
+
+.text-regular-14 {
+  font-size: 14px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-italic-14-grey {
+  font-size: 14px;
+  font-weight: normal;
+  color: $TABLE_TEXT;
+  font-style: italic;
+}
+
+.text-bold-14 {
+  font-family: "Clear Sans", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.text-bold-14-grey {
+  font-family: "Clear Sans", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: $TABLE_TEXT;
+}
+
+.text-bold-15 {
+  font-family: "Clear Sans", sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.text-icon-15 {
+  font-size: 15px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-regular-light-15 {
+  font-size: 15px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-us-15 {
+  font-size: 15px;
+  font-weight: normal;
+  text-decoration: underline;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-15-grey {
+  font-size: 15px;
+  font-weight: normal;
+  color: $TABLE_TEXT;
+}
+
+.text-regular-16-white {
+  font-size: 16px;
+  font-weight: normal;
+  color: $WHITE;
+}
+
+.text-bold-16 {
+  font-size: 16px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.text-bold-17-white {
+  font-size: 17px;
+  font-weight: bold;
+  color: $WHITE;
+}
+
+.text-regular-17 {
+  font-size: 17px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-regular-17-grey {
+  font-size: 17px;
+  font-weight: normal;
+  color: $TABLE_TEXT;
+}
+
+.text-regular-18 {
+  font-size: 18px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-bold-18 {
+  font-size: 18px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.text-regular-light-22 {
+  font-size: 22px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-bold-20 {
+  font-size: 20px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.text-regular-20 {
+  font-size: 20px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-link-18 {
+  font-size: 18px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+}
+
+.text-bold-28 {
+  font-size: 28px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.text-white-bold-26 {
+  font-size: 26px;
+  font-weight: bold;
+  color: $WHITE;
+}
+
+.text-bold-34 {
+  font-weight: bold;
+  font-size: 34px;
+}
+
+.green-text {
+  color: $LIME_GREEN;
+}
+
+.red-text {
+  color: $DANGER_RED;
+}
+
+.white {
+  color: $WHITE;
+}

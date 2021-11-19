@@ -1,0 +1,21 @@
+@import 'src/palate';
+@import 'src/text-styles';
+
+.bird-link > i {
+  color: $ACCENT_BLUE;
+}
+
+.icon-column {
+  min-width: 150px;
+}
+
+.timeout-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

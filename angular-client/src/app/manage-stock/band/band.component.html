@@ -1,0 +1,190 @@
+<div class="alert-div">
+  <div *ngFor="let alert of alerts">
+    <alert type="md-color" [dismissible]="dismissible" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i class="material-icons-round alert-ok">check_circle_outline</i>
+      <span>{{ alert.msg }}</span>
+    </alert>
+  </div>
+</div>
+
+
+<div *ngIf="loaded; else loading" class="m-4">
+  <h1 class="page-heading m-4">Band {{prefixNumber}}-{{shortNumber}}</h1>
+  <div class="d-flex justify-content-between flex-wrap">
+    <div class="d-flex flex-column lhs-pane p-4 pl-2 pr-2">
+      <div class="card">
+        <div class="card-body-table">
+          <div class="card-heading card-table-header d-flex justify-content-between align-items-center mb-0">
+            <div class="card-title">Band details</div>
+          </div>
+              <div class="row mt-4 mb-4 ml-2">
+                <div class="col-4">
+                  <div class="d-flex flex-column m-2">
+                    <label class="input-caption" for="date">DATE OF LAST CHANGE</label>
+                    <span id="band-assign-date">
+                      {{band.bandAssignDate}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex flex-column m-2">
+                    <label class="input-caption" for="bander-name">BANDER</label>
+                    <a *ngIf="isAdmin" [routerLink]="['/people-view/', band.checkBanderId]"><span>{{ band.banderName}}</span></a>
+                    <span *ngIf="!isAdmin" id="bander-name">{{band.banderName}}</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex flex-column m-2 align-items-left justify-content-between">
+                    <label class="input-caption" for="no-of-rows">STATE</label>
+                    <span class="text-regular-13 align-self-start" [ngClass]="getStatusClass(band.checkMarkState)">{{ band.checkMarkState}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column rhs-pane p-4 pl-2 pr-2">
+        <div class="card">
+          <div class="card-body-table">
+            <div class="card-heading card-table-header d-flex justify-content-between align-items-center">
+              <div class="card-title">Band history</div>
+                <a (click)="sort()"><span class="sort-label">Sort</span><i class="material-icons-round mr-4"  [ngClass]="sortUp ? 'sort-icon-up': 'sort-icon-down'" alt="Sort">sort</i></a>
+            </div>
+            <div class="d-flex flex-column">
+              <div *ngFor="let h of history; let i = index"
+                     [ngClass]="{'is-selected': h.isFocused, 'event-row-hover': h.isEditable && !h.isFocused}"
+                     class="event-row p-4 justify-content-between"
+                     (click)="focus(h)">
+                  <div class="d-flex justify-content-between flex-wrap">
+                    <div style="width:20%">
+                      <label class="input-caption">
+                        <b>
+                          DATE OF
+                          <span *ngIf="['ATTACHED', 'DETACHED'].includes(h.history.state); else nolink" class="text-regular-17">
+                            <a [routerLink]="['/view-data/event/', h.history.eventId]">EVENT</a>
+                          </span>
+                          <ng-template #nolink>
+                            EVENT
+                          </ng-template>
+
+                          <span class="required" *ngIf="h.isEditable"> *</span>
+                        </b>
+                      </label>
+                      <input id="dateOfEvent"
+                             *ngIf="isAdmin && h.isEditable"
+                             [(ngModel)]="h.history.eventDateObj"
+                             style="flex-basis:100px"
+                             name="dateOfEvent"
+                             class="input-flex-100 form-control"
+                             placeholder="Choose a date"
+                             bsDatepicker
+                             autocomplete="off"
+                             placement="bottom"
+                             data-lpignore="true"
+                             [disabled]="!h.isEditable"
+                             [bsConfig]="{
+                                dateInputFormat: 'DD/MM/YYYY',
+                                containerClass: 'theme-dark-blue',
+                                showWeekNumbers: false
+                                }" />
+
+                      <div *ngIf="!(isAdmin && h.isEditable)" class="text-field">{{h.history.eventDate}}</div>
+                    </div>
+
+                    <div class="mr-4" style="width:20%">
+                      <label class="input-caption">
+                        <b><span>TIME</span><span class="required" *ngIf="h.isEditable">*</span></b>
+                      </label>
+                      <input style="width:120px"
+                             *ngIf="h.isEditable"
+                             [(ngModel)]="h.history.eventTime"
+                             placeholder="HH:MM"
+                             id="timeOfEvent"
+                             name="timeOfEvent"
+                             class="input-flex-100 form-control"
+                             data-lpignore="true" />
+                      <div *ngIf="!(h.isEditable)" class="text-field">{{h.history.eventTime}}</div>
+                    </div>
+
+                    <div class="mr-4" style="width:30%" *ngIf="!h.editAllEventMarks">
+                      <label class="input-caption">
+                        <b><span>BANDER NAME</span><span *ngIf="needsBander(h.history.state)" class="required">*</span></b>
+                      </label>
+
+                      <app-wrapped-typeahead-ngmodel
+                             *ngIf="isBanderEditable(h)"
+                             id="bander"
+                             name="bander"
+                             [(ngModel)]="h.history.banderId"
+                             [optionList]="people"
+                             optionField="display"
+                             placeholder="Enter a bander name"
+                       ></app-wrapped-typeahead-ngmodel>
+
+                      <div *ngIf="!isBanderEditable(h)" class="text-field">{{getBanderText(h)}}</div>
+                    </div>
+
+                    <div *ngIf="!h.editAllEventMarks" style="flex-basis: 150px">
+                      <label class="input-caption">
+                        <b><span>STATUS</span><span class="required">*</span></b>
+                      </label>
+                      <!-- The blank option that appears was left in because angular doesn't update state when tabbing and selecting first item by key -->
+                      <select *ngIf="h.isStateEditable" id="state" name="state" class="input-flex-100" [(ngModel)]="h.history.state">
+                        <option [ngValue]="bs" *ngFor="let bs of selectableBandStates" [selected]="bs == h.history.state">{{ bs }} </option>
+                      </select>
+                      <div class="text-field">
+                        <span *ngIf="!(h.isStateEditable)" class="text-regular-13 align-self-start" [ngClass]="getStatusClass(h.history.state)">{{ h.history.state }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="error-msg" *ngIf="!!h.errorMsg">Error: {{h.errorMsg}}</div>
+                  <div *ngIf="h.isFocused" class="d-flex row justify-content-between align-items-center mt-4">
+                      <ng-template [ngIf]="!h.isSaving">
+                        <a class="text-regular-us-15" (click)="isDeletable(h.history) ? deleteEvent(h, i) : false" [ngClass]="isDeletable(h.history) ? 'link-button': 'not-allowed'">
+                          <i class="material-icons-round delete-icon ml-3">delete_outline</i>
+                          <span>Delete</span>
+                        </a>
+                        <span class="pl-4 pr-4"> | </span>
+                        <a class="text-regular-us-15 link-button" (click)="cancel(i, $event)">Cancel</a>
+                        <ng-template [ngIf]="h.history.isMultipleBands">
+                          <span class="pl-4 pr-4"> | </span>
+                          <input attr.id="all-events-cb-{{h.history.eventId}}" attr.name="all-events-cb-{{h.history.eventId}}" type="checkbox" [(ngModel)]="h.editAllEventMarks" />
+                          <label for="all-events-cb-{{h.history.eventId}}">
+                            Edit all marks for this event? <i [tooltip]="affectedBands" containerClass="white-tooltip" class="material-icons-round inline-question-tooltip ml-1 info-icon">info_outline</i>
+                          </label>
+                          <ng-template #affectedBands>
+                            <div style="text-align:left">Adjusts the date and time for the other marks associated with this event<br/>
+                             ({{h.history.markCount}} bands with prefixes: '{{h.history.bandPrefixes.join("', '").toUpperCase()}}')
+                            </div>
+                          </ng-template>
+                        </ng-template>
+                      </ng-template>
+                    <div class="d-flex flex-grow-1 justify-content-end pr-3">
+                      <button type="submit" class="blue-button save-button" style="" *ngIf="!h.isSaving" (click)="updateEvent(h)">
+                        Save
+                      </button>
+                      <div class="col-1 p-0" *ngIf="h.isSaving">
+                        <app-loading-button useClass="flex-blue-button-md"> </app-loading-button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row new-event-pane" *ngIf="isAdmin">
+                <span class="new-event-text" (click)="addBlankEvent()">+ Add event</span>
+              </div>
+            </div>
+
+            </div>
+          </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #loading>
+  <app-loading-spinner loadingText="Loading data..."></app-loading-spinner>
+</ng-template>
+
+
+
+

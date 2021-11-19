@@ -1,0 +1,426 @@
+<div class="alert-div">
+  <div *ngFor="let alert of alerts">
+    <alert type="md-color" [dismissible]="dismissible" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i class="material-icons-round alert-ok">check_circle_outline</i>
+      <span>{{ alert.msg }}</span>
+    </alert>
+  </div>
+</div>
+<div *ngIf="loaded; else loading" class="child">
+  <h1 class="page-heading mb-4">
+    <span *ngIf="person.isAdmin">Stock Detail</span>
+    <span *ngIf="!person.isAdmin">My stock details</span>
+  </h1>
+
+  <div class="d-flex">
+    <!-- Search -->
+    <div class="d-flex flex-column mr-4" [ngClass]="{ search: person.isAdmin, 'full-search': !person.isAdmin }">
+      <!-- Search box -->
+      <div class="search-box d-flex justify-content-start align-items-center mb-4">
+        <div class="small-input mr-4">
+          <label class="input-caption" for="prefix"><b>BAND PREFIX</b></label>
+          <select id="prefix" name="prefix" [(ngModel)]="searchFields.prefix" class="form-control input-flex">
+            <option *ngFor="let prefix of bandPrefixes">{{ prefix }}</option>
+          </select>
+        </div>
+        <div class="normal-input mr-2">
+          <label class="input-caption" for="numberFrom"><b>BAND NUMBER</b></label>
+          <input id="numberFrom"
+                 [(ngModel)]="searchFields.bandNumberFrom"
+                 autocomplete="off"
+                 placeholder="From"
+                 class="form-control input-flex" />
+        </div>
+        <div class="normal-input mr-4 align-self-end">
+          <input id="numberTo"
+                 [(ngModel)]="searchFields.bandNumberTo"
+                 autocomplete="off"
+                 placeholder="To"
+                 class="form-control input-flex" />
+        </div>
+        <div class="normal-input mr-4">
+          <label class="input-caption" for="status"><b>STATUS</b></label>
+          <select id="status" name="status" [(ngModel)]="searchFields.status" class="form-control input-flex">
+            <option *ngFor="let stat of getStatus('SEARCH')">{{ stat }}</option>
+          </select>
+        </div>
+        <div *ngIf="person.isAdmin" class="large-input mr-4">
+          <label class="input-caption" for="search"><b>BANDER</b></label>
+          <div class="d-flex flex-row">
+            <input id="search"
+                   [(ngModel)]="selectedBander"
+                   [typeahead]="people"
+                   typeaheadOptionField="display"
+                   autocomplete="off"
+                   [disabled]="!person.isAdmin"
+                   (typeaheadOnSelect)="onSelectBander($event.item)"
+                   [typeaheadLatinize]="true"
+                   placeholder="Choose person..."
+                   class="form-control input-flex" />
+            <button *ngIf="selectedBander" class="btn btn-link reset-button" type="button" (click)="clearBanderSearch()">
+              <i class="material-icons-round">close</i>
+            </button>
+          </div>
+        </div>
+        <div class="align-self-end">
+          <button *ngIf="!isSearching; else loadingButton" class="blue-button" (click)="onSearch()">Search</button>
+        </div>
+      </div>
+
+      <!-- Search results -->
+      <div class="card">
+        <div class="card-body-table pb-0">
+          <div *ngIf="person.isAdmin && bandsSize !== 0">
+            <div class="card-table-header d-flex justify-content-between align-items-baseline">
+              <div class="d-flex card-row-data justify-content-between">
+                <input type="checkbox"
+                       (click)="onToggleToBucket()"
+                       [(ngModel)]="toBucket"
+                       [ngModelOptions]="{ standalone: true }"
+                       id="toBucket"
+                       class="edit-check-box form-control" />
+                <label class="input-caption text-regular-16" for="toBucket">Transfer bands on this screen to bucket</label>
+
+              </div>
+              <div class="filter-group justify-content-end">
+                <div style="vertical-align: middle" class="filter-label mr-2">Select for:</div>
+                <div>
+                  <input id="transfer" value="TRANSFER" type="radio" [(ngModel)]="filterBy" (change)="unselectAll()" />
+                  <label for="transfer">Transfer</label>
+                </div>
+                <div>
+                  <input id="newEvent" value="NEW_EVENT" type="radio" [(ngModel)]="filterBy" (change)="unselectAll()" />
+                  <label for="newEvent">New event</label>
+                </div>
+                <div>
+                  <input id="delete" value="DELETE" type="radio" [(ngModel)]="filterBy" (change)="unselectAll()" />
+                  <label for="delete">Delete</label>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div *ngIf="bandsSize === 0" class="empty-results">
+            <div *ngIf="noResults" class="d-flex flex-column align-items-center">
+              <img src="../../../assets/icons/search_off-24px.svg" class="icon-large" />
+              <span class="text-regular-17 mt-4">No results found</span>
+            </div>
+            <div *ngIf="person.isAdmin && !noResults" class="d-flex flex-column align-items-center">
+              <img src="../../../assets/icons/search-24px.svg" />
+              <span class="text-regular-17 mt-4">Start searching for bands above</span>
+            </div>
+            <div *ngIf="!person.isAdmin && !noResults" class="d-flex flex-column align-items-center">
+              <img src="../../../assets/icons/Icon%20-%20Empty.svg" />
+              <span class="text-regular-17 mt-4">There are currently no bands assigned to you</span>
+            </div>
+          </div>
+
+          <div *ngIf="bandsSize !== 0" class="results d-flex flex-column">
+            <div *ngFor="let bands of allBands; index as i" class="d-flex band-table-divider pt-2 pb-2">
+              <div *ngFor="let band of bands; index as j" class="band-item text-regular-18 on-hover">
+                <div class="d-flex align-items-center" [ngClass]="{ 'edit-background': band.isBandEdit }">
+                  <input *ngIf="person.isAdmin"
+                         type="checkbox"
+                         (click)="onToggleBand(i, j)"
+                         [(ngModel)]="band.isBandMarked"
+                         [ngModelOptions]="{ standalone: true }"
+                         id="chk{{ i }}_{{ j }}"
+                         class="edit-check-box form-control"
+                         [disabled]="!canSelect(band)" />
+                  <label for="chk{{ i }}_{{ j }}"
+                         class="d-flex align-items-center mb-0"
+                         [tooltip]="tolTemplate"
+                         [delay]="800">
+                    <ng-template #tolTemplate>
+                      <div>User: {{band.banderName}}</div>
+                      <div>User Id: {{band.userId}}</div>
+                      <div>Date: {{band.bandAssignDate}}</div>
+                    </ng-template>
+
+                    <a [routerLink]="['../band', band.bandPrefix, band.lastBandNo]">
+                      <span><b>{{ band.bandPrefix }}</b></span>
+                      - <span>{{ band.lastBandNo }}</span>
+                    </a>
+                    <span class="text-regular-13 ml-3" [ngClass]="getStatusClass(band.state)">{{ band.state }}</span>
+                  </label>
+                  <div *ngIf="getStatus(band.state).length !== 0" class="edit-status hiddenDiv">
+                    <i class="material-icons-round link-blue-16 ml-3" (click)="onToggleBandEdit(i, j)">edit</i>
+                    <ul *ngIf="band.isBandEdit" class="select-status">
+                      <li *ngFor="let stat of getStatus(band.state)" class="text-regular-13 pointer" (click)="onStatusChange(stat, i, j)">
+                        {{ stat }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="bandsSize !== 0" class="mt-4 mb-4 d-flex justify-content-center">
+          <!-- Not yet... -->
+          <!--          <div class="pagination-text ml-4">-->
+          <!--            <label for="limit" class="pr-2">RESULTS PER PAGE</label>-->
+          <!--            <select id="limit"-->
+          <!--                    name="limit"-->
+          <!--                    [value]="limitPerPage"-->
+          <!--                    (change)="onLimitChanged($event)"-->
+          <!--                    class="pagination-input">-->
+          <!--              <option [value]="20">20</option>-->
+          <!--              <option [value]="50">50</option>-->
+          <!--            </select>-->
+          <!--          </div>-->
+          <!-- Interim as API can't deliver max rows -->
+          <!--          <div class="pagination-main">-->
+          <!--            <pagination [totalItems]="bandsSize"-->
+          <!--                        [maxSize]="8"-->
+          <!--                        [rotate]="false"-->
+          <!--                        [itemsPerPage]="limitPerPage"-->
+          <!--                        [(ngModel)]="currentPage"-->
+          <!--                        (pageChanged)="onPageChanged($event)"-->
+          <!--                        previousText="&lsaquo;"-->
+          <!--                        nextText="&rsaquo;"></pagination>-->
+          <!--          </div>-->
+          <div class="mb-4">
+            <button class="blue-button mr-4" [disabled]="isFirstPage" [ngClass]="{ isDisabled: isFirstPage }" (click)="onPreviousPage()">
+              Previous
+            </button>
+            <button class="blue-button" [disabled]="isLastPage" [ngClass]="{ isDisabled: isLastPage }" (click)="onNextPage()">Next</button>
+          </div>
+          <!-- Also not possible on this screen ... yet -->
+          <!--          <div class="pagination-text mr-4">-->
+          <!--            <label for="jump" class="pr-2">JUMP TO PAGE</label>-->
+          <!--            <input id="jump"-->
+          <!--                   name="jump"-->
+          <!--                   [(ngModel)]="jumpToPage"-->
+          <!--                   (blur)="onJumpTo()"-->
+          <!--                   (keyup.enter)="onJumpTo()"-->
+          <!--                   class="pagination-input">-->
+          <!--          </div>-->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bands bucket -->
+    <div *ngIf="person.isAdmin" class="card card-body-table bucket"
+         [ngStyle]="{'top.px': [topHeight]}"
+         [ngClass]="{ 'large-bucket': bandsBucket.length > 15 }">
+      <div class="card-heading card-table-header full-width mb-0">
+        <div class="d-flex justify-content-between">
+          <div>Bands bucket</div>
+          <div class="band-summary">
+            {{ getBandBucketSum() }}
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="bandsBucket.length === 0" class="empty-bucket mt-auto full-width mb-auto">
+        <div class="d-flex flex-column align-items-center">
+          <span class="material-icons-round very-large-icon">swap_horiz</span>
+          <span class="text-regular-17 mt-2">0 bands in your bucket</span>
+        </div>
+      </div>
+      <div *ngIf="bandsBucket.length !== 0" class="d-flex flex-column mb-auto full-width pr-4 pl-4">
+        <div class="table-header-text d-flex justify-content-between">
+          <span class="">Band type</span>
+          <span class="">Amount</span>
+        </div>
+        <div *ngFor="let band of bandsBucket" class="table-row-text d-flex justify-content-between">
+          <span>{{ band.prefix }}</span>
+          <span>{{ band.amount }} bands</span>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column full-width pl-4 pr-4">
+        <div class="d-flex flex-row">
+          <button class="blue-button w-100"
+                  *ngIf="filterBy === 'TRANSFER'"
+                  (click)="onTransferBands(transferTemplate)"
+                  [disabled]="bandsBucket.length === 0"
+                  [ngClass]="{ 'disabled-button': bandsBucket.length === 0 }">
+            Transfer bands
+          </button>
+
+          <button class="blue-button w-100"
+                  *ngIf="filterBy === 'NEW_EVENT'"
+                  (click)="onNewEvent(newEventTemplate)"
+                  [disabled]="bandsBucket.length === 0"
+                  [ngClass]="{ 'disabled-button': bandsBucket.length === 0 }">
+            Add event
+          </button>
+        </div>
+        <button class="blue-button"
+                *ngIf="filterBy === 'DELETE'"
+                [disabled]="!canDeleteBucket()"
+                [ngClass]="{ isDisabled: !canDeleteBucket() }"
+                (click)="onBandDelete(deleteTemplate)">
+          Delete bands
+        </button>
+        <div *ngIf="bandsBucket.length !== 0" class="d-flex justify-content-center mt-4">
+          <span class="link-blue-16" (click)="onEmptyBucket()">Empty bucket</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading-spinner loadingText="Loading data..."></app-loading-spinner>
+</ng-template>
+
+<ng-template #deleteTemplate>
+  <div>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Are you sure?</h4>
+    </div>
+    <div class="modal-body m-4">
+      <div>
+        <p>
+          This will permanently delete <b>{{ getBandBucketSum() }}</b> bands from the database.
+        </p>
+        <p>Please check before proceeding.</p>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" class="card-button" aria-label="Close" (click)="deleteRef.hide()">Cancel</button>
+        <button type="button" class="red-button"  [disabled]="isSaving" aria-label="close" (click)="onConfirmDelete()">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #transferTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Transfer {{ getBandBucketSum() }} bands</h4>
+    </div>
+    <div class="search-box d-flex flex-column">
+      <div class="error-msg mb-2" *ngIf="saveError">{{saveError}}</div>
+      <div>
+        <label class="input-caption" for="transferTo"><b>TRANSFER TO</b></label>
+        <input id="transferTo"
+               [(ngModel)]="selectedTransferTo"
+               [typeahead]="people"
+               typeaheadOptionField="display"
+               autocomplete="off"
+               (typeaheadOnSelect)="onSelectTransferTo($event.item)"
+               [typeaheadLatinize]="true"
+               placeholder="Add person..."
+               class="form-control large-input person-select" />
+      </div>
+      <div class="mt-1">
+        <label class="input-caption" for="transferDate"><b>TRANSFER DATE</b></label>
+        <input type="text"
+               [(ngModel)]="transferDate"
+               name="transferDate"
+               id="transferDate"
+               placeholder="Choose a date"
+               bsDatepicker
+               autocomplete="off"
+               data-lpignore="true"
+               class="form-control input-flex normal-input"
+               [bsConfig]="{
+            dateInputFormat: 'DD MMM YYYY',
+            containerClass: 'theme-dark-blue',
+            showWeekNumbers: false
+          }" />
+      </div>
+    </div>
+    <div class="modal-body m-2">
+      <div class="d-flex flex-column mb-4">
+        <div *ngFor="let band of bandsBucket" class="table-row-text d-flex justify-content-between transfer-table-divider">
+          <span><b>{{ band.prefix }}</b></span>
+          <span>{{ band.amount }} bands</span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" class="card-button" aria-label="Close" (click)="cancelTransfer()">Cancel</button>
+        <button type="button" class="blue-button" [disabled]="isSaving" aria-label="close" (click)="onConfirmTransfer()">Confirm</button>
+      </div>
+    </div>
+</ng-template>
+
+<ng-template #newEventTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create event for {{ getBandBucketSum() }} bands</h4>
+    </div>
+    <div class="search-box d-flex flex-column">
+      <div class="error-msg mb-2" *ngIf="saveError">{{saveError}}</div>
+      <div>
+        <label class="input-caption" for="transferTo"><b>BANDER</b></label>
+        {{selectedNewEventBander}}
+        <app-wrapped-typeahead-ngmodel
+          *ngIf="isBanderSelectable()"
+          id="transferTo"
+          [(ngModel)]="newEventBander"
+          [optionList]="people"
+          optionField="display"
+          placeholder="Add person..."></app-wrapped-typeahead-ngmodel>
+        <div *ngIf="!isBanderSelectable()" class="banding-office-label">Banding office</div>
+      </div>
+        
+
+      <div>
+        <label class="input-caption" for="newEventState"><b>BAND STATE</b></label>
+        <select id="newEventState" name="newEventState" class="input-flex-100" [(ngModel)]="newEventState">
+          <option [ngValue]="bs" *ngFor="let bs of selectableBandStates">{{ bs }} </option>
+        </select>
+        <div *ngIf="newEventStateError" class="error-msg">{{newEventStateError}}</div>
+      </div>
+      <div class="mt-1">
+        <label class="input-caption" for="newEventDate"><b>DATE OF EVENT</b></label>
+        <input type="text"
+               [(ngModel)]="newEventDate"
+               name="newEventDate"
+               id="newEventDate"
+               placeholder="Choose a date"
+               bsDatepicker
+               autocomplete="off"
+               data-lpignore="true"
+               class="form-control input-flex normal-input"
+               [bsConfig]="{
+            dateInputFormat: 'DD MMM YYYY',
+            containerClass: 'theme-dark-blue',
+            showWeekNumbers: false
+          }" />
+        <div *ngIf="newEventDateError" class="error-msg">{{newEventDateError}}</div>
+      </div>
+      <div class="mt-1">
+        <label class="input-caption" for="newEventTime"><b>TIME OF EVENT</b></label>
+        <input [(ngModel)]="newEventTime"
+               placeholder="HH:MM"
+               id="newEventTime"
+               name="newEventTime"
+               class="form-control input-flex normal-input"
+               data-lpignore="true" />
+        <div *ngIf="newEventTimeError" class="error-msg">{{newEventTimeError}}</div>
+      </div>
+    </div>
+    <div class="modal-body m-2">
+      <div class="d-flex flex-column mb-4">
+        <div *ngFor="let band of bandsBucket" class="table-row-text d-flex justify-content-between transfer-table-divider">
+          <span><b>{{ band.prefix }}</b></span>
+          <span>{{ band.amount }} bands</span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" class="card-button" aria-label="Close" (click)="cancelNewEvent()">Cancel</button>
+        <button type="button" class="blue-button" [disabled]="isSaving" aria-label="close" (click)="onConfirmNewEvent()">Confirm</button>
+      </div>
+    </div>
+</ng-template>
+
+<ng-template let-bandsBucket="bandsBucket" #actionSummary>
+  <div class="d-flex flex-column mb-4">
+    <div *ngFor="let band of bandsBucket" class="table-row-text d-flex justify-content-between transfer-table-divider">
+      <span><b>{{ band.prefix }}</b></span>
+      <span>{{ band.amount }} bands</span>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #loadingButton>
+  <app-loading-button useClass="spinner-button"></app-loading-button>
+</ng-template>

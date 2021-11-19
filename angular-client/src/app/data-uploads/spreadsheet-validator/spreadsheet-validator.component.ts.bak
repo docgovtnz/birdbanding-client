@@ -1,0 +1,169 @@
+import { Component, OnInit } from '@angular/core';
+import { PeopleService } from '../../services/people.service';
+import { ProjectService } from '../../projects/services/project.service';
+import { SpreadsheetUploadService } from '../services/spreadsheet-upload.service';
+import { PeopleData } from '../../people/people-data';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FileUploader, FileItem } from 'ng2-file-upload';
+import { format} from 'date-fns'
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { UploadError, UploadErrorModalComponent } from '../upload-error-modal/upload-error-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Project } from '../../projects/services/project-types';
+import { csvGenerator } from '../../common/csv/csv-generator';
+
+interface PresignedUrlResponse { presignedUrl: string };
+
+enum ValidationStage {
+  BEGIN,
+  UPLOAD,
+  LOADING,
+  ERROR,
+  SUCCESS
+}
+
+@Component({
+  selector: 'app-spreadsheet-validator',
+  templateUrl: './spreadsheet-validator.component.html',
+  styleUrls: ['./spreadsheet-validator.component.scss']
+})
+export class SpreadsheetValidatorComponent implements OnInit {
+  people: PeopleData[] = [];
+
+  projects: Project[] = [];
+
+  sheetValidatorState: ValidationStage = ValidationStage.BEGIN;
+
+  uploadForm: FormGroup;
+
+  uploader: FileUploader;
+
+  fileOver = false;
+
+  errors = this.fakeErrors();
+
+  constructor(
+    private peopleService: PeopleService,
+    private projectService: ProjectService,
+    private fb: FormBuilder,
+    private modalService: BsModalService,
+    private spreadsheetUploadService: SpreadsheetUploadService,
+  ) {}
+
+  ngOnInit() {
+    this.peopleService.getPeople().subscribe(p => (this.people = p));
+    this.projectService.getProjects().subscribe(p => (this.projects = p));
+    this.uploadForm = this.fb.group({
+      person: [null, Validators.required],
+      project: [null, Validators.required]
+    });
+
+    this.uploader = new FileUploader({
+      disableMultipart: true // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
+    });
+
+    this.uploader.onBeforeUploadItem = ((item: FileItem) => {
+
+      const projectUUID = this.projectControl.value.id;
+      const personUUID = this.personControl.value.id;
+      const fileSizeInBytes = this.uploader.queue[0].file.size;
+      this.spreadsheetUploadService.getPresignedUrl(
+        this.generateFileName(),
+        projectUUID,
+        personUUID,
+        fileSizeInBytes).subscribe(r => {
+          item.url = r.presignedUrl;
+          item.headers = [{ name: 'Content-Type', value: item.file.type }];
+          item.withCredentials = false;
+          item.method = 'PUT';
+          item.upload();
+          
+        });
+      ;
+    })
+  }
+
+  get personControl() {
+    return this.uploadForm.get('person');
+  }
+
+  get projectControl() {
+    return this.uploadForm.get('project');
+  }
+
+  fileIsOver(e: any) {
+    this.fileOver = e;
+  }
+
+
+
+  uploadFile() {
+    console.log('Here is a line');
+    this.uploader.uploadItem(this.uploader.queue[0]);
+  }
+
+  private generateFileName(): string {
+    const formattedDate = format(new Date(), 'yyyy-MM-dd:hh:mm:ss');
+    const userName = this.personControl.value.userName;
+    const projectName = this.projectControl.value.name.replace(/\s/g, '');
+    return `${projectName}-${userName}-${formattedDate}`;
+  }
+
+  cancelUpload() {
+    this.sheetValidatorState = ValidationStage.BEGIN;
+  }
+
+  tryAgain() {
+    this.uploader.clearQueue();
+    this.sheetValidatorState = ValidationStage.UPLOAD;
+  }
+
+  downloadCsv() {
+    const headers = {
+      rowNumber: 'row',
+      columnNumber: 'column',
+      comment: 'comment'
+    };
+    const filePrefix = 'banding-upload-errors_';
+    csvGenerator(headers, filePrefix, this.errors.errors);
+  }
+
+  showUploadErrors(): void {
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: false,
+      class: 'upload-error-modal',
+      initialState: {
+        uploadErrors: this.errors.errors
+      }
+    };
+    this.modalService.show(UploadErrorModalComponent, config);
+  }
+
+  fakeErrors() {
+    // mock data to simulate different error numbers
+    const totalRows = Math.floor(Math.random() * 100);
+    const rowsError = Math.ceil(Math.random() * totalRows);
+    const rowsOk = totalRows - rowsError;
+    const errors = generateNErrors(rowsError, totalRows);
+    return {
+      totalRows,
+      rowsError,
+      rowsOk,
+      errors
+    };
+  }
+}
+
+const generateNErrors = (numberOrErrors: number, totalRows: number): UploadError[] => {
+  const errors: UploadError[] = [];
+  for (let i = 0; i < numberOrErrors; i++) {
+    errors.push({
+      rowNumber: Math.ceil(Math.random() * totalRows) + '',
+      columnNumber: Math.ceil(Math.random() * 20) + '',
+      comment: Math.random() > 0.5 ? 'Too square' : 'Not square enough'
+    });
+  }
+  return errors;
+};

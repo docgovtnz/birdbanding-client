@@ -1,0 +1,56 @@
+@import '../../../palate';
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+  flex-grow: unset;
+  margin: 1rem 0;
+}
+
+.banding-prefix {
+  max-width: 48%;
+}
+
+option {
+  color: $TEXT;
+}
+
+select option:first-child {
+  color: #9ea6b1;
+}
+
+.first-selected option:first-child {
+  color: $TEXT;
+}
+
+input::placeholder {
+  color: $PLACE_HOLDER;
+}
+
+.date-input {
+  font-size: 14px;
+}
+
+.check-label {
+  font-style: normal;
+  font-size: 16px;
+  color: #4d4d4d;
+  text-decoration: line-through;
+}
+
+.search-group input:checked {
+  background-color: $ACCENT_BLUE;
+}
+
+.no-wrap {
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  float: left;
+}
+
+.btn-link {
+  color: $ACCENT_BLUE;
+  text-decoration: none;
+}

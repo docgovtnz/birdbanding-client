@@ -1,0 +1,128 @@
+@import 'src/text-styles';
+@import 'src/palate';
+
+.error-table-line td, .error-table-line th {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  border-top: none;
+}
+
+.table th {
+  white-space:nowrap;
+}
+
+.error-table-no-line td{
+  border: none;
+}
+
+.download-csv-link {
+  right: 0px;
+  top: 10px;
+  position: absolute;
+}
+
+.bread-crumb-text {
+  @extend .text-bold-18;
+  display: inline-block;
+}
+
+.sightings {
+  margin: 2em 0;
+
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    margin: 2em 20%;
+  }
+}
+
+.progress-sphere {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: $BORDER_GREY;
+  font-size: 18px;
+  color: $WHITE;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  i{
+      color: $BORDER_GREY;
+  }
+}
+
+.active-sphere {
+  background-color: $DOC_GOLD;
+  color: $TEXT;
+
+}
+
+.rejected-sphere, .error-sphere {
+  background-color: tomato;
+  i {
+      color:tomato;
+  }
+}
+
+.gray-sphere{
+  background-color: $BORDER_GREY;
+  i{
+      color: $BORDER_GREY;
+  }
+}
+
+.warning-sphere {
+  background-color: #fadba8;
+  i{
+      color: #fadba8;
+  }
+}
+
+.valid-sphere {
+  background-color: $LIME_GREEN;
+  i{
+      color: white;
+  }
+}
+
+.progress-spheres-background {
+  position: relative;
+  z-index: 1;
+
+  &:before {
+    border-top: 2px solid #dfdfdf;
+    content: '';
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    z-index: -1;
+
+    @media (min-width: $MEDIUM_SCREEN) {
+      width: 95%;
+    }
+  }
+}
+
+.medium-blue-spinner {
+  display: inline-block;
+  vertical-align: middle;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border-left: solid 3px $ACCENT_BLUE;
+  border-top: solid 3px $ACCENT_BLUE;
+  animation: roll 1s infinite;
+  transform: rotate(30deg);
+}
+
+.very-large-icon {
+  font-size: 100px;
+  text-align: center;
+  width:100px
+}
+
+.delete-icon{
+    color: $BORDER_GREY;
+}
+

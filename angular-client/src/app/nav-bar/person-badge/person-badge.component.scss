@@ -1,0 +1,39 @@
+@import './src/palate';
+@import 'src/text-styles';
+@import 'src/app/nav-bar/nav-styles';
+
+.initialBox {
+  background-color: #59c3b2;
+  height: 54px;
+  width: 54px;
+
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 19px;
+  font-weight: bold;
+  border-radius: 5%;
+  display: none;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    display: flex;
+  }
+}
+
+.wrapper {
+  height: 100%;
+}
+
+.vertical-divide-left {
+  min-height: 100px;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    border-left: solid 1px $DIVIDER_GREEN;
+  }
+}
+
+.white-icon {
+  color: $WHITE;
+}
+
+.badge-wrapper {
+  cursor: pointer;
+}

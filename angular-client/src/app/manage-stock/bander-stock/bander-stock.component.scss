@@ -1,0 +1,287 @@
+@import '../../../palate.scss';
+
+.child {
+  margin: 3rem 3rem 0 3rem;
+}
+
+.card-table-header {
+  padding-right: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.search {
+  width: 80%;
+}
+
+.full-search {
+  width: 100%;
+}
+
+.search-box {
+  background: $BOX_GREY;
+  border: 1px solid $BORDER_GREY;
+  border-radius: unset;
+  padding: 1.5rem;
+}
+
+.input-flex {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  padding: 0 1em;
+  color: $TEXT;
+  font-size: 16px;
+  height: 48px !important;
+}
+
+.small-input {
+  flex: 1 1 auto;
+}
+
+.normal-input {
+  flex: 2 1 auto;
+}
+
+.large-input {
+  flex: 4 1 auto;
+}
+
+.modal-input {
+  @extend .input-flex;
+  width: 400px;
+}
+
+.empty-results {
+  height: 35vh;
+  padding: calc(20vh / 2);
+}
+
+.empty-bucket {
+  padding: calc(10vh / 2);
+}
+
+.large-icon {
+  font-size: 20px;
+  color: $LIGHT_TEXT;
+}
+
+.very-large-icon {
+  font-size: 50px;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-13 {
+  font-size: 13px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-regular-16 {
+  font-size: 16px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-regular-17 {
+  font-size: 17px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-18 {
+  font-size: 18px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-19 {
+  font-size: 19px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-19-dark {
+  font-size: 19px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.link-blue-16 {
+  font-size: 16px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+  cursor: pointer;
+}
+
+.link-grey-16 {
+  font-size: 16px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+  cursor: pointer;
+}
+
+.icon-large {
+  width: 6%;
+  filter: invert(48%) sepia(13%) saturate(496%) hue-rotate(172deg) brightness(93%) contrast(86%);
+}
+
+.results {
+  padding: 1.5rem;
+}
+
+.bucket {
+  width: 17.5%;
+  min-height: 490px;
+  position: fixed;
+  right: 3rem;
+  top: 333px;
+  //justify-content: space-between;
+  align-items: start;
+}
+
+.large-bucket {
+  top: 100px;
+}
+
+.band-summary {
+  font-size: 16px;
+  background-color: #c0c5cb;
+  border-radius: 3px;
+  padding: 0.2rem 0.8rem;
+  margin-right: 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.band-item {
+  width: 25%;
+  margin: 0.25rem 0;
+}
+
+.band-table-divider {
+  border-bottom: 1px solid #c0c5cb;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.transfer-table-divider {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid $PLACE_HOLDER;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.edit-background {
+  background-color: $BACKGROUND_GREY;
+}
+
+.edit-status {
+  position: relative;
+}
+
+.select-status {
+  position: absolute;
+  z-index: 99;
+  border: 1px solid $BOX_DARKGREY;
+  background-color: white;
+  -webkit-box-shadow: 0 0 16px 7px rgba(216, 213, 213, 0.53);
+  -moz-box-shadow: 0 0 16px 7px rgba(216, 213, 213, 0.53);
+  box-shadow: 0 0 16px 7px rgba(216, 213, 213, 0.53);
+}
+
+ul.select-status {
+  list-style: none;
+  padding-inline-start: 5px;
+  padding-inline-end: 5px;
+}
+
+.hiddenDiv {
+  visibility: hidden;
+  text-align: center;
+}
+
+.on-hover:hover .hiddenDiv {
+  visibility: visible;
+}
+
+.reset-button {
+  color: $TEXT;
+  margin: 0 0 0 -50px;
+  z-index: 10;
+}
+
+.error-msg{
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: $DANGER_RED;
+}
+
+//li:first-child {
+//  width: 0;
+//  height: 0;
+//  border-left: 5px solid transparent;
+//  border-right: 5px solid transparent;
+//  border-bottom: 5px solid black;
+//}
+
+// tweak for pagination
+:host ::ng-deep .page-link {
+  border: none !important;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  padding: 0;
+
+  input {
+    display: none;
+    background: #ffffff;
+    color: $ROW_HOVER;
+    height: 48px;
+
+    &:checked + label {
+      background: $ACCENT_BLUE;
+      color: $WHITE;
+      border: 1px solid $ACCENT_BLUE;
+    }
+  }
+
+  label {
+    background: $WHITE;
+    color: $ACCENT_BLUE;
+    height: 48px;
+    display: flex;
+    padding: 0 2em;
+    margin: auto;
+    align-items: center;
+    border: 1px solid $ACCENT_BLUE;
+    cursor: pointer;
+    z-index: 90;
+
+    &:hover {
+      background: #ddd;
+    }
+  }
+}
+
+.filter-label{
+    line-height:3rem;
+}
+
+.person-select{
+    height: 48px;
+}
+
+.banding-office-label{
+  padding-left: 1rem;
+  line-height: 48px;
+}
+
+

@@ -1,0 +1,22 @@
+<select autocomplete="off" data-lpignore="true" (change)="onSelect($event)" name="multi" class="styled-select">
+  <option [ngValue]="option" *ngFor="let option of optionList"> {{ option[optionField] }} </option>
+  <option value="null" disabled selected>{{placeholder}}</option>
+</select>
+<div class="d-flex flex-direction-row justify-content-between">
+  <div id="badge-container">
+    <span
+      [tooltip]="nextItem[optionField]"
+      containerClass="white-tooltip"
+      class="badge badge-secondary pill m-1"
+      *ngFor="let nextItem of selectedItems; index as index"
+      (click)="onRemoveItem(index)"
+    >
+      {{ truncateDescription(nextItem[optionField]) }}
+    </span>
+  </div>
+  <div id="cross-container">
+    <span class="clear-delete-button p-1" (click)="clearItems()" *ngIf="selectedItems.length > 0"
+      ><i class="material-icons-round ">close</i></span
+    >
+  </div>
+</div>

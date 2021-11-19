@@ -1,0 +1,24 @@
+<div id="search-top-bar" class="top-bar">
+  <div class="d-flex flex-row h-100">
+    <a
+      class="d-flex ml-5 align-items-center search-nav"
+      routerLinkActive="active"
+      routerLink="/manage-stock"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="material-icons-round pr-2">equalizer</i><span>Stock Summary</span>
+    </a>
+    <a class="d-flex ml-5 align-items-center search-nav" routerLinkActive="active" routerLink="/manage-stock/bander">
+      <i class="material-icons-round pr-2">perm_identity</i><span>Band Details</span>
+    </a>
+    <a
+      *ngIf="person.isAdmin"
+      class="d-flex ml-5 align-items-center search-nav"
+      routerLinkActive="active"
+      routerLink="/manage-stock/transfers"
+    >
+      <i class="material-icons-round pr-2">sync_alt</i><span>Transfers</span>
+    </a>
+  </div>
+</div>
+<router-outlet></router-outlet>

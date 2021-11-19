@@ -1,0 +1,185 @@
+<div [ngSwitch]="sheetValidatorState" class="content-box">
+  <div class="bottom-line p-3">
+    <h3 *ngSwitchCase="0" class="text-bold-20 ">Data BOX submission process</h3>
+    <h3 *ngSwitchCase="1" class="text-bold-20 ">Upload a data BOX and check format</h3>
+    <h3 *ngSwitchCase="2" class="text-bold-20 ">Error uploading</h3>
+    <h3 *ngSwitchCase="3" class="text-bold-20 ">Checking spreadsheet format...</h3>
+    <h3 *ngSwitchCase="4" class="text-bold-20 ">Errors found</h3>
+    <h3 *ngSwitchCase="5" class="text-bold-20 d-flex flex-row align-items-center">
+      <i class="material-icons-round green-text">check</i> Uploaded
+    </h3>
+  </div>
+  <div>
+    <div *ngSwitchCase="0">
+      <div class="pr-3">
+        <div class="p-3">
+          <h4 class="text-bold-18">Have you tried our online ‘add record’ form?</h4>
+          <p class="text-regular-17">
+            Right now you can use the <a [routerLink]="['/data-uploads']">add record form</a> instead of managing a spreadsheet.
+          </p>
+        </div>
+
+
+
+        <ol>
+          <li>
+            Before you begin, check:
+            <ul>
+              <li>
+                you are using <a href="https://www.doc.govt.nz/globalassets/documents/our-work/bird-banding/nznbbs-data-spreadsheet.xlsx">Data BOX v.FALCON.1x</a>
+              </li>
+              <li>the sheet contains no more than 1000 records</li>
+              <li>at least one bird event (stock records are ignored)</li>
+              <li>records belong to a single project</li>
+              <li>you are a member of this project</li>
+            </ul>
+          </li>
+          <li>
+            Attach file, choose project and upload
+            <ul>
+              <li>PASS: added to the right-hand panel</li>
+              <li>FAIL: upload unsuccessful; fix formatting errors and resubmit</li>
+            </ul>
+          </li>
+          <li>
+            Click on row for spreadsheet detail
+            <ul>
+              <li>Warnings: review (can submit)</li>
+              <li>Errors: fix in own Data BOX and resubmit</li>
+            </ul>
+          </li>
+          <li>
+            Submit/revalidate/delete
+
+          </li>
+          <li>
+            Admin checks submitted data
+            <ul>
+              <li>Approve: added to database</li>
+              <li>Reject: fix and resubmit</li>
+            </ul>
+          </li>
+
+
+
+        </ol>
+      </div>
+      <div class="p-3">
+        <button (click)="sheetValidatorState = 1" class="flex-blue-button ">Continue</button>
+      </div>
+    </div>
+    <div *ngSwitchCase="1" [formGroup]="uploadForm">
+      <div class="p-3 d-flex flex-column">
+        <label class="input-caption">ATTACH A FILE<sup class="required-star">*</sup></label>
+        <div *ngIf="uploader.queue.length === 0; else selectedFiles"
+             ng2FileDrop
+             [uploader]="uploader"
+             (fileOver)="fileIsOver($event)"
+             class="dropzone py-5"
+             [ngClass]="{ 'file-over': fileOver }"
+             (onFileDrop) ="onSelected($event)"
+          >
+          <i class="material-icons-round">upload</i>
+          <span>Drag and drop</span>
+          <span>or </span>
+          <label class="btn btn-link" for="file-select">
+            browse files<input id="file-select" class="none" type="file" ng2FileSelect [uploader]="uploader" accept=".xlsx" (onFileSelected)="onSelected($event)" />
+          </label>
+        </div>
+        <div *ngIf="submittedWithoutFile">
+            <span class="error-inline">Please add a file</span>
+         </div>
+        <div *ngIf="submittedWrongFormat">
+            <span class="error-inline">Please submit an '.xlsx' file</span>
+         </div>
+      </div>
+      <div class="p-3 d-flex flex-column">
+        <label class="input-caption">CHOOSE PROJECT<sup class="required-star">*</sup></label>
+        <app-wrapped-typeahead [selectedItem]="projectControl"
+                               [optionList]="projects"
+                               optionField="name"
+                               id="project"
+                               placeholder="Start typing a name..."></app-wrapped-typeahead>
+        <div *ngIf="projectControl.errors && (projectControl.dirty || projectControl.touched)">
+          <span class="error-inline" *ngIf="projectControl.errors.required">Project is required</span>
+        </div>
+      </div>
+      <div class="p-3">
+        <button (click)="uploadFile()" class="flex-blue-button ">Upload</button>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="2" class="p-3">
+      <div class="warning-box p-3">
+        <span class="pr-1"><i class="material-icons-round orange-circle">priority_high</i></span><span class="pl-1">
+          An unexpected issue prevented your file from being uploaded. Please contact an administrator
+        </span>
+      </div>
+      <div class="pt-3">
+        <button (click)="tryAgain()" class="flex-clear-button">Try again</button>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="3">
+      <div class="d-flex flex-column align-items-center justify-content-center">
+        <span class="big-blue-spinner m-3"></span>
+      </div>
+    </div>
+
+
+      <div *ngSwitchCase="4" class="p-3">
+
+        <div *ngIf="!isFileFormatError; else fileFormatError" class="warning-box p-3">
+          <h4 class="text-bold-18 pb-3">Spreadsheet upload unsuccessful</h4>
+          <span class="pr-1">
+            <i class="material-icons-round orange-circle">priority_high</i>
+          </span>
+          <span class="pl-1">
+            {{getErrorMessage()}}
+          </span>
+        </div>
+        <ng-template #fileFormatError>
+          <h4 class="text-bold-18 pb-3">File format error</h4>
+          Your spreadsheet is in the wrong format for upload.
+          Check that:
+          <ul>
+            <li>your are using <a href="https://www.doc.govt.nz/globalassets/documents/our-work/bird-banding/nznbbs-data-spreadsheet.xlsx">Data BOX v.FALCON.1x</a></li>
+            <li>file extension is .xlsx </li>
+            <li>column names and order have not been changed</li>
+            <li>spreadsheet tab with data is named "Bands" (only one such tab is allowed).</li>
+            <li>spreadsheet includes at least one row of non-stock data</li>
+          </ul>
+           <div class="mb-3">If you need help with this step, email <a href="mailto:falcon@doc.govt.nz">falcon@doc.govt.nz</a></div>
+          
+
+        </ng-template>
+        <div class="w-100 pt-3">
+          <button (click)="tryAgain()" class="flex-clear-button">Upload corrected spreadsheet</button>
+        </div>
+      </div>
+ 
+
+    <div *ngSwitchCase="5">
+      <div class="p-3">
+        <h4 class="text-bold-18">Spreadsheet upload successful</h4>
+        <p class="text-regular-17">
+          Your spreadsheet is in the correct template and has been uploaded.
+            The next step is to <b>review</b> any warnings and <b>submit</b> the sheet for approval or, if there are errors, re-upload a corrected version.
+            <span *ngIf="showLink">
+              <a [routerLink]="['/data-uploads', 'spreadsheet-detail', stagedSheetDetail.id]">Review and submit spreadsheet</a>
+            </span>
+        </p>
+        <div class="pt-3">
+          <button (click)="tryAgain()" class="flex-clear-button">Upload another spreadsheet</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<ng-template #selectedFiles>
+  <div class="d-flex flex-column" *ngFor="let q of uploader.queue">
+    <p class="text-regular-17 file-name">{{ q.file.name }} ({{ q.file.size / 1000 }} kb)</p>
+    <button class="btn btn-link" (click)="q.remove()">Remove file</button>
+  </div>
+</ng-template>

@@ -1,0 +1,22 @@
+<div class="controls">
+  <input data-lpignore="true" name="text-field" class="text-field" [placeholder]="placeholder" [(ngModel)]="currentValue" (keyup)="onFieldChange($event)" />
+  <span class="material-icons-round pl-2 pr-2 close-button" [ngClass]="currentValue.length ? '': 'disabled'" (click)="currentValue = ''; onFieldChange($event)">close</span>
+  <button class="btn btn-link d-flex flex-row align-items-center add-button" [ngClass]="{'disabled': currentValue.length < minimumTermSize}" (click)="addItem()">
+    <span class="material-icons-round pl-2 pr-2"> add_circle </span> {{buttonLabel}}
+  </button>
+</div>
+<div class="d-flex flex-direction-row justify-content-between">
+  <div id="badge-container">
+    <span
+      containerClass="white-tooltip"
+      class="badge badge-secondary pill m-1"
+      *ngFor="let nextItem of selectedItems; index as index"
+      (click)="removeItem(nextItem)"
+    >
+      {{ truncateDescription(nextItem) }}
+    </span>
+      <span class="clear-delete-button p-1" (click)="clearItems()" *ngIf="selectedItems.size > 0"
+        ><i class="material-icons-round ">close</i></span
+      >
+  </div>
+</div>

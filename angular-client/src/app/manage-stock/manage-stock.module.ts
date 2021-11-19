@@ -1,0 +1,34 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
+import { BanderStockComponent } from './bander-stock/bander-stock.component';
+import { BandingStockComponent } from './banding-stock/banding-stock.component';
+import { TransfersComponent } from './transfers/transfers.component';
+import { SharedModule } from '../common/shared-common-module';
+import { ManageStockRoutingModule } from './manage-stock-routing-module';
+import { ManageStockComponent } from './manage-stock.component';
+import { BandComponent } from './band/band.component';
+
+
+@NgModule({
+    imports: [
+        SharedModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ManageStockRoutingModule,
+        TypeaheadModule.forRoot(),
+        PaginationModule.forRoot(),
+        AlertModule.forRoot(),
+        TooltipModule.forRoot(),
+        BsDatepickerModule
+    ],
+  declarations: [ManageStockComponent, BanderStockComponent, BandingStockComponent, TransfersComponent, BandComponent]
+})
+export class ManageStockModule {}

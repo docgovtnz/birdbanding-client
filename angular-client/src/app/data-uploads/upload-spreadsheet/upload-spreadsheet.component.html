@@ -1,0 +1,23 @@
+<div class="m-5">
+  <h2 class="page-heading my-5">Upload spreadsheet</h2>
+  <div class="empty-results" *ngIf="!hasProjects && !isAdmin">
+      </div>
+  <div class="row mt-6">
+    <div class="col-3 pr-5">
+      <ng-template [ngIf]="(isAdmin || hasProjects)">
+        <app-spreadsheet-validator></app-spreadsheet-validator>
+      </ng-template>
+
+      <div *ngIf="!isLoading && !isAdmin && !hasProjects" class="d-flex flex-column align-items-center justify-content-center h-100">
+        <div>
+          <img src="../../../assets/icons/Icon%20-%20Empty.svg" />
+          <span class="text-regular-17 mt-4">You're not a member of any projects</span>
+        </div>
+      </div>
+</div>
+
+    <div class="col-9 m-0 p-0" style="padding:0px">
+      <app-spreadsheet-list #spreadsheetList></app-spreadsheet-list>
+    </div>
+  </div>
+</div>

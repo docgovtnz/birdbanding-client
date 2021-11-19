@@ -1,0 +1,214 @@
+<div class="px-5 d-flex flex-column align-items-start w-100">
+  <div>
+    <h2 class="page-heading my-5">Registered projects</h2>
+  </div>
+  <div class="project-search-box p-3 ">
+    <div class="row">
+      <div class="col-12 ml-1">
+        <h3 class="head-three">Search projects</h3>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <label class="input-caption" for="find-project">Find Project</label>
+        <input
+          [typeahead]="allProjects"
+          typeaheadOptionField="name"
+          (typeaheadOnSelect)="navigateToProject($event.item)"
+          name="projectSearch"
+          [formControl]="projectSearch"
+          placeholder="Find project…"
+          class="flexible-input"
+          id="find-project"
+        />
+      </div>
+      <div>
+        <label class="input-caption">DOC project</label>
+        <div class="filter-group">
+          <div>
+            <input id="all-projects" value="ALL" type="radio" name="doc-project-filter" [formControl]="isDOCProjectFilter" />
+            <label for="all-projects">All</label>
+          </div>
+          <div>
+            <input id="doc-project" value="DOC" type="radio" name="doc-project-filter" [formControl]="isDOCProjectFilter" />
+            <label for="doc-project">DOC</label>
+          </div>
+          <div>
+            <input id="non-doc-project" value="NON_DOC" type="radio" name="doc-project-filter" [formControl]="isDOCProjectFilter" />
+            <label for="non-doc-project">Non-DOC</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 search-term-group">
+        <label class="input-caption" for="project-search-term">Search by project detail</label>
+        <app-free-text-multi-select placeholder="" buttonLabel="New term" (selectedItemsChange)="searchTermChange($event)">
+
+        </app-free-text-multi-select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label class="input-caption">Status</label>
+
+        <div class="filter-group">
+          <div>
+            <input id="all" value="ALL" type="radio" name="projectFilter" [formControl]="projectFilter" />
+            <label for="all">All</label>
+          </div>
+          <div>
+            <input id="active" value="ACTIVE" type="radio" name="projectFilter" [formControl]="projectFilter" />
+            <label for="active">Active ({{ activeProjectCount }})</label>
+          </div>
+          <div>
+            <input type="radio" value="AWAITING_APPROVAL" id="pending" name="projectFilter" [formControl]="projectFilter" />
+            <label for="pending"
+              >Waiting <span class="d-none d-xl-inline-flex text-nowrap">&nbsp;for approval</span> ({{ pendingProjectCount }})</label
+            >
+          </div>
+          <div>
+            <input type="radio" value="INACTIVE" id="inactive" name="projectFilter" [formControl]="projectFilter" />
+            <label for="inactive">Inactive ({{ inactiveProjectCount }})</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="result-table full-width  mb-5">
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="table-top-text ml-3" *ngIf="selectedProjects.length > 0"
+        >Showing {{ fromResult }}-{{ toResult }} of {{ selectedProjects.length }} projects</span
+      >
+      <span class="table-top-text ml-3" *ngIf="selectedProjects.length === 0">No results </span>
+      <button *ngIf="person.isAdmin" routerLink="create" class="md-blue-button mr-3">New project</button>
+    </div>
+    <div class="mt-3">
+      <table class="table ">
+        <thead class="table-header-text">
+          <tr>
+            <th (click)="setSelectedSort('PROJECT_NAME')">
+              <div class="d-flex align-items-center">
+                Project name
+                <i class="sorted-selected" *ngIf="sortedColumn === 'PROJECT_NAME'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+            <th (click)="setSelectedSort('PROJECT_MANAGER')">
+              <div class="d-flex align-items-center">
+                Project manager
+                <i *ngIf="sortedColumn === 'PROJECT_MANAGER'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+            <th (click)="setSelectedSort('DATE_CREATED')">
+              <div class="d-flex align-items-center">
+                Date Created
+                <i *ngIf="sortedColumn === 'DATE_CREATED'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+            <th (click)="setSelectedSort('NUMBER_RECORDS')">
+              <div class="d-flex align-items-center">
+                No. of records
+                <i *ngIf="sortedColumn === 'NUMBER_RECORDS'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+            <th (click)="setSelectedSort('NUMBER_MEMBERS')">
+              <div class="d-flex align-items-center">
+                Number of members
+                <i *ngIf="sortedColumn === 'NUMBER_MEMBERS'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+            <th (click)="setSelectedSort('STATUS')">
+              <div class="d-flex align-items-center">
+                Status 
+                <i *ngIf="sortedColumn === 'STATUS'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+            <th (click)="setSelectedSort('MORATORIUM')">
+              <div class="d-flex align-items-center">
+                Moratorium 
+                <i *ngIf="sortedColumn === 'MORATORIUM'" class="sorted-selected material-icons-round ">
+                  {{sortDirection === 1 ? 'expand_more': 'expand_less'}}
+                </i>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="table-row-text">
+          <tr *ngFor="let p of currentPage">
+            <td>
+              <a [routerLink]="['/projects/details', p.id]">{{ p.name }}</a>
+            </td>
+            <td>{{ p.projectManager.name }}</td>
+            <td>{{ p.dateCreated | date: 'dd MMM yyyy' }}</td>
+            <td>
+              <a [routerLink]="" (click)="goToProject(p)">{{ p.numberOfRecords }}</a>
+            </td>
+            <td>{{ p.numberOfMembers }}</td>
+            <td>
+              <span
+                [ngClass]="{
+                  'status-green': p.status === 1,
+                  'status-grey': p.status === 2,
+                  'status-orange': p.status === 3
+                }"
+                >{{ toStatusName(p.status) }}
+              </span>
+            </td>
+            <td>
+              <span
+                [tooltip]="p.moratoriumExpiry | date: 'dd MMM yyyy'"
+                containerClass="white-tooltip"
+                *ngIf="p.moratorium"
+                class="small-hidden-icon "
+                ><i class="material-icons-round">visibility_off</i></span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-4 d-flex justify-content-between">
+      <div class="pagination-text ml-4">
+        <label for="limit" class="pr-2">RESULTS PER PAGE</label>
+        <select id="limit" name="limitPerPage" [(ngModel)]="limitPerPage" (change)="limitChanged()" class="pagination-input">
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="pagination-main">
+        <pagination
+          [totalItems]="selectedProjects.length"
+          [maxSize]="8"
+          [rotate]="false"
+          [itemsPerPage]="limitPerPage"
+          [(ngModel)]="selectedPageNumber"
+          (pageChanged)="pageChanged($event)"
+          previousText="&lsaquo;"
+          nextText="&rsaquo;"
+        ></pagination>
+      </div>
+      <div class="pagination-text mr-4">
+        <label class="pr-2">JUMP TO PAGE</label>
+        <input
+          id="jump"
+          name="jump"
+          [(ngModel)]="desiredPageNumber"
+          (blur)="jumpToPage()"
+          (keyup.enter)="jumpToPage()"
+          class="pagination-input"
+        />
+      </div>
+    </div>
+  </div>
+</div>

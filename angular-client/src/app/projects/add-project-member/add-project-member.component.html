@@ -1,0 +1,44 @@
+<form (ngSubmit)="addPerson()" autocomplete="off">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">ADD PERSON TO PROJECT</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="project-search-box p-3 w-100 d-flex flex-column">
+    <label class="input-caption">FIND PERSON</label>
+    <div class="d-flex flex-row">
+      <input
+        [readOnly]="isPersonSelected"
+        class="flexible-input"
+        (typeaheadOnSelect)="selectPerson($event)"
+        [typeahead]="people"
+        name="personName"
+        typeaheadOptionField="display"
+        [formControl]="personNameControl"
+      />
+      <button *ngIf="isPersonSelected" class="btn btn-link reset-button" type="button" (click)="clearSelection()">
+        <i class="material-icons-round ">close</i>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="isPersonSelected; else placeHolder" class="d-flex flex-column align-items-center">
+    <h4 class="text-bold-18 my-3">Banding certificate for '{{ personNameControl.value }}'</h4>
+    <app-banding-certificate class="w-100" [personId]="selectedPersonId"></app-banding-certificate>
+  </div>
+
+  <div class="d-flex flex-row justify-content-between">
+    <button class="md-clear-button m-3" type="button" (click)="modalRef.hide()">Cancel</button>
+    <button *ngIf="isPersonSelected" class="md-blue-button m-3" [disabled]="loading" type="submit">Add person</button>
+  </div>
+  <div *ngIf="submissionError.hasError">
+    <span class="m-1 p-1 error-inline" *ngFor="let message of errorMessages">
+      {{ message }}
+    </span>
+  </div>
+</form>
+<ng-template #placeHolder>
+  <div class="d-flex flex-row justify-content-center align-items-center certificate-placeholder">
+    <p class="big-table-text">Bander’s certificate will show here</p>
+  </div>
+</ng-template>

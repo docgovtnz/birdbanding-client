@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    SLS_DEBUG: "*"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+  build:
+    commands:
+      - ENV_LOWER=`echo "$DEPLOYMENT_ENVIRONMENT" | tr '[:upper:]' '[:lower:]'`
+      - GIT_TAG="${CODEBUILD_WEBHOOK_HEAD_REF:-not tagged}"
+      - STARTING_DIR=`pwd`
+      - echo "Building the $SERVICE_NAME client application for the $DEPLOYMENT_ENVIRONMENT environment, version is $GIT_TAG ..."
+      - cd angular-client && npm install && npm run build-prod && cd ..
+      - echo "Copying environment specific properties for environment $ENV_LOWER"
+      - cp "./angular-client/etc/env/environment-$ENV_LOWER.properties" ./angular-client/dist/angular-client/environment.properties
+      - BUILD_ENV="build.env = $ENV_LOWER"
+      - BUILD_VERSION="build.version = $GIT_TAG"
+      - echo "Adding the environment $BUILD_ENV and current git-tag $BUILD_VERSION to the environment.properties"
+      - echo "$BUILD_ENV" >> ./angular-client/dist/angular-client/environment.properties
+      - cat "./angular-client/etc/version" >> ./angular-client/dist/angular-client/environment.properties
+  post_build:
+    commands:
+      - echo "Deploying the $SERVICE_NAME client application to the $DEPLOYMENT_ENVIRONMENT environment......"
+      - TGT_SPA_BUCKET_PARAM_NAME="/$ENV_LOWER/$SERVICE_NAME/client-app/bucket/name"
+      - TGT_SPA_BUCKET=`aws ssm get-parameter --name $TGT_SPA_BUCKET_PARAM_NAME | python3 -c "import sys, json; print(json.load(sys.stdin)['Parameter']['Value'])"`
+      - echo "Syncing build output to $TGT_SPA_BUCKET (note --delete flag used to ensure stale artifacts are removed)"
+      - aws s3 sync "./angular-client/dist/angular-client/" "s3://$TGT_SPA_BUCKET/" --delete

@@ -1,0 +1,14 @@
+<div class="card" *ngIf="showContent()">
+  <div class="card-header">
+    <div class="d-flex justify-content-between">
+      <div class="card-title">{{ content.link_label }}</div>
+      <button class="btn btn-link align-items-center m-0 p-0" (click)="onEdit()" *ngIf="isAdmin()">
+        <i class="material-icons-round small">edit</i> Edit
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body" *ngIf="content">
+    <app-content-view [content]="content"></app-content-view>
+  </div>
+</div>

@@ -1,0 +1,185 @@
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{ isAdd() ? 'ADD NEW PERSON' : 'EDIT PROFILE' }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex flex-column">
+      <div class="d-flex justify-content-between">
+        <div class="card-column">
+          <div class="card-row-data">
+            <div>
+              <label class="input-caption" for="firstName"> <span>FIRST NAME</span><span class="required">*</span> </label>
+              <input
+                class="edit-input-box form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+                type="text"
+                id="firstName"
+                name="firstName"
+                required
+                tabindex="1"
+                formControlName="firstName"
+              />
+              <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                <div *ngIf="f.firstName.errors.required" class="error-text">First name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-row-data">
+            <div>
+              <label class="input-caption" for="email"> <span>EMAIL</span><span class="required">*</span> </label>
+              <input
+                class="edit-input-box form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                type="text"
+                id="email"
+                name="email"
+                required
+                tabindex="3"
+                formControlName="email"
+              />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required" class="error-text">Email is required</div>
+                <div *ngIf="f.email.errors.duplicate" class="error-text">This email is taken, try another</div>
+                <div *ngIf="f.email.errors.invalid_format" class="error-text">Invalid email format</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div>
+              <label class="input-caption" for="company">
+                <span>COMPANY</span>
+              </label>
+              <input class="edit-input-box form-control" type="text" id="company" name="company" tabindex="5" formControlName="company" />
+            </div>
+          </div>
+        </div>
+        <div class="card-column">
+          <div class="card-row-data">
+            <div>
+              <label class="input-caption" for="lastName"> <span>LAST NAME</span><span class="required">*</span> </label>
+              <input
+                class="edit-input-box form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+                type="text"
+                id="lastName"
+                name="lastName"
+                required
+                tabindex="2"
+                formControlName="lastName"
+              />
+              <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="f.lastName.errors.required" class="error-text">Last name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-row-data">
+            <div>
+              <label class="input-caption" for="username"> <span>USERNAME</span><span class="required">*</span> </label>
+              <input
+                class="edit-input-box form-control"
+                [readonly]="!isAdd()"
+                [ngClass]="{ 'is-invalid': submitted && f.userName.errors }"
+                type="text"
+                id="username"
+                name="username"
+                required
+                tabindex="4"
+                formControlName="userName"
+              />
+              <div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
+                <div *ngIf="f.userName.errors.required" class="error-text">Username is required</div>
+                <div *ngIf="f.userName.errors.duplicate" class="error-text">This user name is taken, try another</div>
+                <div *ngIf="f.userName.errors.invalid_format" class="error-text">Invalid user name</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div>
+              <label class="input-caption" for="phone">
+                <span>CONTACT PHONE NUMBER</span>
+              </label>
+              <input
+                class="edit-input-box form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.phone.errors }"
+                type="text"
+                id="phone"
+                name="phone"
+                tabindex="6"
+                formControlName="phone"
+              />
+              <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                <div *ngIf="f.phone.errors.invalid_format" class="error-text">Format is: +nnn and at least 5 numbers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-row-data mr-3 ml-3">
+        <div>
+          <label class="input-caption" for="address">
+            <span>ADDRESS</span>
+          </label>
+          <input class="edit-input-box form-control" type="text" id="address" name="address" tabindex="7" formControlName="address" />
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div *ngIf="isAdmin()" class="card-column">
+          <div class="card-row-data">
+            <div>
+              <label class="input-caption" for="banderId">
+                <span>BANDER ID #</span>
+              </label>
+              <input
+                class="edit-input-box form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.banderId.errors }"
+                type="text"
+                id="banderId"
+                name="banderId"
+                tabindex="8"
+                formControlName="banderId"
+              />
+              <div *ngIf="submitted && f.banderId.errors" class="invalid-feedback">
+                <div *ngIf="f.banderId.errors.duplicate" class="error-text">This bander number is taken, try another</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-column">
+          <div class="card-row-data">
+            <div>
+              <label class="input-caption" for="nznbb">
+                <span>CONTACTABLE THROUGH NZNBBS</span>
+              </label>
+              <div class="custom-checkbox">
+                <input
+                  class="edit-check-box form-control"
+                  style="width: auto"
+                  type="checkbox"
+                  id="nznbb"
+                  name="nznbb"
+                  tabindex="9"
+                  formControlName="nznbb"
+                />
+                <label class="input-caption" for="nznbb">Enable contact</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isAdd()">
+      <span class="input-text ml-3">
+        This person will receive an email once you have selected “Add”. Check all details are correct.
+      </span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="card-button ml-3 mb-3" tabindex="10" (click)="modalRef.hide()">Cancel</button>
+    <button type="submit" tabindex="11" [disabled]="submitting" [ngClass]="{ 'disabled-button': submitting }" class="blue-button mr-3 mb-3">
+      {{ isAdd() ? 'Add' : 'Update' }}
+    </button>
+  </div>
+</form>

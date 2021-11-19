@@ -1,0 +1,20 @@
+@import '../../../palate.scss';
+
+.contact-column {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  margin-bottom: 1rem;
+}
+
+.heading {
+  font-size: 35px;
+  font-weight: bold;
+  color: $TEXT;
+  margin-bottom: 2rem;
+}
+
+.card-heading {
+  color: $TEXT;
+  margin-bottom: 0;
+}

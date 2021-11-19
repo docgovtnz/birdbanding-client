@@ -1,0 +1,11 @@
+@import 'src/palate';
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}
+
+.warning-inline {
+  font-size: 15px;
+  color: $ERROR_BACKGROUND;
+}

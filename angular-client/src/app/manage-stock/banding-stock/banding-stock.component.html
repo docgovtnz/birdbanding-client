@@ -1,0 +1,194 @@
+<div *ngIf="loaded; else loading" class="m-5">
+  <h1 class="page-heading mb-4">Stock Summary</h1>
+
+  <div class="d-flex justify-content-between">
+    <div class="d-flex flex-column half-screen-column">
+      <div class="card">
+        <div class="card-body-table pb-4">
+          <div class="card-heading card-table-header d-flex justify-content-between align-items-center mb-0">
+            <div style="width: 40%;">Current band stock</div>
+            <div *ngIf="person.isAdmin" class="normal-input mr-4">
+              <label class="input-caption" for="search"><b>FOR BANDER</b></label>
+              <div class="d-flex flex-row">
+                <input
+                  id="search"
+                  [(ngModel)]="selectedBander"
+                  [typeahead]="people"
+                  typeaheadOptionField="display"
+                  autocomplete="off"
+                  (typeaheadOnSelect)="onSelectBander($event.item)"
+                  [typeaheadLatinize]="true"
+                  placeholder="Choose person..."
+                  class="form-control input-flex"
+                />
+                <button *ngIf="selectedBander" class="btn btn-link reset-button" type="button" (click)="clearBanderSearch()">
+                  <i class="material-icons-round">close</i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center table-header">
+            <div class="flex-table-row">Band prefix</div>
+            <div class="flex-table-row">No. of bands</div>
+            <div class="flex-table-row">Last band #</div>
+            <div class="flex-table-row-edit"></div>
+          </div>
+          <div *ngFor="let band of bands; index as i">
+            <div *ngIf="band.lastBandNo !== '-'" class="d-flex justify-content-between align-items-center table-row on-hover">
+              <div class="flex-table-row mt-3 mb-3">
+                <span class="text-regular-17">{{ band.bandPrefix }}</span>
+              </div>
+              <div class="flex-table-row mt-3 mb-3">
+                <span class="text-regular-17">{{ band.noOfBands }}</span>
+              </div>
+              <div class="flex-table-row mt-3 mb-3">
+                <span class="text-regular-17">{{ band.lastBandNo }}</span>
+              </div>
+              <div *ngIf="!selectedBander && person.isAdmin" class="flex-table-row-edit">
+                <div class="pointer" (click)="toggleEditMode(i)">
+                  <div class="hiddenDiv" [class.inEditMode]="band.isBandEdit">
+                    <span class="text-blue-regular-17 mr-2">Edit</span>
+                    <i class="material-icons-round text-blue-regular-17">edit</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form *ngIf="band.isBandEdit" [formGroup]="bandForm" (ngSubmit)="onBandSave()" class="band-edit" autocomplete="off">
+              <div class="mb-3"><b>Add band stock</b></div>
+              <div class="d-flex justify-content-end">
+                <div class="d-flex flex-column input-div">
+                  <div>
+                    <label class="input-caption" for="firstShort">FIRST SHORT NUMBER</label>
+                  </div>
+                  <div>
+                    <input class="edit-input-box form-control" id="firstShort" formControlName="firstShortNo" />
+                  </div>
+                </div>
+                <div class="pl-3 pr-3 pt-4"><img src="../../../assets/icons/arrows.svg" /></div>
+                <div class="d-flex flex-column input-div">
+                  <div>
+                    <label class="input-caption" for="lastShort">LAST SHORT NUMBER</label>
+                  </div>
+                  <div>
+                    <input class="edit-input-box form-control" id="lastShort" formControlName="lastShortNo" />
+                  </div>
+                </div>
+                <div class="d-flex flex-column new-total-div">
+                  <div>
+                    <label class="input-caption" for="newTotal">NEW TOTAL</label>
+                  </div>
+                  <div class="new-total">
+                    <span id="newTotal"
+                      ><b>{{ getNewTotal() }}</b></span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-4">
+                <a class="text-regular-us-16 pointer" tabindex="10" (click)="setEditMode(i, false)">Cancel</a>
+                <button
+                  type="submit"
+                  tabindex="11"
+                  [disabled]="bandSaving"
+                  [ngClass]="{ 'disabled-button': bandSaving }"
+                  class="blue-button cert-button"
+                >
+                  Update stock
+                </button>
+              </div>
+              <div *ngFor="let error of updateStockErrors" class="d-flex flex-column justify-content-center align-items-end mt-3">
+                <span class="error-inline"> {{ error.message }}</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column half-screen-column">
+      <div class="card">
+        <div class="card-body-table">
+          <div class="d-flex justify-content-between pr-4 pl-4">
+            <div class="card-heading">Band transfer activity</div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center table-header">
+            <div class="flex-table-row-20">Transfer from</div>
+            <div class="flex-table-row-20">Amount</div>
+            <div class="flex-table-row-edit"></div>
+            <div class="flex-table-row-20">Transfer to</div>
+            <div class="flex-table-row-edit"></div>
+          </div>
+          <div *ngFor="let tfr of transfers.transfers; index as i">
+            <div class="d-flex justify-content-between align-items-center table-row on-hover">
+              <div class="flex-table-row-20 mt-3 mb-3">
+                <div>
+                  <a routerLink="/people-view/{{ tfr.transferFromUserId }}" aria-disabled="true" routerLinkActive="active">{{
+                    tfr.transferFromUserName
+                  }}</a>
+                </div>
+                <div class="text-regular-11">
+                  <span [ngClass]="getBallColourClass(tfr.transferFromMaxCert)" class="pl-3 mr-2"> </span>
+                  <span class="text-regular-15">{{ tfr.transferFromMaxCert }} bander</span>
+                </div>
+              </div>
+              <div class="flex-table-row-20 mt-3 mb-3">
+                <div class="d-flex flex-column">
+                  <div class="text-regular-15">{{ tfr.amount }} bands</div>
+                  <div class="text-regular-13">{{ tfr.transferDate | date: 'dd MMM yyyy @ HH:mm' }}</div>
+                </div>
+              </div>
+              <div class="flex-table-row-edit mt-3 mb-3">
+                <i class="material-icons-round green-arrow">arrow_forward</i>
+              </div>
+              <div class="flex-table-row-20 mt-3 mb-3">
+                <div>
+                  <a routerLink="/people-view/{{ tfr.transferToUserId }}" aria-disabled="true" routerLinkActive="active">{{
+                    tfr.transferToUserName
+                  }}</a>
+                </div>
+                <div class="text-regular-11">
+                  <span [ngClass]="getBallColourClass(tfr.transferToMaxCert)" class="pl-3 mr-2"> </span>
+                  <span class="text-regular-15">{{ tfr.transferToMaxCert }} bander</span>
+                </div>
+              </div>
+              <div class="flex-table-row-edit">
+                <div class="pointer" (click)="toggleViewMode(i)">
+                  <div class="hiddenDiv" [class.inViewMode]="tfr.isTransferView">
+                    <span class="text-blue-regular-17 mr-2">View</span>
+                    <i *ngIf="tfr.isTransferView" class="material-icons-round text-blue-regular-24">expand_less</i>
+                    <i *ngIf="!tfr.isTransferView" class="material-icons-round text-blue-regular-24">expand_more</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="tfr.isTransferView" class="band-edit">
+              <div *ngFor="let tfrBands of tfr.transferred" class="d-flex justify-content-between align-items-center nested-table-row">
+                <div>
+                  <span>{{ getFormattedRange(tfrBands) }}</span>
+                </div>
+                <div>
+                  <span>{{ tfrBands.amount }} </span>
+                  <span *ngIf="tfrBands.amount > 1">bands</span>
+                  <span *ngIf="tfrBands.amount <= 1">band</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end mt-3 mb-3">
+                <div>
+                  <b>Total bands: {{ tfr.amount }} bands</b>
+                </div>
+              </div>
+              <div>
+                <a class="text-regular-us-16 pointer" tabindex="10" (click)="setViewMode(i, false)">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading-spinner loadingText="Loading data..."></app-loading-spinner>
+</ng-template>

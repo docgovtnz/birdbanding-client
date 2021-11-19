@@ -1,0 +1,7 @@
+@import "src/palate";
+@import "src/text-styles";
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}

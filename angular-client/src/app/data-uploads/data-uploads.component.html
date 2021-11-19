@@ -1,0 +1,19 @@
+<div id="uploads-top-bar" class="top-bar">
+  <div class="d-flex flex-row h-100">
+    <a
+      class="d-flex ml-5 align-items-center search-nav"
+      routerLinkActive="active"
+      routerLink="/data-uploads"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ><img src="assets/icons/green-bird-icon.svg" class="mr-2" /><span>Add Record</span>
+    </a>
+    <a
+      class="d-flex ml-5 align-items-center search-nav"
+      routerLinkActive="active"
+      routerLink="/data-uploads/upload-spreadsheet"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ><i class="material-icons-round pr-2">upload</i><span>Upload spreadsheet</span>
+    </a>
+  </div>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,399 @@
+<div class="alert-div">
+  <div *ngFor="let alert of alerts">
+    <alert type="md-color" [dismissible]="dismissible" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i class="material-icons-round alert-ok">check_circle_outline</i>
+      <span>{{ alert.msg }}</span>
+    </alert>
+  </div>
+</div>
+<div class="d-flex flex-column mx-5 my-4">
+  <div *ngIf="isAdd" class="row created-card mx-0 p-3 align-items-center mb-3">
+    <div class="col-1">
+      <i class="material-icons-round create-icon">check_circle_outline</i>
+    </div>
+    <div class="col-9">
+      <h4 class="text-bold-20">Record created</h4>
+      <p class="text-regular-17">
+        Your record was added to the database successfully. You can quickly add another record by hitting duplicate.
+      </p>
+    </div>
+    <div class="col-2">
+      <button class="flex-clear-button" (click)="duplicateEvent()">Duplicate this record</button>
+    </div>
+  </div>
+  <div class="row mb-4 ml-0">
+    <div id="back" (click)="goBack()" class="col-12 col-md-2 back-button mr-4 align-items-center d-flex">
+      <i class="material-icons-round feedback-icon mr-1">arrow_back</i><span>Back</span>
+    </div>
+    <div class="col-12  col-md-3 border-left">
+      <label class="input-caption">
+         FRIENDLY NAME
+      </label>
+      <div class="d-flex flex-row align-items-center">
+        <h1 [tooltip]="eventDetails.birdDisplayName" containerClass="white-tooltip" class="text-bold-34 pr-3 ellipsis">
+          {{ eventDetails.birdDisplayName | uppercase }}
+        </h1>
+      </div>
+    </div>
+    <div class="col-12 col-md-2 d-flex align-items-center justify-content-start">
+      <a *ngIf="eventDetails.hasBird" [routerLink]="['/view-data', 'bird', eventDetails.birdId]">
+        <svg-icon class="point" src="assets/icons/bird-icon.svg"></svg-icon>
+        <span>View bird</span>
+      </a>
+    </div>
+    <div class="col-12 col-md-2">
+      <label class="input-caption">
+        SPECIES
+      </label>
+      <div class="text-regular-17">
+        {{ eventDetails.commonName }}
+      </div>
+    </div>
+    <div class="col-12  col-md-2">
+      <label class="input-caption">
+        SCIENTIFIC
+      </label>
+      <div class="text-regular-17">
+        <i>{{ eventDetails.scientificName }}</i>
+      </div>
+    </div>
+  </div>
+  <div class="data-block">
+    <div class="row">
+      <div class="d-flex row w-100 justify-content-between m-3 py-3 bottom-line">
+        <div class="d-flex pl-3 col-5 flex-column">
+          <label class="input-caption">
+            EVENT
+          </label>
+          <h2 class="text-bold-28">{{ eventDetails.eventType | titlecase }} on {{ eventDetails.dateOfEvent | date: 'dd MMM yyyy' }}</h2>
+        </div>
+        <div class="d-flex align-items-center row justify-content-end col-6">
+          <div class="col-4">
+            <button *ngIf="isDeletor" (click)="deleteEvent()" class="flex-red-button">
+              Delete this record
+            </button>
+          </div>
+          <div class="col-4">
+            <button
+              (click)="duplicateEvent()"
+              *ngIf="isEditor && !isAdd"
+              class="flex-clear-button"
+            >
+              Duplicate this record
+            </button>
+          </div>
+          <div class="col-3">
+            <button
+              *ngIf="isEditor"
+              class="flex-blue-button"
+              [routerLink]="['/data-uploads', 'edit-record', eventDetails.eventId]"
+            >
+              Edit event
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="banding-event" class="row my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">Banding event</h5>
+      </div>
+      <div class="col-10">
+        <div class="row">
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                BANDING SCHEME
+              </label>
+              <span class="text-regular-20">{{ eventDetails.bandScheme | uppercase }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                WILD/CAPTIVE
+              </label>
+              <span class="text-regular-20">{{ eventDetails.birdSituation }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                CONDITION
+              </label>
+              <span class="text-regular-20">{{ birdCharacteristics.outConditionCode }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                STATUS CODE
+              </label>
+              <span class="text-regular-20">{{ birdCharacteristics.outStatusCode }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                CAPTURE CODE
+              </label>
+              <span class="text-regular-20">{{ eventDetails.captureType }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                EVENT TYPE
+              </label>
+              <span class="text-regular-20">{{ eventDetails.eventType }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                REGISTERED PROJECT
+              </label>
+              <span class="text-regular-20">{{ eventDetails.projectName }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                AGE
+              </label>
+              <span class="text-regular-20">{{ birdCharacteristics?.age | uppercase }}</span>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                SEX
+              </label>
+              <span class="text-regular-20">{{ birdCharacteristics?.sex | uppercase }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="marking-configuration" class="row pt-5 my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">Marking configuration</h5>
+      </div>
+      <div class="col-10">
+        <table class="table">
+          <tr>
+            <th>Leg</th>
+            <th>Banding position</th>
+            <th>Banding type</th>
+            <th>Band form</th>
+            <th>Colour</th>
+            <th>Text colour</th>
+            <th>Number/Letter ID</th>
+          </tr>
+          <tr *ngFor="let b of eventDetails.bandConfiguration">
+            <td>{{ b.leg }}</td>
+            <td>{{ b.bandingPosition }}</td>
+            <td>{{ b.bandType }}</td>
+            <td>{{ b.markForm }}</td>
+            <td>{{ b.colour }}</td>
+            <td>{{ b.textColour }}</td>
+            <td [tooltip]="b.bandId" containerClass="white-tooltip">{{ b.bandId | uppercase | truncate: [15, '...'] }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="bird-detail" class="row pt-5 my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">Bird details</h5>
+      </div>
+      <div class="col-10 d-flex flex-wrap detail-row ">
+        <div class="status-detail" *ngIf="birdCharacteristics.statusDetails !== ''">
+          <label class="input-caption">STATUS DETAIL </label>
+          <div>
+            <ul>
+              <ng-container *ngIf="birdCharacteristics.statusDetails === '-' else status">
+                -
+              </ng-container>
+              <ng-template #status>
+                <li *ngFor="let sd of birdCharacteristics.statusDetails">{{sd}}</li>
+              </ng-template>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <label class="input-caption">MASS (gm)
+          </label>
+          <div>{{formatCharValue('mass')}}</div>
+        </div>
+        <div>
+          <label class="input-caption">WING LENGTH (mm)
+          </label>
+          <div>{{formatCharValue('winglength')}}</div>
+        </div>
+        <div>
+          <label class="input-caption">BILL LENGTH (mm)
+          </label>
+          <div>{{formatCharValue('billlength')}}</div>
+        </div>
+        <div>
+          <label class="input-caption">BODY CONDITION
+          </label>
+          <div>{{formatCharValue('bodycondition')}}</div>
+        </div>
+        <div>
+          <label class="input-caption">MOULT CONDITION
+          </label>
+            {{formatMoultScore()}}<br />
+            {{formatCharValue('moultnotes')}}
+        </div>
+
+      </div>
+    </div>
+
+    <div id="other-detail" class="row pt-5 my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">Other details</h5>
+      </div>
+      <div class="col-10 d-flex flex-wrap detail-row">
+        <ng-template ngFor let-a [ngForOf]="eventDetails.characteristicValues">
+          <div *ngIf="!standAloneChars.includes(a.code)">
+            <label class="input-caption">{{ a.display }} </label>
+            <span class="characteristic-text">{{a.displayValue}}</span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+
+
+    <div id="people" class="row pt-5 my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">People involved</h5>
+      </div>
+      <div class="col-10">
+        <div class="row">
+          <div class="col-3">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                L3 (ID & NAME)
+              </label>
+              <a *ngIf="loggedInIdentity?.isAdmin" [routerLink]="['/people-view', eventDetails.provider.banderId]">
+                {{eventDetails.provider.banderDisplay}}
+              </a>
+              <span class="text-regular-20" *ngIf="!loggedInIdentity?.isAdmin">{{ eventDetails.provider.banderDisplay }}</span>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                BANDER/REPORTER (ID & NAME)
+              </label>
+              <a *ngIf="loggedInIdentity?.isAdmin" [routerLink]="['/people-view', eventDetails.reporter.banderId]">
+                {{eventDetails.reporter.banderDisplay}}
+              </a>
+              <span *ngIf="!loggedInIdentity?.isAdmin" class="text-regular-20">{{ eventDetails.reporter.banderDisplay }}</span>
+            </div>
+          </div>
+          <div *ngIf="isEditor" class="col-3">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                OTHER NAME
+              </label>
+              <span class="text-regular-20">{{ eventDetails.otherName }}</span>
+            </div>
+          </div>
+          <div *ngIf="isEditor" class="col-3">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                OTHER CONTACT
+              </label>
+              <span class="text-regular-20">{{ eventDetails.otherContact }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="comments" class="row pt-5 my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">Comments</h5>
+      </div>
+      <div class="col-10">
+        <p>{{ eventDetails.comments }}</p>
+      </div>
+    </div>
+    <div id="location" class="row pt-5 my-4 mx-3">
+      <div class="col-2">
+        <h5 class="text-bold-20">Location</h5>
+      </div>
+      <div class="col-10">
+        <div class="row">
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                EVENT LOCATION
+              </label>
+              <span class="text-regular-20 ellipsis">{{ eventDetails.region }}</span>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                LOCALITY ACCURACY
+              </label>
+              <span class="text-regular-20">{{ eventDetails.locationAccuracy }}</span>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                COORDINATE SYSTEM
+              </label>
+              <span class="text-regular-20">{{ eventDetails.coordinateSystem | uppercase }}</span>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                LAT
+              </label>
+              <span class="text-regular-20">{{ eventDetails.latitude ? (eventDetails.latitude | number: '2.4-4') : '-' }}</span>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                LONG
+              </label>
+              <span class="text-regular-20">{{ eventDetails.longitude ? (eventDetails.longitude | number: '2.4-4') : '-' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <app-map *ngIf="events" [events]="events"></app-map>
+    </div>
+    <div id="metadata" class="row my-4 mx-3" *ngIf="eventDetails.dateUpdated">
+      <div class="col-2">
+        <h5 class="text-bold-20">Metadata</h5>
+      </div>
+      <div class="col-10">
+        <div class="row">
+          <div class="col-4">
+            <div class="d-flex flex-column">
+              <label class="input-caption">
+                LAST UPDATED
+              </label>
+              <span class="text-regular-20">{{ eventDetails.dateUpdated | date:'dd MMM yyyy @ HH:mm' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+@import 'src/app/sightings/sightings-styles';
+@import 'src/palate';
+
+.head-two {
+  @extend %head-two-shared;
+}
+
+.background {
+  @extend %sightings-background-shared;
+}
+
+.head-four {
+  @extend %head-4-shared;
+}
+
+.head-five {
+  @extend %head-5-shared;
+}
+
+.head {
+  @extend %head;
+}
+
+.question {
+  @extend %question;
+}
+
+.flex-input {
+  @extend %flexible-input;
+}
+
+.big-green-icon {
+  color: $LIME_GREEN;
+  font-size: 55px;
+}
+
+.return-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: $ACCENT_BLUE;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.left-blue-side-box {
+  border-left: solid $ACCENT_BLUE 8px;
+  border-radius: 4px;
+  border-right: $BORDER_GREY solid 1px;
+  border-top: $BORDER_GREY solid 1px;
+  border-bottom: $BORDER_GREY solid 1px;
+  width: 95%;
+  @media (min-width: $MEDIUM_SCREEN) {
+    width: 75%;
+  }
+}
+
+

@@ -1,0 +1,118 @@
+<div>
+  <div class="row mb-3">
+    <div class="col-3">
+      <button (click)="showMapPicker()" class="md-blue-button  d-flex align-items-center">
+        <span class="material-icons-round pr-3">
+          place
+        </span>
+        Find on a map
+      </button>
+    </div>
+    <p class="col-7">
+      Use the map to quickly pin point a sighting location to populate the coordinates, or enter the coordinates and check where these plot
+      on the map
+    </p>
+  </div>
+  <div class="row" [formGroup]="locationForm">
+    <div class="col-6">
+      <h4 class="text-bold-18">General location</h4>
+      <div class="col-6 pl-0 mt-2">
+        <label for="region" class="input-caption">REGION<sup class="required-star">*</sup></label>
+        <app-wrapped-typeahead
+          [selectedItem]="locationForm.controls.region"
+          [optionList]="uploadEnums.regions"
+          optionField="display"
+          id="region"
+          placeholder="Start typing a Region name…"
+        ></app-wrapped-typeahead>
+        <div *ngIf="f.region.invalid && (f.region.dirty || f.region.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.region.errors.required">
+            Region is required
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="locationGeneral" class="input-caption">LOCALITY GENERAL</label>
+        <textarea id="locationGeneral" name="locationGeneral" formControlName="locationGeneral" class="input-flex-100"></textarea>
+        <div *ngIf="f.locationGeneral.invalid && (f.locationGeneral.dirty || f.locationGeneral.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.locationGeneral.errors.maxlength">
+            Maximum length is {{ f.locationGeneral.errors.maxlength.requiredLength }}
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="locationDescription" class="input-caption">LOCALITY DESCRIPTION<sup class="required-star">*</sup></label>
+        <textarea
+          id="locationDescription"
+          name="locationDescription"
+          formControlName="locationDescription"
+          class="input-flex-100"
+        ></textarea>
+        <div *ngIf="f.locationDescription.invalid && (f.locationDescription.dirty || f.locationDescription.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.locationDescription.errors.maxlength">
+            Maximum length is {{ f.locationDescription.errors.maxlength.requiredLength }}
+          </div>
+          <div class="error-inline" *ngIf="f.locationDescription.errors.required">
+            Location description is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <h4 class="text-bold-18">Coordinates (decimal degrees)</h4>
+      <div class="d-flex flex-column text-regular-14">
+        <span>Number format only, no symbols or spaces</span>
+        <span>e.g. -43.451; 172.695</span>
+        <span>South (latitude) is Negative</span>
+        <span>West (longitude) is Negative</span>
+      </div>
+      <div class="mt-2">
+        <label for="latitude" class="input-caption">LATITUDE<sup class="required-star">*</sup></label>
+        <input id="latitude" autocomplete="off" data-lpignore="true" name="latitude" formControlName="latitude" class="input-flex-100" />
+        <div *ngIf="f.latitude.invalid && (f.latitude.dirty || f.latitude.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.latitude.errors.required">
+            Latitude is required
+          </div>
+          <div class="error-inline" *ngIf="f.latitude.errors.pattern">
+            Must be a valid latitude eg. -43.5908
+          </div>
+          <div class="error-inline" *ngIf="f.latitude.errors.min">Minimum value is {{ f.latitude.errors.min.min }}</div>
+          <div class="error-inline" *ngIf="f.latitude.errors.max">Maximum value is {{ f.latitude.errors.max.max }}</div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="longitude" class="input-caption">LONGITUDE<sup class="required-star">*</sup></label>
+        <input id="longitude" autocomplete="off" data-lpignore="true" name="latitude" formControlName="longitude" class="input-flex-100" />
+        <div *ngIf="f.longitude.invalid && (f.longitude.dirty || f.longitude.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.longitude.errors.required">
+            Longitude is required
+          </div>
+          <div class="error-inline" *ngIf="f.longitude.errors.pattern">
+            Must be a valid longitude eg. 170.1380
+          </div>
+          <div class="error-inline" *ngIf="f.longitude.errors.min">Minimum value is {{ f.longitude.errors.min.min }}</div>
+          <div class="error-inline" *ngIf="f.longitude.errors.max">Maximum value is {{ f.longitude.errors.max.max }}</div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-6">
+          <label for="coordinateSystem" class="input-caption">COORDINATE SYSTEM<sup class="required-star">*</sup></label>
+          <select id="coordinateSystem" name="coordinateSystem" formControlName="coordinateSystem" class="input-flex-100">
+            <option [ngValue]="c" *ngFor="let c of uploadEnums.coordinateSystem"> {{ c }}</option>
+          </select>
+          <div *ngIf="f.coordinateSystem.invalid && (f.coordinateSystem.dirty || f.coordinateSystem.touched)" class="p-1">
+            <div class="error-inline" *ngIf="f.coordinateSystem.errors.required">
+              Coordinate System is required
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="accuracy" class="input-caption">LOCALITY ACCURACY</label>
+          <select id="accuracy" autocomplete="off" data-lpignore="true" name="accuracy" formControlName="accuracy" class="input-flex-100">
+            <option [ngValue]="a.id" *ngFor="let a of accuracies"> {{ a.display }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

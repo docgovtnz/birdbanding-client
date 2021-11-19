@@ -1,0 +1,484 @@
+<div class="alert-div">
+  <div *ngFor="let alert of alerts">
+    <alert [type]="alert.type" [dismissible]="dismissible" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i *ngIf="alert.type === 'success'" class="material-icons-round alert-ok">check_circle_outline</i>
+      <i *ngIf="alert.type === 'warning'" class="material-icons-round alert-ok">priority_high</i>
+      <span>{{ alert.msg }}</span>
+    </alert>
+  </div>
+</div>
+<div class="child-page">
+  <div *ngIf="loadedAuth && loadedPers && loadedRef; else loading">
+    <div *ngIf="person.isAdmin; else nameOnly" class="child-header-info">
+      <div class="header-left">
+        <div id="back" class="back-button mr-4 align-items-center d-flex">
+          <div class="align-items-center d-flex" (click)="goBack()">
+            <i class="material-icons-round feedback-icon mr-1">arrow_back</i><span>Back</span>
+          </div>
+        </div>
+        <div class="d-flex flex-column divider">
+          <div>
+            <span class="min-header">MANAGE PEOPLE</span>
+          </div>
+          <div class="d-flex flex-row">
+            <h2 class="page-heading">{{ personData.firstName }} {{ personData.lastName }}</h2>
+            <span class="info-box">Bander ID - {{ personData.banderId }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-right align-items-center">
+        <div class="mr-4">
+          <span class="min-header">LAST LOGIN: </span>
+          <span *ngIf="personData.lastLogin" class="text-regular-14"
+            >{{ personData.lastLogin | date: 'dd MMMM yyyy' }} @ {{ personData.lastLogin | date: 'HH:mm' }}</span
+          >
+          <span *ngIf="!personData.lastLogin" class="text-regular-14">no previous login</span>
+        </div>
+        <div class="divider">
+          <span class="min-header">CURRENT STATUS</span>
+          <div class="btn-group" dropdown #dropdown="bs-dropdown" [isDisabled]="isInactive" [autoClose]="true">
+            <button
+              dropdownToggle
+              type="button"
+              [class.status-green]="personData.banderStatus === 'ACTIVE'"
+              [class.status-orange]="personData.banderStatus === 'SUSPENDED'"
+              [class.status-red]="personData.banderStatus === 'LOCKED'"
+              [class.status-grey]="personData.banderStatus === 'INACTIVE'"
+              class="status clear-input-format ml-3"
+            >
+              {{ personData.banderStatus }}
+              <i *ngIf="!isInactive" class="material-icons-round edit-icon">create</i>
+            </button>
+            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
+              <li *ngIf="personData.banderStatus !== 'ACTIVE'" role="menuitem" (click)="onStatusChanged('ACTIVE')">
+                <div class="d-flex dropdown-item">
+                  <div class="dropdown-circle status-green"></div>
+                  <div>ACTIVE</div>
+                </div>
+              </li>
+              <li *ngIf="personData.banderStatus !== 'SUSPENDED'" role="menuitem" (click)="onStatusChanged('SUSPENDED')">
+                <div class="d-flex dropdown-item">
+                  <div class="dropdown-circle status-orange"></div>
+                  <div>SUSPENDED</div>
+                </div>
+              </li>
+              <li *ngIf="personData.banderStatus !== 'LOCKED'" role="menuitem" (click)="onStatusChanged('LOCKED')">
+                <div class="d-flex dropdown-item">
+                  <div class="dropdown-circle status-red"></div>
+                  <div>LOCKED</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <button *ngIf="isInactive && person?.isAdmin" (click)="resendInvitation()" class="card-button mx-3">Resend invitation</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <!-- LEFT COLUMN -->
+      <div class="d-flex flex-column half-screen-column">
+        <!-- PROFILE DETAILS -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <div class="card-heading">{{ person.isAdmin ? 'Profile details' : 'Your profile' }}</div>
+              <div>
+                <button
+                  *ngIf="!person.isAdmin"
+                  [disabled]="true"
+                  [ngClass]="{ isDisabled: true }"
+                  class="d-none card-button mr-4"
+                  (click)="onResetPwd()"
+                  disabled
+                >
+                  Reset password
+                </button>
+                <button class="card-button" [disabled]="!canEdit()" [ngClass]="{ isDisabled: !canEdit() }" (click)="onProfileEdit()">
+                  Edit
+                </button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="card-column">
+                <div class="card-row-data">
+                  <div class="input-caption">USERNAME</div>
+                  <div class="card-content">{{ personData.userName ? personData.userName : ' ' }}</div>
+                </div>
+                <div class="card-row-data">
+                  <div class="input-caption">ADDRESS</div>
+                  <div class="card-content">{{ personData.address ? personData.address : ' ' }}</div>
+                </div>
+              </div>
+              <div class="card-column">
+                <div class="card-row-data">
+                  <div class="input-caption">CONTACT PHONE</div>
+                  <div class="card-content">{{ personData.phone ? personData.phone : ' ' }}</div>
+                </div>
+                <div class="card-row-data">
+                  <div class="input-caption">COMPANY NAME</div>
+                  <div class="card-content">{{ personData.company ? personData.company : ' ' }}</div>
+                </div>
+              </div>
+              <div class="card-column">
+                <div class="card-row-data">
+                  <div class="input-caption">EMAIL ADDRESS</div>
+                  <div class="card-content">{{ personData.email ? personData.email : ' ' }}</div>
+                </div>
+                <div class="card-row-data">
+                  <div class="input-caption">CONTACTABLE THROUGH NZNBBS</div>
+                  <div class="card-content">{{ personData.nznbb ? 'Yes' : 'No' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECTS  -->
+        <div class="card mb-4">
+          <div class="card-body-table">
+            <div class="d-flex justify-content-between pr-4 pl-4">
+              <div class="card-heading">Projects</div>
+            </div>
+            <table class="table">
+              <thead class="table-header-text">
+                <tr>
+                  <th scope="col" class="pl-4">Project name</th>
+                  <th scope="col" class="cert-level">{{ personData.firstName }} {{ personData.lastName }} is a Manager</th>
+                </tr>
+              </thead>
+              <tbody class="table-row-text">
+                <tr *ngFor="let prj of personData.projects; index as i">
+                  <td class="pl-4">
+                    <a [routerLink]="['/projects', 'details', prj.projectId]">{{ prj.projectName }}</a>
+                    <!-- TODO: Change to link when available -->
+                  </td>
+                  <td class="cert-level">
+                    <div *ngIf="prj.isManager" class="project-manager">
+                      <i class="material-icons-round project-manager-text">done</i>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="d-flex flex-column half-screen-column">
+        <!-- CERTIFICATES - link to DOC -->
+        <div *ngIf="!person.isAdmin && personData.certs.length === 0" class="card mb-4">
+          <div class="card-body-table">
+            <div class="card-heading pl-4 pr-4 horizontal-line">Banding certification</div>
+            <div class="d-flex pl-3 pr-3 mb-4">
+              <div class="pr-2 text-regular-17">
+                <p>
+                  DOC is responsible for the management of marking systems on wildlife, including banding. The banding certification system
+                  of the New Zealand National Bird Banding Scheme (NZNBBS) ensures that banders are competent for the species and capture
+                  methods.
+                </p>
+                <p>
+                  Banding certification is gained from an accumulation of experience over time gained under a Level 3 (expert) bander. It
+                  can’t be obtained through attending a banding course.
+                </p>
+                <a
+                  href="https://www.doc.govt.nz/our-work/bird-banding/how-to-become-a-certified-bander/"
+                  target="_blank"
+                  class="text-link-18"
+                >
+                  Learn more about getting certified
+                  <i class="material-icons-round">call_made</i>
+                </a>
+              </div>
+              <div>
+                <img src="assets/images/banding_pass.png" />
+                <span class="text-icon-15">Bird banding certificate</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CERTIFICATES - ADMIN - EDIT -->
+        <div
+          *ngIf="(loadedRef && person.isAdmin && personData.certs.length !== 0) || (!person.isAdmin && personData.certs.length !== 0)"
+          class="card mb-4"
+        >
+          <div class="card-body-table pb-0">
+            <div class="card-heading card-table-header mb-0">
+              <div *ngIf="person.isAdmin">Edit certification</div>
+              <div *ngIf="!person.isAdmin">Your certification</div>
+            </div>
+            <div *ngFor="let cert of personData.certs; index as i">
+              <form *ngIf="cert.isInEditMode" [formGroup]="certForm" (ngSubmit)="onCertSave()" class="cert-edit" autocomplete="off">
+                <div class="d-flex flex-column">
+                  <div *ngIf="isCertAdd()" class="mb-4">
+                    <span class="cert-heading">Add new certification</span>
+                  </div>
+                  <div *ngIf="!isCertAdd()" class="d-flex align-items-center mb-4">
+                    <img src="assets/icons/icon-blackbird.svg" class="mr-2" />
+                    <span class="text-regular-17">{{
+                      cert.certificationType === 'SPECIES_GROUP' ? cert.speciesGroup.name : cert.endorsement
+                    }}</span>
+                  </div>
+                  <div class="d-flex">
+                    <div *ngIf="isCertAdd()" class="card-row-data mr-4">
+                      <label class="input-caption" for="speciesOrEndorsement">
+                        <b><span>SPECIES GROUP</span><span class="required"> *</span></b>
+                      </label>
+                      <input
+                        id="speciesOrEndorsement"
+                        name="speciesOrEndorsement"
+                        required
+                        tabindex="1"
+                        autocomplete="off"
+                        formControlName="speciesOrEndorsement"
+                        [typeahead]="speciesOrEndorsement"
+                        [typeaheadLatinize]="true"
+                        placeholder="Choose bird group..."
+                        [ngClass]="{ 'is-invalid': certSaved && f.speciesGroup.errors }"
+                        (click)="resetError()"
+                        class="edit-input-box form-control"
+                      />
+                      <div *ngIf="certSaved && f.speciesGroup.errors" class="invalid-feedback">
+                        <div *ngIf="f.speciesGroup.errors.required" class="error-text">Species group is required</div>
+                      </div>
+                    </div>
+                    <div class="card-row-data mr-4">
+                      <label class="input-caption" for="level"><b>CERT. LEVEL</b></label>
+                      <select id="level" name="level" formControlName="bandingLevel" class="edit-input-box form-control">
+                        <option *ngFor="let lvl of bandingLevel" [ngValue]="lvl">{{ lvl }}</option>
+                      </select>
+                    </div>
+                    <div class="card-row-data mr-4">
+                      <label class="input-caption" for="certDate"><b>DATE OF CERT.</b></label>
+                      <input
+                        type="text"
+                        formControlName="validFrom"
+                        name="certDate"
+                        id="certDate"
+                        placeholder="Choose a date"
+                        bsDatepicker
+                        autocomplete="off"
+                        placement="left"
+                        class="edit-input-box form-control"
+                        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-dark-blue', showWeekNumbers: false }"
+                      />
+                    </div>
+                    <div class="d-flex card-row-data cert-restrict">
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="hasRestrictions"
+                        [ngModelOptions]="{ standalone: true }"
+                        id="restriction"
+                        class="edit-check-box form-control"
+                      />
+                      <label class="input-caption" for="restriction"><b>RESTRICTIONS</b></label>
+                    </div>
+                  </div>
+                  <div *ngIf="hasRestrictions" class="card-row-data mt-3">
+                    <label class="input-caption" for="restrictions">
+                      <b><span>RESTRICTIONS</span></b>
+                    </label>
+                    <input
+                      id="restrictions"
+                      name="restrictions"
+                      tabindex="4"
+                      autocomplete="off"
+                      formControlName="comment"
+                      class="edit-input-box form-control"
+                    />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                  <div class="d-flex align-items-center">
+                    <div *ngIf="!isCertAdd()" class="button" (click)="onCertRemove(i)">
+                      <i class="material-icons-round text-regular-light-22 mr-2">delete_outline</i>
+                      <a class="text-regular-us-15 right-border" tabindex="9">Remove certification</a>
+                    </div>
+                    <a class="text-regular-us-15 button" tabindex="10" (click)="onCertCancel(i)">Cancel</a>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      tabindex="11"
+                      [disabled]="certSaved"
+                      [ngClass]="{ 'disabled-button': certSaved }"
+                      class="blue-button cert-button"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="!cert.isInEditMode" class="d-flex justify-content-between align-items-center table-row">
+                <div>
+                  <img src="assets/icons/icon-blackbird.svg" class="mr-2" />
+                  <span class="text-regular-17">{{
+                    cert.certificationType === 'SPECIES_GROUP' ? cert.speciesGroup.name : cert.endorsement
+                  }}</span>
+                  <div *ngIf="cert.comment" class="restrictions">
+                    <i class="material-icons-round circle-small green mr-2">panorama_fish_eye</i>
+                    <span class="text-regular-14 ">{{ cert.comment }}</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="max-level-text">Level</span>
+                  <div
+                    *ngIf="cert.bandingLevel === 'L1'"
+                    class="lvl-banding lvl1-banding"
+                    popover="Must band under the direct supervision of a Level 3 bander, and keep a detailed training log signed by L3 certified for the species."
+                    triggers="mouseenter:mouseleave"
+                    popoverTitle="L1: Trainee"
+                  >
+                    <span class="lvl-banding-text">1<span *ngIf="cert.comment" class="lvl-banding-star">*</span></span>
+                  </div>
+                  <div
+                    *ngIf="cert.bandingLevel === 'L2'"
+                    class="lvl-banding lvl2-banding"
+                    popover="Can band independently, but still operate under a Level 3 bander in whose name the bands will be issued and who retains the responsibility for all the banding and Data."
+                    triggers="mouseenter:mouseleave"
+                    popoverTitle="L2: Intermediate, competent"
+                  >
+                    <span class="lvl-banding-text">2<span *ngIf="cert.comment" class="lvl-banding-star">*</span></span>
+                  </div>
+                  <div
+                    *ngIf="cert.bandingLevel === 'L3'"
+                    class="lvl-banding lvl3-banding"
+                    popover="Has extensive experience for the species listed and is authorised to train and supervise L1 and L2 banders. Responsibilities including signing training logs, ordering bands, submitting banding schedules, overseeing projects, and ensuring the necessary Wildlife Act Authorisation permits are in place."
+                    triggers="mouseenter:mouseleave"
+                    popoverTitle="L3: Expert, supervisor, trainer"
+                  >
+                    <span class="lvl-banding-text">3<span *ngIf="cert.comment" class="lvl-banding-star">*</span></span>
+                  </div>
+                  <div *ngIf="person.isAdmin" class="ml-3">
+                    <button
+                      class="card-button cert-button"
+                      [ngClass]="{ isDisabled: isCertInEditMode }"
+                      [disabled]="isCertInEditMode"
+                      (click)="onCertEdit(i)"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div *ngIf="person.isAdmin" class="d-flex">
+                <div class="cert-footer-left">
+                  <span class="cert-footer-text" [ngClass]="{ isDisabled: isCertInEditMode }" (click)="onAddCert()"
+                    >+ Add certification</span
+                  >
+                </div>
+                <div class="cert-footer-right">
+                  <!-- TODO: need a story for that -->
+                  <!--                  <div class="cert-footer-text" (click)="onGetCert()">-->
+                  <!--                    <i class="material-icons-round card-button-img">picture_as_pdf</i>-->
+                  <!--                    <span class="">Competency certificate</span>-->
+                  <!--                  </div>-->
+                  <!--                  <div class="cert-footer-text" (click)="onUploadCert()">-->
+                  <!--                    <i class="material-icons-round card-button-img">attach_file</i>-->
+                  <!--                    <span class="">Upload competency certificate</span>-->
+                  <!--                  </div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="person.isAdmin && personData.certs.length === 0" class="card mb-4">
+          <div class="card-body-table pb-0">
+            <div class="card-heading card-table-header mb-0">
+              <div>Edit certification</div>
+            </div>
+            <div class="d-flex flex-column align-items-center no-cert">
+              <div class="">
+                <img src="assets/images/pictogram-cert.svg" />
+              </div>
+              <div class="mt-4">
+                <span>{{ personData.firstName }} has no banding certification yet</span>
+              </div>
+              <div class="no-cert-add" (click)="onAddCert()">
+                <span>+ Add certification</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- CERTIFICATES - explained -->
+        <div *ngIf="!person.isAdmin" class="card mb-4">
+          <div class="card-body-table">
+            <div class="card-heading pl-4 pr-4 horizontal-line">Explanation of levels of NZNBBS bander certification</div>
+            <div class="ml-4 mr-4">
+              <div class="horizontal-line d-flex mb-3">
+                <div class="d-flex flex-column">
+                  <div class="text-bold-14 mb-1">LEVEL</div>
+                  <div class="lvl-banding lvl-banding-lg lvl1-banding text-white-bold-26 adjust-circle">1</div>
+                </div>
+                <div class="d-flex flex-column ml-4 mb-2">
+                  <div class="text-bold-20 mb-2">
+                    Trainee
+                  </div>
+                  <div class="text-regular-17 mb-2">
+                    Must band under the direct supervision of a Level 3 bander, and keep a detailed training log signed by L3 certified for
+                    the species.
+                  </div>
+                </div>
+              </div>
+              <div class="horizontal-line  d-flex mb-3">
+                <div class="d-flex flex-column">
+                  <div class="text-bold-14 mb-1">LEVEL</div>
+                  <div class="lvl-banding lvl-banding-lg lvl2-banding text-white-bold-26 adjust-circle">2</div>
+                </div>
+                <div class="d-flex flex-column ml-4 mb-2">
+                  <div class="text-bold-20 mb-2">
+                    Intermediate, competent
+                  </div>
+                  <div class="text-regular-17 mb-2">
+                    Can band independently, but still operate under a Level 3 bander in whose name the bands will be issued and who retains
+                    the responsibility for all the banding and Data.
+                  </div>
+                </div>
+              </div>
+              <div class=" d-flex">
+                <div class="d-flex flex-column">
+                  <div class="text-bold-14 mb-1">LEVEL</div>
+                  <div class="lvl-banding lvl-banding-lg lvl3-banding text-white-bold-26 adjust-circle">3</div>
+                </div>
+                <div class="d-flex flex-column ml-4 mb-2">
+                  <div class="text-bold-20 mb-2">
+                    Expert, supervisor, trainer
+                  </div>
+                  <div class="text-regular-17">
+                    <p>Has extensive experience for the species listed and is authorised to train and supervise L1 and L2 banders.</p>
+                    Responsibilities including signing training logs, ordering bands, submitting banding schedules, overseeing projects, and
+                    ensuring the necessary Wildlife Act Authorisation permits are in place.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="person.isAdmin" class="mt-4 d-flex">
+      <div class="ml-auto">
+        <span class="min-header">PROFILE LAST UPDATED: </span>
+        <span *ngIf="personData.lastUpdated" class="text-regular-14"
+          >{{ personData.lastUpdated | date: 'dd MMMM yyyy' }} @ {{ personData.lastUpdated | date: 'HH:mm' }}</span
+        >
+        <span *ngIf="!personData.lastUpdated" class="text-regular-14">no previous update</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading-spinner loadingText="Loading data..."></app-loading-spinner>
+</ng-template>
+
+<ng-template #nameOnly>
+  <div class="d-flex flex-row mb-4">
+    <h2 class="page-heading">{{ personData.firstName }} {{ personData.lastName }}</h2>
+    <span *ngIf="isOwnProfile" class="info-box">Bander ID - {{ personData.banderId }}</span>
+  </div>
+</ng-template>

@@ -1,0 +1,158 @@
+@import '../../../palate';
+
+.green-arrow {
+  color: $LIME_GREEN;
+}
+
+.text-regular-11 {
+  font-size: 11px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-13 {
+  font-size: 13px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-15 {
+  font-size: 15px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-regular-us-16 {
+  font-size: 15px;
+  font-weight: normal;
+  text-decoration: underline;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-17 {
+  font-size: 17px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-blue-regular-17 {
+  font-size: 17px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+}
+
+.text-blue-regular-24 {
+  font-size: 24px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+}
+
+.hiddenDiv {
+  visibility: hidden;
+  text-align: center;
+}
+
+.on-hover:hover .hiddenDiv {
+  visibility: visible;
+}
+
+.flex-table-row {
+  width: 30%;
+}
+
+.flex-table-row-20 {
+  width: 20%;
+}
+
+.flex-table-row-edit {
+  width: 10%;
+  //padding: 1rem 0 1rem 0;
+}
+
+.inEditMode {
+  visibility: visible !important;
+  background-color: $ROW_HOVER;
+  border-left: 1px solid $BORDER_GREY;
+  border-bottom: 1px solid $ROW_HOVER;
+  padding: 1rem 0;
+  margin: -1rem 0;
+}
+
+.inViewMode {
+  visibility: visible !important;
+  background-color: $ROW_HOVER;
+  border-left: 1px solid $BORDER_GREY;
+  border-bottom: 1px solid $ROW_HOVER;
+  padding: 1.5rem 0;
+  margin: -1rem 0;
+}
+
+.band-edit {
+  background-color: $ROW_HOVER;
+  padding: 1.5rem;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.input-div {
+  width: 20%;
+}
+
+//exist already in edit-person
+.edit-input-box {
+  background: #ffffff;
+  border: 1px solid #c0c5cb;
+  border-radius: 4px;
+  font-size: 16px;
+  height: 48px;
+}
+
+.new-total {
+  align-self: flex-end;
+}
+
+.new-total-div {
+  margin-left: 6rem;
+}
+
+.flex-table-row-non-edit {
+  width: 90%;
+}
+
+.table-header {
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid $BORDER_GREY;
+  font-weight: bold;
+}
+
+.on-hover:hover {
+  background-color: $ROW_HOVER;
+}
+
+.table-row {
+  padding: 0 0 0 1.5rem;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.nested-table-row {
+  padding: 1rem 0 1rem 0;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.normal-input {
+  flex: 2 1 auto;
+}
+
+.reset-button {
+  color: $TEXT;
+  margin: 0 0 0 -50px;
+  z-index: 10;
+}
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}

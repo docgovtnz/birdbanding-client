@@ -1,0 +1,341 @@
+<form [formGroup]="recordForm" autocomplete="off" class="my-5 mx-2 row">
+  <div class="col-12 col-lg-10 form-height">
+    <div [ngSwitch]="formType">
+      <h1 *ngSwitchCase="'ADD'" class="text-bold-34">Add record</h1>
+      <h1 *ngSwitchCase="'EDIT'" class="text-bold-34">Edit record</h1>
+      <h1 *ngSwitchCase="'DUPLICATE'" class="text-bold-34">Duplicate record</h1>
+    </div>
+
+    <div class="generic-search-box row">
+      <div class="col-2 ">
+        <div class="d-flex flex-row justify-content-start">
+          <span class="form-ball mr-2">1</span>
+          <h3 class="text-bold-20">Type of sighting</h3>
+        </div>
+      </div>
+      <div class="col-6" id="sighting-type-scroll">
+        <div class="filter-group" *ngIf="formType === 'ADD'; else sightingTypeDisplay">
+          <div>
+            <input id="first-marking" value="FIRST_MARKING" type="radio" name="sightingType" formControlName="sightingType" />
+            <label for="first-marking">First Marking</label>
+          </div>
+          <div>
+            <input id="remarking" value="REMARKING" type="radio" name="sightingType" formControlName="sightingType" />
+            <label for="remarking">Re-marking </label>
+          </div>
+          <div>
+            <input type="radio" value="RESIGHTING" id="resighting" name="sightingType" formControlName="sightingType" />
+            <label for="resighting">Resighting/Recovery </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="recordForm.controls.sightingType.invalid" class="grey-cover"></div>
+    <div>
+      <div class="generic-search-box row" id="banding-event-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">2</span>
+            <h3 class="text-bold-20">Banding event</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <app-banding-event [sightingType]="sightingType" [bandingEventForm]="bandingEvent"></app-banding-event>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="marking-scroll">
+        <div class="col-2">
+          <div class="row-xxl justify-content-center">
+            <span class="form-ball mr-2">3</span>
+            <h3 class="text-bold-20">Marking configurations</h3>
+          </div>
+        </div>
+        <div class="col-10 test">
+          <app-marking-configurations [markingType]="recordForm.controls.sightingType.value"
+                                      [markingForm]="marking"
+                                      [hasPrimaryMarkSet]="hasPrimaryMarkSubject"
+                                      [primaryMarkControl]="primaryMark"></app-marking-configurations>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="bird-details-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">4</span>
+            <h3 class="text-bold-20">Bird details</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <app-bird-details [uploadEnums]="uploadEnums" [birdForm]="birdDetails" [birdId]="birdId" [formType]="formType"></app-bird-details>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="additional-fields-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">5</span>
+            <h3 class="text-bold-20">Additional fields</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <app-additional-fields [additionalFieldsForm]="additionalFields" [characteristics]="characteristics" [characteristicValues]="characteristicValues" [formType]="formType"></app-additional-fields>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="status-details-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">6</span>
+            <h3 class="text-bold-20">Status details</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <app-status-details [statusDetailsForm]="statusDetailsForm" [statusDetails]="statusDetails" [statusDetailValues]="statusDetailValues" [formType]="formType"></app-status-details>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="people-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-3">7</span>
+            <h3 class="text-bold-20">People involved</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <app-people [formType]="formType" [peopleForm]="people"></app-people>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="location-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">8</span>
+            <h3 class="text-bold-20">Location</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <app-location [locationForm]="locationForm" [uploadEnums]="uploadEnums"></app-location>
+        </div>
+      </div>
+      <div class="generic-search-box row">
+        <div class="col-3">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">9</span>
+            <h3 class="text-bold-20">Additional comments</h3>
+          </div>
+        </div>
+        <div class="col-6" id="additional-comments-scroll">
+          <label for="additional-comments">Additional comments</label>
+          <p class="text-regular-17">Other details about bird, event, or marks (GPS, Transmitter, etc.)</p>
+          <textarea formControlName="additionalInformation" id="additional-comments" class="input-flex-100"></textarea>
+          <div *ngIf="additionalInformation.invalid && (additionalInformation.dirty || additionalInformation.touched)" class="p-1">
+            <div class="error-inline" *ngIf="additionalInformation.errors.maxlength">
+              Maximum length is {{ additionalInformation.errors.maxlength.requiredLength }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="generic-search-box row" id="finish-scroll">
+        <div class="col-2">
+          <div class="d-flex flex-row justify-content-start">
+            <span class="form-ball mr-2">10</span>
+            <h3 class="text-bold-20">Finish</h3>
+          </div>
+        </div>
+        <div class="col-10">
+          <div class="row">
+            <div [ngClass]="{
+                'col-9': formType === 'ADD',
+                'col-6': formType !== 'ADD'
+              }">
+              <div [ngSwitch]="formType">
+                <p *ngSwitchCase="'ADD'">Check all details are correct and hit Submit.</p>
+                <p *ngSwitchCase="'EDIT'">Check all details are correct and hit Update.</p>
+                <p *ngSwitchCase="'DUPLICATE'">Check all details are correct and hit Duplicate.</p>
+              </div>
+              <div *ngIf="formType === 'ADD'">
+                <p>You will be able to ‘duplicate' this record and create another after you submit this record.</p>
+                <p>A data refresh takes place every 30 minutes.</p>
+              </div>
+            </div>
+            <div *ngIf="formType !== 'ADD'" class="col-3">
+              <button [routerLink]="['/view-data/event', eventId]" class="flex-clear-button">Cancel</button>
+            </div>
+            <div class="col-3">
+              <div *ngIf="!submitting; else loadingButton">
+                <div [ngSwitch]="formType">
+                  <button *ngSwitchCase="'ADD'" type="button" (click)="submitForm(false)" class="flex-blue-button">Submit</button>
+                  <button *ngSwitchCase="'DUPLICATE'" type="button" (click)="submitForm(false)" class="flex-blue-button">Duplicate</button>
+                  <button *ngSwitchCase="'EDIT'" (click)="updateForm(false)" class="flex-blue-button">Update</button>
+                </div>
+                <p class="error-inline" *ngIf="hasPressedSubmit && recordForm.invalid">
+                  There are errors on the form, fix these and try to submit again
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-9 row m-0 p-0">
+              <div class="col-6">
+                <div *ngIf="validationErrors.length > 0" class="d-flex flex-column align-items-center">
+                  <h3 class="text-bold-20 d-flex flex-row align-items-center">
+                    <i class="material-icons-round red-ball mr-2">close</i>Errors (Must be fixed)
+                  </h3>
+                  <p class="error-inline break-long-words" *ngFor="let e of validationErrors">{{ e }}</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div *ngIf="validationWarnings.length > 0" class="d-flex flex-column align-items-center">
+                  <h3 class="text-bold-20 d-flex flex-row align-items-center">
+                    <i class="material-icons-round orange-circle mr-2">priority_high</i>Warnings (Can be ignored)
+                  </h3>
+                  <p class="warning-inline break-long-words" *ngFor="let e of validationWarnings">{{ e }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div [ngSwitch]="formType"
+                   class=" d-flex flex-column justify-content-center"
+                   *ngIf="!submitting && validationWarnings.length > 0 && validationErrors.length == 0">
+                <button *ngSwitchCase="'ADD'" type="button" (click)="submitForm(true)" class="flex-clear-button">
+                  Submit with warnings
+                </button>
+                <button *ngSwitchCase="'DUPLICATE'" type="button" (click)="submitForm(true)" class="flex-clear-button">
+                  Duplicate with warnings
+                </button>
+                <button *ngSwitchCase="'EDIT'" (click)="updateForm(true)" type="button" class="flex-clear-button">
+                  Update with warnings
+                </button>
+              </div>
+              <div class=" d-flex flex-column justify-content-center"
+                   *ngIf="submitting && validationWarnings.length > 0 && validationErrors.length == 0">
+                <app-loading-button></app-loading-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 d-lg-flex d-none">
+    <div class="floating-nav flex-column ">
+      <h5 class="text-bold-14">Sighting progress</h5>
+      <div class="background-line ">
+        <div class="d-flex flex-row mb-3 point" role="button" (click)="jumpToId('sighting-type-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('sightingType').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('sightingType').valid
+            }"
+                class="mr-3"><i *ngIf="recordForm.get('sightingType').valid" class="material-icons-round ">check</i></span><span>1. Type of sighting</span>
+        </div>
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('banding-event-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('bandingEvent').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('bandingEvent').valid,
+              'red-circle': recordForm.get('bandingEvent').invalid && hasPressedSubmit
+            }"
+                class="blue-circle mr-3">
+            <i *ngIf="recordForm.get('bandingEvent').valid" class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('bandingEvent').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span><span>2. Banding event</span>
+        </div>
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('marking-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('marking').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('marking').valid,
+              'red-circle': recordForm.get('marking').invalid && hasPressedSubmit
+            }"
+                class=" mr-3">
+            <i *ngIf="recordForm.get('marking').valid" class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('marking').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span><span>3. Marking configurations</span>
+        </div>
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('bird-details-scroll')">
+          <span [ngClass]="{
+              'blue-circle': (recordForm.get('birdDetails').invalid || birdId.invalid) && !hasPressedSubmit,
+              'green-circle': recordForm.get('birdDetails').valid && birdId.valid,
+              'red-circle': (recordForm.get('birdDetails').invalid || birdId.invalid) && hasPressedSubmit
+            }"
+                class="blue-circle mr-3">
+            <i *ngIf="recordForm.get('birdDetails').valid && birdId.valid" class="material-icons-round ">check</i>
+            <i *ngIf="(recordForm.get('birdDetails').invalid || birdId.invalid) && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span><span>4. Bird details</span>
+        </div>
+
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('additional-fields-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('additionalFields').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('additionalFields').valid,
+              'red-circle': recordForm.get('additionalFields').invalid && hasPressedSubmit
+            }"
+                class="blue-circle mr-3 ">
+            <i *ngIf="recordForm.get('additionalFields').valid" class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('additionalFields').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span>
+          <span>5. Additional fields</span>
+        </div>
+
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('status-details-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('statusDetails').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('statusDetails').valid,
+              'red-circle': recordForm.get('statusDetails').invalid && hasPressedSubmit
+            }"
+                class="blue-circle mr-3 ">
+            <i *ngIf="recordForm.get('statusDetails').valid" class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('statusDetails').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span>
+          <span>6. Status details</span>
+        </div>
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('people-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('people').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('people').valid,
+              'red-circle': recordForm.get('people').invalid && hasPressedSubmit
+            }"
+                class="blue-circle mr-3">
+            <i *ngIf="recordForm.get('people').valid" class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('people').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span><span>7. People involved</span>
+        </div>
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('location-scroll')">
+          <span [ngClass]="{
+              'blue-circle': recordForm.get('location').invalid && !hasPressedSubmit,
+              'green-circle': recordForm.get('location').valid,
+              'red-circle': recordForm.get('location').invalid && hasPressedSubmit
+            }"
+                class="blue-circle mr-3 ">
+            <i *ngIf="recordForm.get('location').valid" class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('location').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span>
+          <span>8. Location</span>
+        </div>
+
+        <div class="d-flex flex-row my-3 point" role="button" (click)="jumpToId('additional-comments-scroll')">
+          <span [ngClass]="{
+              'blue-circle':
+                (recordForm.get('additionalInformation').invalid && !hasPressedSubmit) || !recordForm.get('additionalInformation').touched,
+              'green-circle': recordForm.get('additionalInformation').valid && recordForm.get('additionalInformation').touched,
+              'red-circle': recordForm.get('additionalInformation').invalid && hasPressedSubmit
+            }"
+                class="blue-circle mr-3">
+            <i *ngIf="recordForm.get('additionalInformation').valid && recordForm.get('additionalInformation').touched"
+               class="material-icons-round ">check</i>
+            <i *ngIf="recordForm.get('additionalInformation').invalid && hasPressedSubmit" class="material-icons-round ">close</i>
+          </span><span>9. Additional comments</span>
+        </div>
+        <div class="d-flex flex-row mt-3 align-items-end point" role="button" (click)="jumpToId('finish-scroll')">
+          <span class="blue-circle mr-3"></span><span>10. Finish</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<ng-template #sightingTypeDisplay>
+  <div class="sightings-type-display" [ngSwitch]="sightingType.value">
+    <span *ngSwitchCase="'FIRST_MARKING'">First Marking</span>
+    <span *ngSwitchCase="'PRE_CHANGE'">Remarking - pre change</span>
+    <span *ngSwitchCase="'POST_CHANGE'">Remarking - post change</span>
+    <span *ngSwitchCase="'REMARKING'">Remarking</span>
+    <span *ngSwitchCase="'RESIGHTING'">Resighting</span>
+    <span *ngSwitchDefault>{{ sightingType.value }}</span>
+  </div>
+</ng-template>
+<ng-template #loadingButton>
+  <app-loading-button></app-loading-button>
+</ng-template>

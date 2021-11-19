@@ -1,0 +1,952 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'palate';
+@import 'fonts';
+
+body {
+  padding-top: 0;
+  background: $BACKGROUND_GREY;
+  font-family: 'Clear Sans', sans-serif;
+}
+
+a {
+  color: $ACCENT_BLUE;
+  &:hover {
+    color: $ACCENT_BLUE;
+  }
+}
+
+tr {
+  &:hover {
+    background-color: $ROW_HOVER;
+  }
+}
+
+.child-page {
+  margin: 2rem 3rem;
+}
+
+/* slight larger margin-bottom to avoid jumping elements when alert is displayed*/
+.page-heading {
+  font-size: 34px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.search-box {
+  background: $BOX_GREY;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 4px;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+}
+
+.search-text {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  color: $TEXT;
+}
+
+.input-caption {
+  font-size: 14px;
+  color: $LABEL;
+  font-weight: bolder;
+  margin-bottom: 0.25rem;
+}
+
+.input-flex {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  padding: 0 1em;
+  color: $TEXT;
+  font-size: 16px;
+  height: 48px;
+}
+
+.input-flex-100 {
+  @extend .input-flex;
+  width: 100%;
+}
+
+.input-box {
+  @extend .input-flex;
+  width: 264px;
+}
+
+.text-area {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  height: 100px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+}
+
+.result-table {
+  background: $WHITE;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 4px;
+  margin-top: 2rem;
+  padding: 1rem 0 1rem 0;
+}
+
+.table-top-text {
+  font-size: 19px;
+  color: $TEXT;
+}
+
+.table-header-text {
+  font-size: 15px;
+  font-weight: bold;
+  color: $TEXT;
+}
+
+.table-row-text {
+  font-size: 15px;
+  color: $TABLE_TEXT;
+}
+
+.table-row {
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.table td {
+  border-top: solid 1px $ROW_DIVIDER;
+}
+
+.blue-button {
+  background: $ACCENT_BLUE;
+  font-size: 16px;
+  color: $WHITE;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  padding: 10px 15px 10px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background: $ACCENT_HOVER;
+  }
+}
+
+.spinner-button {
+  width: 85px;
+  height: 48px;
+  background: $WHITE;
+  font-size: 16px;
+  color: $ACCENT_BLUE;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  padding: 10px 15px 10px 15px;
+}
+
+.red-button {
+  background: $BUTTON_RED;
+  font-size: 16px;
+  color: $WHITE;
+  border: 1px solid $BUTTON_RED;
+  border-radius: 3px;
+  padding: 10px 15px 10px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background: $HOVER_RED;
+  }
+}
+
+.scroll-button {
+  transform: translate(115%, -125%);
+
+  margin-right: 0;
+  margin-bottom: 2em;
+  background: $ACCENT_BLUE;
+  font-size: 16px;
+  color: $WHITE;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  padding: 10px;
+  float: right;
+
+  &:hover {
+    background: $ACCENT_HOVER;
+  }
+}
+
+.disabled-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+%blue-button {
+  background: $ACCENT_BLUE;
+  color: $WHITE;
+  border: 1px solid $ACCENT_BLUE;
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:hover {
+    background: $ACCENT_HOVER;
+    color: $WHITE;
+  }
+
+  &:focus {
+    background: $ACCENT_HOVER;
+  }
+
+  &:active {
+    background: $ACCENT_HOVER;
+  }
+  &:visited {
+    background: $ACCENT_HOVER;
+  }
+  &:disabled {
+    background-color: $DISABLED_GREY;
+    color: $PLACE_HOLDER;
+    cursor: default;
+    border: solid 1px $BORDER_GREY;
+    &:focus {
+      background-color: $DISABLED_GREY;
+    }
+    &:active {
+      background: $DISABLED_GREY;
+    }
+  }
+}
+
+.big-blue-button {
+  @extend %blue-button;
+  font-size: 18px;
+  min-width: 155px;
+  height: 60px;
+}
+
+.flex-blue-button {
+  @extend %blue-button;
+  font-size: 18px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-blue-button-md {
+  @extend .flex-blue-button;
+  height: 48px;
+  font-size: 16px;
+}
+
+.flex-blue-button-sm {
+  @extend .flex-blue-button;
+  height: 40px;
+  font-size: 16px;
+}
+
+.md-blue-button {
+  @extend %blue-button;
+  height: 48px;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+.clear-button {
+  background: $WHITE;
+  color: $ACCENT_BLUE;
+  cursor: pointer;
+  border: 1px solid $ACCENT_BLUE;
+  border-radius: 3px;
+
+  &:hover {
+    background: $ROW_HOVER;
+  }
+
+  &:focus {
+    background: $ROW_HOVER;
+  }
+
+  &:active {
+    background: $ROW_HOVER;
+  }
+
+  &:visited {
+    background: $ACCENT_HOVER;
+  }
+
+  &:disabled {
+    background-color: $DISABLED_GREY;
+    color: $PLACE_HOLDER;
+    border: solid 1px $BORDER_GREY;
+    cursor: default;
+  }
+}
+
+%flex-button {
+  font-size: 18px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.flex-red-button {
+  @extend %flex-button;
+  background: $DANGER_RED;
+  color: $WHITE;
+  border: 1px solid $DANGER_RED;
+  &:hover {
+    background: $BUTTON_RED;
+    color: $WHITE;
+  }
+
+  &:focus {
+    background: $BUTTON_RED;
+  }
+
+  &:active {
+    background: $BUTTON_RED;
+  }
+  &:visited {
+    background: $BUTTON_RED;
+  }
+
+  &:disabled {
+    background-color: $BUTTON_RED;
+    color: $PLACE_HOLDER;
+    border: solid 1px $BORDER_GREY;
+    cursor: default;
+  }
+}
+
+.big-clear-button {
+  @extend .clear-button;
+  font-size: 16px;
+  width: 155px;
+  height: 60px;
+}
+
+.md-red-button {
+  @extend .red-button;
+  height: 48px;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+.md-clear-button {
+  @extend .clear-button;
+  height: 48px;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+.flex-clear-button {
+  @extend .clear-button;
+  font-size: 18px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-clear-button-md {
+  @extend .flex-clear-button;
+  height: 48px;
+  font-size: 16px;
+}
+
+.flex-clear-button-sm {
+  @extend .flex-clear-button;
+  height: 40px;
+  font-size: 16px;
+}
+
+.flex-red-button-sm {
+  @extend .flex-red-button;
+  height: 40px;
+  font-size: 16px;
+}
+
+.btn-link {
+  margin: 15px;
+  color: $ACCENT_BLUE;
+  &:hover {
+    color: $ACCENT_HOVER;
+  }
+}
+
+.half-screen-column {
+  width: 49%;
+}
+
+.card-body {
+  //white-space: pre;
+  padding: 2rem 1.5rem;
+}
+
+.card-body-table {
+  padding: 2rem 0;
+}
+
+.card-heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  padding-bottom: 2rem;
+}
+
+.card-column {
+  display: flex;
+  flex-flow: column;
+  margin-right: 1rem;
+  width: 33%;
+}
+
+.card-button {
+  border: 1px solid $ACCENT_BLUE;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $ACCENT_BLUE;
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.card-button-disabled {
+  border-color: $PLACE_HOLDER;
+  color: $PLACE_HOLDER;
+}
+
+.card-button-img {
+  font-size: 16px;
+  margin-right: 0.5rem;
+}
+
+.card-label {
+  font-size: 14px;
+  color: $LABEL;
+  opacity: 78%;
+  font-weight: bolder;
+}
+
+.card-row-data {
+  margin-bottom: 1rem;
+}
+
+.card-content {
+  font-size: 18px;
+  color: $TEXT;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.card-table-header {
+  padding-left: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.card-table-row {
+  font-size: 15px;
+  color: $TABLE_TEXT;
+  padding: 1rem 2rem 1rem 1rem;
+  border-bottom: 1px solid $ROW_DIVIDER;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+// modal size has to be global
+.edit-modal {
+  max-width: 754px;
+}
+.warn-modal {
+  max-width: 400px;
+}
+
+.delete-modal {
+  max-width: 500px;
+}
+.transfer-modal {
+  max-width: 440px;
+}
+
+.modal-header {
+  background: $MODAL_BLACK;
+  border-radius: 0;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: $WHITE;
+}
+
+.close {
+  color: $WHITE;
+  opacity: 1;
+}
+
+.modal-footer {
+  border: none;
+  justify-content: space-between;
+}
+
+.alert-md-color {
+  background-color: $LIME_GREEN;
+  box-shadow: 0 0 6px #00000029;
+  border-radius: 6px;
+  color: $WHITE;
+  display: flex;
+  align-items: center;
+  height: 74px;
+}
+
+.alert-success {
+  @extend .alert-md-color;
+}
+
+.alert-warning {
+  @extend .alert-md-color;
+  background-color: $BOX_ORANGE;
+  border-color: $ERROR_BACKGROUND;
+  color: $TEXT;
+}
+
+.alert-dismissible .close {
+  top: 10px;
+}
+
+.alert-ok {
+  margin-right: 1rem;
+}
+
+.child-header-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* reduced margin to avoid jumping elements */
+.alert {
+  margin-bottom: 0.5rem;
+}
+
+.alert-div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  z-index: 999;
+}
+
+.back-button {
+  color: $ACCENT_BLUE;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.divider {
+  padding-left: 1.5rem;
+  padding-right: 1rem;
+  border-left: solid 1px #c0c5cb;
+}
+
+.horizontal-line {
+  border-bottom: 1px solid #d9dee5;
+}
+
+.status {
+  font-size: 13px;
+  font-weight: bold;
+  color: $BADGE_TEXT;
+}
+
+.badge {
+  padding: 3px 6px;
+  font-size: 13px;
+  font-weight: bold;
+  color: $BADGE_TEXT;
+}
+
+.status-green {
+  @extend .badge;
+  background: #d2efc1;
+}
+
+.status-grey {
+  @extend .badge;
+  background: #eceef2;
+}
+
+.status-orange {
+  @extend .badge;
+  background: #fadba8;
+}
+
+.status-red {
+  @extend .badge;
+  background: #ffc9c9;
+}
+
+.not-as-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.isDisabled {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+
+  & a[aria-disabled='true'] {
+    color: currentColor;
+    display: inline-block; /* For IE11/ MS Edge bug */
+    pointer-events: none;
+    text-decoration: none;
+  }
+}
+
+.ellipsis {
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orange-circle {
+  border-radius: 50%;
+  background-color: $ERROR_BACKGROUND;
+  color: $WHITE;
+}
+
+.green-ball {
+  border-radius: 50%;
+  background-color: $LIME_GREEN;
+  color: $WHITE;
+}
+
+.red-ball {
+  border-radius: 50%;
+  background-color: $DANGER_RED;
+  color: $WHITE;
+}
+
+.warning-box {
+  border-left: solid 4px $ERROR_BACKGROUND;
+  border-bottom: solid 1px $BORDER_GREY;
+  border-top: solid 1px $BORDER_GREY;
+  border-right: solid 1px $BORDER_GREY;
+  border-radius: 4px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.big-blue-spinner {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  border-left: solid 5px $ACCENT_BLUE;
+  border-top: solid 5px $ACCENT_BLUE;
+  animation: roll 1s infinite;
+  transform: rotate(30deg);
+}
+
+.spin {
+  font-size: 45px;
+  color: $ACCENT_BLUE;
+  animation: roll 3s infinite;
+  transform: rotate(30deg);
+}
+
+.top-bar {
+  height: 70px;
+  border-bottom: solid 1px $BORDER_GREY;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  background-color: white;
+}
+.search-nav {
+  border-bottom: transparent solid 8px;
+  color: $DOC_GREEN;
+  height: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  &:hover {
+    color: $DOC_GREEN;
+    border-bottom: $DOC_GREEN solid 5px;
+    text-decoration: none;
+  }
+
+  &.active {
+    color: $DOC_GREEN;
+    border-bottom: $DOC_GREEN solid 5px;
+  }
+}
+
+.banding-sheet {
+  text-decoration: line-through;
+}
+
+.bottom-line {
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.tooltip-body {
+  background-color: $WHITE;
+  color: $TEXT;
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.tooltip-header {
+  background-color: $BOX_GREY;
+  color: $TEXT;
+}
+
+.question-tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 14px;
+  width: 14px;
+  background-color: $PLACE_HOLDER;
+  color: $WHITE;
+  cursor: pointer;
+}
+
+// responsive helpers
+.visible-xxl {
+  display: none;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    display: inline-block;
+  }
+}
+
+.row-xxl {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    flex-direction: row;
+  }
+}
+
+/* Custom pagination */
+.pagination-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6b7786;
+}
+
+.pagination-input {
+  border: 1px solid #d6d9dd;
+  background: #ffffff;
+  height: 48px;
+  width: 92px;
+}
+
+:host ::ng-deep .pagination-main .page-link {
+  border: none;
+  font-size: 18px;
+  color: #4d4d4d;
+  background: #f4f5f7;
+}
+
+:host ::ng-deep .pagination-main .page-item.active .page-link {
+  border: 1px solid $ACCENT_BLUE;
+  border-radius: 3px;
+  font-size: 18px;
+  color: $WHITE;
+  background: $ACCENT_BLUE;
+}
+
+:host ::ng-deep .dropdown-item.active {
+  background-color: $ACCENT_BLUE;
+}
+
+/* Custom checkbox stuff from here on */
+
+/* Base for label styling */
+[type='checkbox']:not(:checked),
+[type='checkbox']:checked {
+  position: absolute;
+  left: -9999px;
+}
+
+[type='checkbox']:not(:checked) + label,
+[type='checkbox']:checked + label {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
+
+/* checkbox aspect */
+[type='checkbox']:not(:checked) + label:before,
+[type='checkbox']:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.25em;
+  height: 1.25em;
+  border: 2px solid $BORDER_GREY;
+  background: $WHITE;
+  border-radius: 4px;
+}
+/* checked mark aspect */
+[type='checkbox']:not(:checked) + label:after,
+[type='checkbox']:checked + label:after {
+  content: '\2713\0020';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1.3em;
+  line-height: 0.8;
+  background: $ACCENT_BLUE;
+  color: $WHITE;
+  transition: all 0.2s;
+  border: 2px solid $ACCENT_BLUE;
+  border-radius: 4px;
+}
+/* checked mark aspect changes */
+[type='checkbox']:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+
+[type='checkbox']:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+/* disabled checkbox */
+[type='checkbox']:disabled:not(:checked) + label:before,
+[type='checkbox']:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+
+[type='checkbox']:disabled:checked + label:after {
+  color: #999;
+}
+
+[type='checkbox']:disabled + label {
+  color: #aaa;
+}
+/* accessibility */
+[type='checkbox']:checked:focus + label:before,
+[type='checkbox']:not(:checked):focus + label:before {
+  border: 2px solid #9ea6b1;
+}
+
+/* hover style just for information */
+label:hover:before {
+  border: 2px solid #4778d9 !important;
+}
+
+// for the example on the primary mark
+.big-tooltip {
+  .tooltip-inner {
+    min-width: fit-content;
+    background-color: $WHITE;
+    border: $BORDER_GREY solid 1px;
+    box-shadow: 0 0 4px $SHADOW;
+    padding: 0;
+  }
+
+  .tooltip-arrow:before {
+    border-bottom-color: $BORDER_GREY;
+    border-top-color: $BORDER_GREY;
+  }
+  .tooltip-arrow {
+    border-bottom-color: $BORDER_GREY;
+    border-top-color: $BORDER_GREY;
+  }
+}
+
+.white-tooltip {
+  .tooltip-inner {
+    opacity: 1;
+    min-width: fit-content;
+    background-color: $WHITE;
+    color: $TEXT;
+    border: $BORDER_GREY solid 1px;
+    box-shadow: 0 0 4px $SHADOW;
+    z-index: 999;
+  }
+
+  .tooltip-arrow:before {
+    border-bottom-color: $BORDER_GREY;
+    border-top-color: $BORDER_GREY;
+  }
+  .tooltip-arrow {
+    border-bottom-color: $BORDER_GREY;
+    border-top-color: $BORDER_GREY;
+  }
+}
+
+.tooltip.in {
+  opacity: 1 !important;
+}
+
+.inline-question-tooltip {
+  @extend .question-tooltip;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.help-tip-inner {
+  text-align: left;
+}
+
+.map-picker-modal {
+  min-width: 75%;
+}
+
+.map-popup-wrapper {
+  .leaflet-popup-content {
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
+  .leaflet-popup-content-wrapper {
+    padding: 0;
+  }
+}
+
+.map-icon {
+  font-family: 'Clear Sans', sans-serif;
+  font-size: 15px;
+  height: 20px;
+  width: 20px;
+  color: $WHITE;
+  background-color: $DOC_GREEN;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

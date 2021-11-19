@@ -1,0 +1,54 @@
+<div class="sightings">
+  <h1 class="sightings-heading pl-2 pl-md-0">Report a sighting</h1>
+  <div id="progress-spheres" class="d-flex flex-row justify-content-between progress-spheres-background mt-5">
+    <span class="pl-4">
+      <span *ngIf="birdDetailsForm.invalid; else validSphere" class="progress-sphere" [ngClass]="{ 'active-sphere': activePage === 1 }"
+        >1</span
+      >
+    </span>
+    <span *ngIf="locationForm.invalid; else validSphere" class="progress-sphere" [ngClass]="{ 'active-sphere': activePage === 2 }">2</span>
+    <span
+      *ngIf="markingForm.invalid || !markingForm.touched; else validSphere"
+      class="progress-sphere"
+      [ngClass]="{ 'active-sphere': activePage === 3 }"
+      >3</span>
+    <span class="pr-4">
+      <span *ngIf="detailsForm.invalid; else validSphere" class="progress-sphere" [ngClass]="{ 'active-sphere': activePage === 4 }">4</span>
+    </span>
+  </div>
+  <div class="d-flex flex-row justify-content-between mb-5">
+    <span class="bread-crumb-text">Bird details</span>
+    <span class="ml-3 bread-crumb-text">Bird location</span>
+    <span class="ml-1 bread-crumb-text">Marking details</span>
+    <span class="bread-crumb-text">Your details</span>
+  </div>
+  <div [ngSwitch]="activePage">
+    <app-bird-details (changePage)="setActivePage($event)" [birdDetailsForm]="birdDetailsForm" *ngSwitchCase="1"></app-bird-details>
+    <app-bird-location (changePage)="setActivePage($event)" [locationForm]="locationForm" *ngSwitchCase="2"></app-bird-location>
+    <app-marking-details (changePage)="setActivePage($event)" [markingFrom]="markingForm" *ngSwitchCase="3"></app-marking-details>
+    <app-your-details
+      (changePage)="setActivePage($event)"
+      (submitForm)="submitForm()"
+      [detailsForm]="detailsForm"
+      *ngSwitchCase="4"
+      [isSubmitting]="isSubmitting"
+    ></app-your-details>
+    <app-success (resetForm)="reset()" *ngSwitchCase="5"></app-success>
+  </div>
+  <div *ngIf="submissionError.hasError" class="d-flex p-3 align-items-center justify-content-center error-box">
+    <h4 *ngIf="submissionError.errorType === 2" class="error-text">Error submitting sighting. Try again later.</h4>
+    <div *ngIf="submissionError.errorType === 1" class="flex-column">
+      <h5 class="error-text">
+        There is a problem with this sighting submission, please contact the banding office for assistance at
+        <a href="mailto:bandingoffice@doc.govt.nz">bandingoffice@doc.govt.nz</a>
+      </h5>
+      <h5 class="error-text">Error details:</h5>
+      <ul>
+        <li class="error-inline" *ngFor="let message of errorMessages">{{ message }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<ng-template #validSphere>
+  <span class="progress-sphere valid-sphere"> <i class="material-icons-round">check</i></span>
+</ng-template>

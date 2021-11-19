@@ -1,0 +1,99 @@
+<div class="background d-flex flex-column">
+  <div class="head">
+    <h2 class="head-two ml-3">Bird details</h2>
+    <h5 class="head-five ml-3">All fields are required unless stated</h5>
+  </div>
+  <div class="row mx-0 px-2 px-md-3">
+    <div id="right-column" class="col-12 px-0 col-md-6 order-md-2">
+      <div id="band-diagram" class="band-picture-frame flex-grow-1">
+        <h5>Example of a bird with bands. Numbers refer to band placement (configuration)</h5>
+        <img class="bird-picture" src="../../../assets/images/bandDiagram.png" />
+      </div>
+    </div>
+    <form autocomplete="off" id="left-column" [formGroup]="birdDetailsForm" class="col-12 px-0 col-md-6 order-md-1">
+      <div class="question">
+        <h4 class="text-bold-20">Is the bird marked?</h4>
+        <p>Can you see any metal or colour bands or other marks on the bird?</p>
+        <div class="button-toggles">
+          <div>
+            <input autocomplete="off" type="radio" id="has-bands" [value]="true" name="marked" formControlName="marked" />
+            <label for="has-bands">Yes</label>
+          </div>
+          <div>
+            <input type="radio" autocomplete="off" id="no-bands" [value]="false" name="marked" formControlName="marked" />
+            <label for="no-bands">No</label>
+          </div>
+        </div>
+        <div *ngIf="f.marked.invalid && (f.marked.dirty || f.marked.touched)" class="mt-5">
+          <div class="error-inline" *ngIf="f.marked.errors.required">
+            This field is required
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showForm; else noBands">
+        <div class="question">
+          <h4 class="text-bold-20">Condition of bird</h4>
+          <div id="condition-group" class="simple-radio" *ngFor="let condition of conditions">
+            <div>
+              <input type="radio" id="{{ condition.id }}" name="condition" formControlName="condition" [value]="condition.value" />
+              <label for="{{ condition.id }}">{{ condition.display }}</label>
+            </div>
+          </div>
+          <div *ngIf="f.condition.invalid && (f.condition.dirty || f.condition.touched)" class="p-1">
+            <div class="error-inline" *ngIf="f.condition.errors.required">
+              This field is required
+            </div>
+          </div>
+        </div>
+        <div class="question">
+          <h4 class="text-bold-20">Can you recognise the bird?</h4>
+          <p>For example Kea, kākā, tūī. If unsure of species please note this in the comments field at the end of the form.</p>
+          <div class="button-toggles">
+            <div>
+              <input type="radio" id="recognised" [value]="true" formControlName="recognised" name="recognised" />
+              <label for="recognised">Yes</label>
+            </div>
+            <div>
+              <input type="radio" id="not-recognised" [value]="false" formControlName="recognised" name="recognised" />
+              <label for="not-recognised">No</label>
+            </div>
+          </div>
+          <div *ngIf="f.recognised.invalid && (f.recognised.dirty || f.recognised.touched)" class="p1 mt-5">
+            <div class="error-inline" *ngIf="f.recognised.errors.required">
+              This field is required
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isRecognised" class="question d-flex flex-column">
+          <label for="common-name" class="input-caption">BIRD COMMON NAME</label>
+          <input
+            [typeahead]="species"
+            autocomplete="off"
+            typeaheadOptionField="description"
+            (typeaheadOnSelect)="updateSpeciesId($event.item)"
+            id="common-name"
+            formControlName="name"
+            class="flex-input "
+            name="name"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="showForm" class="d-flex white-background row justify-content-end mt-4 w-100 px-3 mx-0">
+    <button (click)="next()" class="big-green-button col-5 col-md-2">Continue <i class="material-icons-round">arrow_forward</i></button>
+  </div>
+</div>
+<ng-template #noBands>
+  <h4 class="text-bold-20">The Banding Office collects data on marked birds only</h4>
+  <p>
+    We recommend you submit the sighting at one of the following websites:
+  </p>
+  <ul>
+    <li><a href="https://ebird.org/newzealand/home" target="_blank">New Zealand eBird</a></li>
+    <li><a href="https://inaturalist.nz" target="_blank">inaturalist.nz</a></li>
+  </ul>
+  <h4 class="text-bold-20">Contact the DOC Banding Office</h4>
+  <p>Email: <a href="mailto:bandingoffice@doc.govt.nz">bandingoffice@doc.govt.nz</a></p>
+  <p>Address: Banding Office, Department of Conservation, PO Box 108, Wellington 6140</p>
+</ng-template>

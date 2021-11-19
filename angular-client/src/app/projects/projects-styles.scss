@@ -1,0 +1,118 @@
+@import 'src/palate';
+
+.left-border {
+  border-left: solid 1px #c0c5cb;
+  padding: 1rem;
+}
+
+.project-search-box {
+  background: $BOX_GREY;
+  border: 1px solid $BORDER_GREY;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.head-three {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  color: $TEXT;
+}
+
+.required {
+  color: $DANGER_RED;
+}
+
+.flexible-input {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+  padding: 0.75em;
+  display: flex;
+  width: 100%;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: row;
+
+  font-size: 16px;
+  padding: 0;
+  input {
+    display: none;
+    background: #ffffff;
+    color: $ROW_HOVER;
+    height: 48px;
+    &:checked + label {
+      background: $ACCENT_BLUE;
+      color: $WHITE;
+      border: 1px solid $ACCENT_BLUE;
+    }
+  }
+  label {
+    background: $WHITE;
+    color: $ACCENT_BLUE;
+    height: 48px;
+    display: flex;
+    padding: 0 2em;
+    margin: auto;
+    align-items: center;
+    border: 1px solid $ACCENT_BLUE;
+
+    cursor: pointer;
+    z-index: 90;
+    &:hover {
+      background: #ddd;
+    }
+  }
+}
+
+.bottom-border {
+  border-bottom: solid $BORDER_GREY 1px;
+}
+
+.small-top-header {
+  color: $LABEL;
+  size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+%hidden-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $HIDDEN_YELLOW;
+  color: $WHITE;
+  border-radius: 3px;
+  margin: auto;
+  cursor: default;
+}
+
+.small-hidden-icon {
+  @extend %hidden-icon;
+  height: 25px;
+  width: 25px;
+}
+
+.md-hidden-icon {
+  @extend %hidden-icon;
+  height: 28px;
+  width: 28px;
+}
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}
+
+.big-table-text {
+  font-size: 18px;
+  color: $TABLE_TEXT;
+}

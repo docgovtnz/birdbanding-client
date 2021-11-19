@@ -1,0 +1,79 @@
+@import 'src/palate';
+@import 'sightings-styles';
+
+.sightings-heading {
+  font-size: 44px;
+  font-family: 'Zilla Slab', serif;
+}
+
+.error-text {
+  @extend %head-5-shared;
+  color: $DANGER_RED;
+}
+
+.bread-crumb-text {
+  @extend .text-bold-18;
+  text-align: center;
+}
+
+.sightings {
+  margin: 2em 0;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    margin: 2em 20%;
+  }
+}
+.progress-sphere {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: $BORDER_GREY;
+  font-size: 18px;
+  color: $WHITE;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.active-sphere {
+  background-color: $DOC_GOLD;
+  color: $TEXT;
+}
+
+.valid-sphere {
+  background-color: $LIME_GREEN;
+}
+
+.white-background {
+  @extend %sightings-background-shared;
+}
+
+.error-box {
+  @extend %sightings-background-shared;
+  color: $DANGER_RED;
+}
+.progress-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-spheres-background {
+  position: relative;
+  z-index: 1;
+  &:before {
+    border-top: 2px solid #dfdfdf;
+    content: '';
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    z-index: -1;
+    @media (min-width: $MEDIUM_SCREEN) {
+      width: 95%;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@import "src/palate";
+
+.shift-up-100 {
+  transform: translateY(-100%);
+  z-index: 9999;
+  position: relative;
+}
+
+.contrast-container {
+  font-family: "Clear Sans", sans-serif;
+  font-size: 18px;
+  height: 60px;
+  color: $WHITE;
+  background-color: $TEXT;
+  opacity: .7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1em;
+}

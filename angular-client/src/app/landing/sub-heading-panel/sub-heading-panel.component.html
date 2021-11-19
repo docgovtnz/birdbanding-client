@@ -1,0 +1,12 @@
+<div class="sub-heading-panel sub-heading-panel-left" *ngIf="content">
+  <div class="d-flex justify-content-between">
+    <div class="sub-heading-panel-heading">{{ content.link_label }}</div>
+    <button class="btn btn-link align-items-center text-white m-0 p-0" (click)="onEdit()" *ngIf="isAdmin()">
+      <i class="material-icons-round small">edit</i> Edit
+    </button>
+  </div>
+
+  <app-content-view [content]="content"></app-content-view>
+
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,131 @@
+@import 'src/palate';
+@import 'src/text-styles';
+
+%head-two-shared {
+  font-family: 'Zilla Slab', serif;
+  font-size: 32px;
+  color: $TEXT;
+}
+
+%head-4-shared {
+  font-family: 'Zilla Slab', serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: $TEXT;
+  margin-bottom: 0;
+}
+
+%head-5-shared {
+  font-family: 'Zilla Slab', serif;
+  font-size: 17px;
+  color: $LIGHT_TEXT;
+}
+
+%sightings-background-shared {
+  display: flex;
+  background-color: $WHITE;
+  @media (min-width: $MEDIUM_SCREEN) {
+    padding: 1em 0;
+  }
+  padding: 0.5em 0;
+}
+
+.error-inline {
+  font-size: 15px;
+  color: $DANGER_RED;
+}
+
+%head {
+  padding: 1em 1em 1em 0;
+  border-bottom: solid 1px $BORDER_GREY;
+  width: 100%;
+}
+
+%question {
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  color: $TEXT;
+  font-size: 17px;
+}
+
+%flexible-input {
+  border: 1px solid $BORDER_GREY;
+  border-radius: 3px;
+  background: $WHITE;
+  color: $TEXT;
+  font-size: 16px;
+  padding: 0.75em;
+  display: flex;
+}
+
+%big-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 4px;
+  height: 60px;
+  padding: 1em 2em;
+}
+
+%big-green-button {
+  @extend %big-button;
+  background-color: $DOC_GREEN;
+  color: $WHITE;
+  &:hover {
+    background-color: $HOVER_GREEN;
+  }
+}
+
+%clear-green-button {
+  @extend %big-button;
+  background-color: transparent;
+  color: $DOC_GREEN;
+  border: solid $DOC_GREEN 1px;
+  &:hover {
+    background-color: $ROW_HOVER;
+  }
+}
+
+%question-buttons {
+  display: flex;
+  flex-direction: row;
+
+  font-size: 16px;
+  padding: 0;
+  input {
+    display: none;
+    background: #ffffff;
+    color: $ROW_HOVER;
+    height: 48px;
+    &:checked + label {
+      background: $ACCENT_BLUE;
+      color: $WHITE;
+      border: 1px solid $ACCENT_BLUE;
+    }
+  }
+  label {
+    background: $WHITE;
+    color: $ACCENT_BLUE;
+    height: 48px;
+    display: flex;
+    padding: 0 2em;
+    margin: auto;
+    align-items: center;
+    border: 1px solid $ACCENT_BLUE;
+
+    cursor: pointer;
+    z-index: 90;
+    &:hover {
+      background: #ddd;
+    }
+  }
+}
+
+.ng-dirty.ng-invalid:not(form) {
+  border-color: $DANGER_RED;
+}
+
+:host ::ng-deep .dropdown-item.active {
+  background-color: $ACCENT_BLUE;
+}

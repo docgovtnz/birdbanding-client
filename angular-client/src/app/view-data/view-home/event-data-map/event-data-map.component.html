@@ -1,0 +1,47 @@
+<div class="row mx-0">
+  <div class="col-2 align-items-end flex-column mt-3 ">
+    <div class="row justify-content-end">
+      <button [routerLink]="['/view-data']" class="md-clear-button d-flex align-items-center mr-3">
+        <span class="material-icons-round mr-2"> list </span>List view
+      </button>
+    </div>
+
+    <div class="event_codes">
+      <hr />
+      <div class="mb-3 text-bold-14-grey">EVENT CODES</div>
+      <div class="d-flex flex-column">
+        <div *ngFor="let eventCode of eventCodes; index as i" class="mb-2">
+          <img src="../../../assets/icons/{{ eventCode.icon }}" />
+          <span class="pl-3 text-regular-15-grey">{{ eventCode.description }}</span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="mb-3 text-bold-14-grey">MAP CONTROLS</div>
+      <div class="d-flex flex-column">
+        <div class="btn-group">
+          <label class="btn btn-info" [(ngModel)]="mapComponent.mapType" btnRadio="Topographical" tabindex="0" role="button"
+            >Topographical</label
+          >
+          <label class="btn btn-info" [(ngModel)]="mapComponent.mapType" btnRadio="Satellite" tabindex="0" role="button">Satellite</label>
+        </div>
+        <div class="btn-group">
+          <label class="btn btn-info" [(ngModel)]="mapComponent.markerLayout" btnRadio="Cluster" tabindex="0" role="button">Cluster</label>
+          <label class="btn btn-info" [(ngModel)]="mapComponent.markerLayout" btnRadio="Scatter" tabindex="0" role="button">Scatter</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-10 p-0">
+    <app-map #mapComponent [fullHeight]="true" [events]="events" [redrawSubject]="redrawMapSubject"></app-map>
+    <div class="row m-0 py-3 shift-up-100 align-items-center justify-content-center">
+      <div class="col-1">
+        <button *ngIf="!loading && hasMoreData" (click)="addDataToMap()" class="flex-clear-button">
+          More Data
+        </button>
+        <app-loading-button *ngIf="loading" useClass="flex-clear-button"></app-loading-button>
+      </div>
+      <span class="col-2 contrast-container">Displaying {{ events?.length | number }} records</span>
+    </div>
+  </div>
+</div>

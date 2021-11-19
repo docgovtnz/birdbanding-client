@@ -1,0 +1,224 @@
+<div class="d-flex flex-row justify-content-center" [formGroup]="advancedSearchForm">
+  <div class="d-flex flex-column align-items-start margin-large-screen p-3 m-3">
+    <span class="text-regular-16">- There is up to 30 minutes before new data appears in search</span>
+    <span class="text-regular-16">- Wildcard (*) searches can be applied on band prefix, band number and alphanumeric characters.</span>
+    <form formArrayName="criteriaList" class="d-flex flex-column w-100 pt-3">
+      <div
+        *ngFor="let searchBlock of criteriaList.controls; let bandIndex = index"
+        [formGroupName]="bandIndex"
+        class="d-flex row mx-0 bottom-line py-2"
+      >
+        <span class="col-1">{{ bandIndex === 0 ? 'Match' : '' }}</span>
+        <select class="col-3 input-flex" name="type" formControlName="type">
+          <option [ngValue]="null">Choose search criteria…</option>
+          <option [ngValue]="criterion.id" *ngFor="let criterion of criteria">{{ criterion.display }}</option>
+        </select>
+        <div class="col-7" [ngSwitch]="searchBlock.value.type">
+          <div *ngSwitchCase="'PERSON'">
+            <app-wrapped-typeahead
+              [selectedItem]="searchBlock.get('value')"
+              [optionList]="people"
+              optionField="display"
+              id="person"
+              placeholder="Start typing a person's name..."
+            ></app-wrapped-typeahead>
+          </div>
+          <div *ngSwitchCase="'SPECIES'">
+            <app-wrapped-typeahead
+              [selectedItem]="searchBlock.get('value')"
+              [optionList]="species"
+              optionField="description"
+              id="species"
+              placeholder="Start typing a species name..."
+            ></app-wrapped-typeahead>
+          </div>
+          <div *ngSwitchCase="'SPECIES_GROUP'">
+            <select class="input-flex w-100" [formControl]="searchBlock.get('value')">
+              <option disabled [ngValue]="null">Select a species group...</option>
+              <option *ngFor="let speciesGroup of speciesGroups" [ngValue]="speciesGroup">{{ speciesGroup.name }}</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'EVENT_CODE'">
+            <select class="input-flex w-100" [formControl]="searchBlock.get('value')">
+              <option disabled [ngValue]="null">Select an event code...</option>
+              <option *ngFor="let birdEventCode of viewDataEnums.birdEventCodes" [ngValue]="birdEventCode">{{
+                birdEventCode.display
+              }}</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'PROJECT'">
+            <app-wrapped-typeahead
+              [selectedItem]="searchBlock.get('value')"
+              [optionList]="projects"
+              optionField="name"
+              id="project"
+              placeholder="Start typing a project name..."
+            ></app-wrapped-typeahead>
+          </div>
+          <div *ngSwitchCase="'BANDING_SCHEME'">
+            <select class="input-flex w-100" [formControl]="searchBlock.get('value')">
+              <option disabled [ngValue]="null">Select a banding scheme...</option>
+              <option *ngFor="let bandingScheme of viewDataEnums.bandingSchemes" [ngValue]="bandingScheme">{{
+                bandingScheme.display
+              }}</option>
+            </select>
+          </div>
+          <div *ngSwitchCase="'LOCATION_DESCRIPTION'">
+            <input
+              class="input-flex w-100"
+              [formControl]="searchBlock.get('value')"
+              id="location-description"
+              placeholder="Location description..."
+              autocomplete="off"
+              data-lpignore="true"
+            />
+          </div>
+          <div *ngSwitchCase="'BAND_NUMBER'" class="d-flex flex-row align-items-center">
+            <input
+              class="input-flex w-100"
+              [formControl]="searchBlock.get('value')"
+              id="band-number"
+              placeholder="Band number... eg: A-1234 or A-* or *-1234"
+              autocomplete="off"
+              data-lpignore="true"
+            />
+            <span [tooltip]="bandFormats" placement="top" containerClass="big-tooltip" class="ml-2 material-icons-round question-tooltip"
+              >help_outline</span
+            >
+          </div>
+          <div *ngSwitchCase="'COMMENTS'">
+            <input
+              class="input-flex w-100"
+              [formControl]="searchBlock.get('value')"
+              id="comments"
+              placeholder="Comments..."
+              autocomplete="off"
+              data-lpignore="true"
+            />
+          </div>
+          <div *ngSwitchCase="'ALPHA_TEXT'">
+            <input
+              class="input-flex w-100"
+              [formControl]="searchBlock.get('value')"
+              id="alpha-numeric-text"
+              placeholder="Alpha numeric text..."
+              autocomplete="off"
+              data-lpignore="true"
+            />
+          </div>
+          <div *ngSwitchCase="'FRIENDLY_NAME'">
+            <input
+              class="input-flex w-100"
+              [formControl]="searchBlock.get('value')"
+              id="friendly-name"
+              placeholder="Friendly name..."
+              autocomplete="off"
+              data-lpignore="true"
+            />
+          </div>
+
+          <div *ngSwitchCase="'EVENT_DATE_RANGE'">
+            <input
+              type="text"
+              [formControl]="searchBlock.get('value')"
+              name="eventDates"
+              bsDaterangepicker
+              autocomplete="off"
+              data-lpignore="true"
+              placement="bottom"
+              class="input-flex w-100"
+              [bsConfig]="{
+                dateInputFormat: 'DD MMM YYYY',
+                rangeInputFormat: 'DD MMM YYYY',
+                containerClass: 'theme-dark-blue',
+                showWeekNumbers: false
+              }"
+              id="event-date-range"
+              placeholder="Event date..."
+            />
+          </div>
+          <div *ngSwitchCase="'EVENT_DATE'">
+            <input
+              type="text"
+              [formControl]="searchBlock.get('value')"
+              name="eventDates"
+              bsDatepicker
+              autocomplete="off"
+              data-lpignore="true"
+              placement="bottom"
+              class="input-flex w-100"
+              [bsConfig]="{
+                dateInputFormat: 'DD MMM YYYY',
+                rangeInputFormat: 'DD MMM YYYY',
+                containerClass: 'theme-dark-blue',
+                showWeekNumbers: false
+              }"
+              id="event-date"
+              placeholder="Event date..."
+            />
+          </div>
+          <div *ngSwitchCase="'MARK'">
+            <app-mark-search [markControl]="searchBlock.get('value')"></app-mark-search>
+          </div>
+          <div *ngSwitchCase="'COORDINATES'">
+            <app-coordinate-search
+              [coordinateControl]="searchBlock.get('value')"
+              [primaryForm]="advancedSearchForm"
+            ></app-coordinate-search>
+          </div>
+        </div>
+        <div class="col-1 d-flex flex-row justify-content-end">
+          <button class="btn btn-link">
+            <span (click)="removeCriteria(bandIndex)" *ngIf="bandIndex !== 0" class="material-icons-round">delete</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="py-3 bottom-line w-100">
+      <button (click)="addEmptyCriteriaGroup()" class="btn btn-link d-flex flex-row align-items-center">
+        <span class="material-icons-round pr-3"> add_circle </span> Add row
+      </button>
+    </div>
+    <div id="button-row" class="row w-100 pt-5 align-items-center">
+      <div id="hide-section" class="col-2">
+        <button type="button" class="btn btn-link d-flex flex-row align-items-center" (click)="hideSearch()">
+          <i class="material-icons-round mr-1">keyboard_arrow_up</i> HIDE SEARCH
+        </button>
+      </div>
+      <div class="col-10">
+        <div class="row align-items-center">
+          <div class="col-7"></div>
+
+          <div class="col-2">
+            <button type="button" class="btn btn-link" (click)="clearSearch()">Clear this search</button>
+          </div>
+          <div class="col-3">
+            <button (click)="search()" type="submit" class="flex-blue-button" *ngIf="!isLoading; else loadingButton">
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-100 d-flex flex-column align-items-center" *ngIf="searchErrors.length > 0">
+      <h3 class="text-bold-20 d-flex flex-row align-items-center">
+        <i class="material-icons-round red-ball mr-2">close</i>There were errors with your search
+      </h3>
+      <span class="error-inline" *ngFor="let searchError of searchErrors">{{ searchError.message }} </span>
+    </div>
+  </div>
+</div>
+<ng-template #loadingButton>
+  <app-loading-button></app-loading-button>
+</ng-template>
+<ng-template #bandFormats>
+  <div class="d-flex flex-column">
+    <div class="tooltip-header text-bold-18">Example</div>
+    <div class="d-flex flex-column align-items-start tooltip-body p-3">
+      <span>Non-gamebird band = AP-7110</span>
+      <span>Gamebird band = 19-43843</span>
+      <span>Transponder = PIT-9982009104470651</span>
+      <span>Web-tag = WEB-7110</span>
+    </div>
+  </div>
+</ng-template>

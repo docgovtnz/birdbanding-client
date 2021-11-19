@@ -1,0 +1,66 @@
+@import 'src/app/sightings/sightings-styles';
+@import 'src/text-styles';
+
+.head-two {
+  @extend %head-two-shared;
+}
+
+.background {
+  @extend %sightings-background-shared;
+}
+
+.head-four {
+  @extend %head-4-shared;
+}
+
+.head-five {
+  @extend %head-5-shared;
+}
+
+.head {
+  @extend %head;
+}
+
+.question {
+  @extend %question;
+}
+
+.flex-input {
+  @extend %flexible-input;
+}
+
+.button-toggles {
+  @extend %question-buttons;
+}
+
+.big-green-button {
+  @extend %big-green-button;
+}
+
+.band-picture-frame {
+  margin-top: 1em;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  background-color: #f8f7f7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h5 {
+    color: $TABLE_TEXT;
+    font-size: 14px;
+    padding: 1em;
+  }
+}
+
+.simple-radio {
+  display: flex;
+  flex-direction: column;
+  input {
+    margin-right: 1em;
+  }
+}
+
+.bird-picture {
+  max-width: 95%;
+}

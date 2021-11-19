@@ -1,0 +1,144 @@
+<div class="background d-flex flex-column">
+  <div class="head">
+    <h2 class="head-two ml-3">Location details</h2>
+    <h5 class="head-five ml-3">All fields are required unless stated</h5>
+  </div>
+  <form autocomplete="off" [formGroup]="locationForm" class="px-2 px-md-3">
+    <div class="my-xl-5 my-0 d-flex row mx-0 ">
+      <div class="d-flex  flex-column my-3 my-xl-0 col-12 col-xl-4">
+        <label for="sighting-date" class="input-caption">DATE SIGHTED</label>
+        <input
+          type="text"
+          formControlName="dateSighted"
+          name="sighting-date"
+          id="sighting-date"
+          placeholder="Choose a date"
+          bsDatepicker
+          autocomplete="off"
+          placement="bottom"
+          class="input-flex-100"
+          data-lpignore="true"
+          [maxDate]="maxDate"
+          [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-dark-blue', showWeekNumbers: false }"
+        />
+        <div *ngIf="f.dateSighted.invalid && (f.dateSighted.dirty || f.dateSighted.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.dateSighted.errors.required">
+            This field is required
+          </div>
+        </div>
+      </div>
+      <div class="d-flex col-12 my-3 my-xl-0 flex-column  col-xl-4">
+        <label for="sighting-time" class="input-caption">TIME SIGHTED (24hr format)</label>
+        <input
+          placeholder="HH:MM"
+          id="sighting-time"
+          name="timeSighted"
+          formControlName="timeSighted"
+          class="input-flex-100"
+          autocomplete="off"
+          data-lpignore="true"
+        />
+        <div *ngIf="f.timeSighted.invalid && (f.timeSighted.dirty || f.timeSighted.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.timeSighted.errors.pattern">
+            Must be a valid 24hour time. eg. 13:42
+          </div>
+          <div class="error-inline" *ngIf="f.timeSighted.errors.required">
+            This field is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p>
+        Use the map to quickly pin point a sighting location to populate the coordinates, or enter the coordinates and check where these
+        plot on the map
+      </p>
+      <app-map-picker [(selectedCoordinate)]="selectedCoordinates" (selectedCoordinateChange)="setLocation($event)"></app-map-picker>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="d-flex row  text-regular-14 mx-0">
+        <span class="pr-2">Number format only, no symbols or spaces</span>
+        <span class="pr-2">e.g. -43.451; 172.695</span>
+        <span class="pr-2">South (latitude) is Negative</span>
+        <span class="pr-2">West (longitude) is Negative</span>
+      </div>
+    </div>
+    <div class="my-xl-5 my-0 d-flex row mx-0">
+      <div class="d-flex flex-column my-3 my-xl-0 col-12 col-xl-4">
+        <label for="sighting-latitude" class="input-caption">LATITUDE - degrees decimal (optional)</label>
+        <input
+          type="text"
+          id="sighting-latitude"
+          name="sighting-latitude"
+          autocomplete="off"
+          class="flex-input"
+          data-lpignore="true"
+          formControlName="sightingLatitude"
+        />
+        <div *ngIf="f.sightingLatitude.invalid && (f.sightingLatitude.dirty || f.sightingLatitude.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.sightingLatitude.errors.required">
+            This field is required
+          </div>
+          <div class="error-inline" *ngIf="f.sightingLatitude.errors.min">Minimum value is {{ f.sightingLatitude.errors.min.min }}</div>
+          <div class="error-inline" *ngIf="f.sightingLatitude.errors.max">Maximum value is {{ f.sightingLatitude.errors.max.max }}</div>
+          <div class="error-inline" *ngIf="f.sightingLatitude.errors.pattern">
+            Must be a valid latitude eg. -43.5908
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column my-3 my-xl-0 col-12 col-xl-4">
+        <label for="sighting-longitude" class="input-caption">LONGITUDE - degrees decimal (optional)</label>
+        <input
+          type="text"
+          id="sighting-longitude"
+          name="sighting-longitude"
+          autocomplete="off"
+          data-lpignore="true"
+          class="flex-input"
+          formControlName="sightingLongitude"
+        />
+        <div *ngIf="f.sightingLongitude.invalid && (f.sightingLongitude.dirty || f.sightingLongitude.touched)" class="p-1">
+          <div class="error-inline" *ngIf="f.sightingLongitude.errors.required">
+            This field is required
+          </div>
+          <div class="error-inline" *ngIf="f.sightingLongitude.errors.min">Minimum value is {{ f.sightingLongitude.errors.min.min }}</div>
+          <div class="error-inline" *ngIf="f.sightingLongitude.errors.max">Maximum value is {{ f.sightingLongitude.errors.max.max }}</div>
+          <div class="error-inline" *ngIf="f.sightingLongitude.errors.pattern">
+            Must be a valid longitude eg. 170.1380
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column my-3 my-xl-0 col-12  col-xl-4">
+        <label for="region" class="input-caption">REGION</label>
+        <select id="region" autocomplete="off" formControlName="sightingRegion" class="input-flex">
+          <option [ngValue]="null" disabled="disabled"></option>
+          <option [ngValue]="region.id" *ngFor="let region of regions">{{ region.display }}</option>
+        </select>
+        <div *ngIf="f.sightingRegion.invalid && f.sightingRegion.touched" class="p-1">
+          <div class="error-inline" *ngIf="f.sightingRegion.errors.required">
+            Select a valid region
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="my-xl-5 my-0 d-flex my-3 my-xl-0 flex-column">
+      <label for="sighting-description" class="input-caption">LOCATION DESCRIPTION</label>
+      <p class="text-regular-17">
+        Detailed location description, e.g. street address, name of bay/valley, distance from nearest named feature
+      </p>
+      <textarea id="sighting-description" formControlName="sightingDescription" class="text-area"></textarea>
+      <div *ngIf="f.sightingDescription.invalid && (f.sightingDescription.dirty || f.sightingDescription.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.sightingDescription.errors.maxlength">
+          Maximum length is {{ f.sightingDescription.errors.maxlength.requiredLength }}
+        </div>
+        <div class="error-inline" *ngIf="f.sightingDescription.errors.required">
+          This field is required
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="d-flex white-background row justify-content-between  mt-3 px-3 mx-0">
+    <button (click)="previous()" class="clear-green-button col-5 col-md-2"><i class="material-icons-round">arrow_back</i> Back</button>
+    <button (click)="next()" class="big-green-button col-5 col-md-2">Continue <i class="material-icons-round">arrow_forward</i></button>
+  </div>
+</div>

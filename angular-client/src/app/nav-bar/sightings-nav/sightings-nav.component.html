@@ -1,0 +1,16 @@
+<div class="navbar d-flex mx-0 flex-row justify-content-between align-items-center">
+  <div class="m-0 p-0 ml-md-3 " id="left">
+    <a class="d-flex navbar-brand m-0 p-0" href="https://www.doc.govt.nz/">
+      <span class="doc-logo">Department of Conservation | Te Papa Atawhai</span>
+    </a>
+  </div>
+  <div id="right-buttons" class="d-flex flex-row mx-0 right-buttons ">
+    <a class="back-link d-flex align-items-center p-0 m-0 p-md-3 mx-md-0-3" [routerLink]="['/']">
+      <i class="material-icons-round m-0 mr-md-1">keyboard_backspace</i><span class="d-none d-md-block">Bird Banding home</span>
+    </a>
+    <app-person-badge class="d-none d-md-block" [buttonTemplate]="login"></app-person-badge>
+  </div>
+</div>
+<ng-template #login>
+  <a class="transparent-button p-3 mx-3 d-none d-md-block" [href]="loginUrl">Bird Banding Login</a>
+</ng-template>

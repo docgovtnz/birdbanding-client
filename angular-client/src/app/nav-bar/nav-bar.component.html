@@ -1,0 +1,4 @@
+<app-banding-nav *ngIf="!isSightings; else docnav" [loginUrl]="loginUrl"></app-banding-nav>
+<ng-template #docnav>
+  <app-sightings-nav [loginUrl]="loginUrl"></app-sightings-nav>
+</ng-template>

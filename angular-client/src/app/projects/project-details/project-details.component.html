@@ -1,0 +1,161 @@
+<div class="alert-div">
+  <div *ngFor="let alert of alerts">
+    <alert type="md-color" [dismissible]="dismissible" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">
+      <i class="material-icons-round alert-ok">check_circle_outline</i>
+      <span>{{ alert.msg }}</span>
+    </alert>
+  </div>
+</div>
+<div class="d-flex flex-column mx-5">
+  <div id="top-info" class="d-flex flex-direction-row justify-content-between w-100 mb-5">
+    <div class="d-flex flex-direction-row justify-content-start">
+      <div id="back" class="back-button mr-4 align-items-center d-flex">
+        <div role="button" (click)="goBack()" class="align-items-center d-flex pointer">
+          <i class="material-icons-round feedback-icon mr-1">arrow_back</i><span>Back</span>
+        </div>
+      </div>
+      <div class="d-flex flex-column left-border">
+        <span class="small-top-header">PROJECT</span>
+        <span class="text-bold-34">{{ projectDetails.name }}</span>
+      </div>
+      <div class="d-flex align-items-end mx-2 mb-4">
+        <span
+          [ngClass]="{
+            'status-green': projectDetails.status === 1,
+            'status-grey': projectDetails.status === 2,
+            'status-orange': projectDetails.status === 3
+          }"
+          >{{ toStatusName(projectDetails.status) }}</span
+        >
+      </div>
+    </div>
+    <div *ngIf="projectDetails.moratorium" class="d-flex align-items-center flex-row mr-5">
+      <span class="md-hidden-icon mr-2"><i class="material-icons-round">visibility_off</i></span>
+      <div class="d-flex flex-column">
+        <span><span class="text-bold-18">Moratorium data</span><span class="text-regular-18">(private)</span> </span>
+        <span class="text-regular-18">Expiry date: {{ projectDetails.moratoriumExpiry | date: 'dd MMM yyyy' }}</span>
+      </div>
+    </div>
+  </div>
+  <div id="main-content" class="row w-100">
+    <div class="col-6">
+      <div id="description" class="card card-body-table">
+        <div id="description-head" class="border-bottom d-flex justify-content-between align-items-center">
+          <h3 class="card-heading ml-3">Project Description</h3>
+          <button *ngIf="person?.isAdmin" [routerLink]="['/projects/edit/', projectDetails.id]" class="md-clear-button mr-3 mb-3">
+            Update project
+          </button>
+        </div>
+        <div class="m-3">
+          <p>{{ projectDetails.description }}</p>
+        </div>
+      </div>
+      <div id="details" class="card card-body-table mt-5">
+        <div id="details-head" class="border-bottom d-flex">
+          <h3 class="card-heading ml-3">Project Details</h3>
+        </div>
+        <div class="m-3">
+          <div class="row">
+            <div class="col-4">
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="manager">PROJECT MANAGER</label
+                ><a
+                  *ngIf="person?.isAdmin || isProjectManager; else projectManagerName"
+                  class="person-link"
+                  [routerLink]="['/people-view', projectDetails?.projectManager?.id]"
+                  id="manager"
+                  >{{ projectDetails.projectManager.name }}</a
+                >
+                <ng-template #projectManagerName>
+                  <span>{{ projectDetails?.projectManager?.name }}</span>
+                </ng-template>
+              </div>
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="type">LOCATION</label><span id="type">{{ projectDetails.location }}</span>
+              </div>
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="type">PROJECT RECORDS</label>
+                <a [routerLink]="" (click)="goToProject(projectDetails)">{{ projectDetails.numberOfRecords }}</a>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="permit-number">PERMIT NUMBER</label
+                ><span id="permit-number">{{ projectDetails.permitId ? projectDetails.permitId : 'NA' }}</span>
+              </div>
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="organisation">RELATED ORGANISATION</label
+                ><span id="organisation">{{ projectDetails.organisation }}</span>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="permit-expiry">EXPIRY DATE OF PERMIT</label
+                ><span id="permit-expiry">{{
+                  projectDetails.permitExpiry ? (projectDetails.permitExpiry | date: 'dd MMM yyyy') : 'NA'
+                }}</span>
+              </div>
+              <div class="d-flex flex-column m-2">
+                <label class="input-caption" for="doc">DOC PROJECT</label
+                ><span id="doc"><i *ngIf="projectDetails.isDocProject" class="material-icons-round green-ball">check</i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div *ngIf="person?.isAdmin || isProjectManager || isProjectMember" id="team" class="card card-body-table">
+        <div id="team-head" class="border-bottom d-flex flex-row justify-content-between align-items-center">
+          <h3 class="card-heading ml-3">Team</h3>
+          <button *ngIf="person?.isAdmin || isProjectManager" class="md-blue-button mr-4 mb-3" (click)="addProjectMember()">
+            Add person to project
+          </button>
+        </div>
+        <div class="row  mt-1 pt-1 border- d-flex mx-1 ">
+          <div class="col-4 ml-3">
+            <h5 class="table-header-text">Team member</h5>
+          </div>
+          <div class="col-4 text-center">
+            <h5 class="table-header-text">Date added</h5>
+          </div>
+          <div class="col-4"></div>
+        </div>
+        <div class="row   my-1 mx-1 py-1 px-3 border-top" *ngFor="let member of projectDetails.projectMembers">
+          <div class="  col-4 d-flex align-items-center ">
+            <span
+              >{{ member.certificationNumber }} -
+              <a *ngIf="person?.isAdmin; else memberName" class="person-link" [routerLink]="['/people-view', member.id]">{{
+                member.name
+              }}</a>
+              <ng-template #memberName
+                ><span>{{ member.name }}</span></ng-template
+              >
+            </span>
+          </div>
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            <span
+              [ngClass]="{
+                'status-orange': member.membershipState.toUpperCase() === 'SUSPENDED',
+                'status-red': member.membershipState.toUpperCase() === 'LOCKED'
+              }"
+              >{{
+                member.membershipState.toUpperCase() === 'ACTIVE' ? (member.joined | date: 'dd MMM yyyy') : member.membershipState
+              }}</span
+            >
+          </div>
+          <div class="col-4 d-flex justify-content-end pr-0">
+            <button
+              *ngIf="person?.isAdmin || isProjectManager"
+              type="button"
+              class="btn btn-link d-flex align-items-center"
+              (click)="removePerson(member.id)"
+            >
+              <i class="material-icons-round  mr-1">remove_circle</i> Remove user
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

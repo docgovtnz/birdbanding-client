@@ -1,0 +1,187 @@
+<div [formGroup]="bandingEventForm">
+  <div class="row mt-2">
+    <div class="col-3">
+      <h4 class="text-bold-18">Primary mark</h4>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-3">
+      <label for="bandPrefix" class="input-caption d-flex align-items-center"
+        >PRIMARY MARK <sup *ngIf="isFirstMarking" class="required-star">*</sup
+        ><i [tooltip]="primaryMarkInfo" placement="top" containerClass="big-tooltip" class="ml-2 material-icons-round question-tooltip "
+          >help_outline</i
+        ></label
+      >
+      <input id="bandPrefix" name="primaryMark" formControlName="primaryMark" class="input-flex-100" />
+      <div *ngIf="f.primaryMark.invalid && (f.primaryMark.dirty || f.primaryMark.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.primaryMark.errors.required">
+          Primary mark is required
+        </div>
+        <div class="error-inline" *ngIf="f.primaryMark.errors.maxlength">
+          Maximum length is {{ f.bandPrefix.errors.maxlength.requiredLength }}
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <label for="bandingScheme" class="input-caption">BANDING SCHEME</label>
+      <select id="bandingScheme" name="bandingScheme" formControlName="bandingScheme" class="input-flex-100">
+        <option [ngValue]="scheme.id" *ngFor="let scheme of viewDataEnums.bandingSchemes">{{ scheme.display }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-3">
+      <h4 class="text-bold-18">Event details</h4>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-3">
+      <label for="dateOfEvent" class="input-caption">DATE OF EVENT <sup class="required-star">*</sup></label>
+      <input
+        id="dateOfEvent"
+        name="dateOfEvent"
+        formControlName="dateOfEvent"
+        class="input-flex-100"
+        placeholder="Choose a date"
+        bsDatepicker
+        autocomplete="off"
+        placement="bottom"
+        data-lpignore="true"
+        [bsConfig]="{
+          dateInputFormat: 'DD/MM/YYYY',
+          containerClass: 'theme-dark-blue',
+          showWeekNumbers: false
+        }"
+      />
+      <div *ngIf="f.dateOfEvent.invalid && (f.dateOfEvent.dirty || f.dateOfEvent.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.dateOfEvent.errors.required">
+          Date of event is required
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <label for="dateAccuracy" class="input-caption ellipsis">DATE ACCURACY</label>
+      <select id="dateAccuracy" name="dateAccuracy" formControlName="dateAccuracy" class="input-flex-100">
+        <option [ngValue]="d.id" *ngFor="let d of dateAccuracies">{{ d.display }}</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="timeOfEvent" class="input-caption">TIME (24H)</label>
+      <input
+        [readOnly]="f.dateAccuracy.value !== 'D'"
+        placeholder="HH:MM"
+        id="timeOfEvent"
+        name="timeOfEvent"
+        formControlName="timeOfEvent"
+        class="input-flex-100"
+        autocomplete="off"
+        data-lpignore="true"
+      />
+      <div *ngIf="f.timeOfEvent.invalid && (f.timeOfEvent.dirty || f.timeOfEvent.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.timeOfEvent.errors.pattern">
+          Must be a valid 24hour time. eg. 13:42
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <label for="registeredProject" class="input-caption">REGISTERED PROJECT<sup class="required-star">*</sup></label>
+      <app-wrapped-typeahead
+        [selectedItem]="f.registeredProject"
+        [optionList]="projects"
+        optionField="name"
+        id="registeredProject"
+        placeholder="Start typing a project name…"
+      ></app-wrapped-typeahead>
+      <div *ngIf="f.registeredProject.invalid && (f.registeredProject.dirty || f.registeredProject.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.registeredProject.errors.required">
+          Project is required
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-3">
+      <label for="eventCode" class="input-caption">EVENT TYPE<sup class="required-star">*</sup></label>
+      <select id="eventCode" name="eventCode" formControlName="eventCode" class="input-flex-100">
+        <option [ngValue]="c.id" *ngFor="let c of eventTypeDisplay"> {{ c.display }}</option>
+        <option disabled="disabled" [ngValue]="null">Choose an event type...</option>
+      </select>
+      <div *ngIf="f.eventCode.invalid && (f.eventCode.dirty || f.eventCode.touched)" class="p-1">
+        <div class="error-inline" *ngIf="f.eventCode.errors.required">
+          Event code is required
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <label for="captureCode" class="input-caption">CAPTURE CODE<sup *ngIf="captureCodeRequired" class="required-star">*</sup></label>
+      <select id="captureCode" name="captureCode" formControlName="captureCode" class="input-flex-100">
+        <option [ngValue]="c.id" *ngFor="let c of uploadEnums.captureCode"> {{ c.display }}</option>
+        <option [disabled]="captureCodeRequired" [ngValue]="null">Choose a capture code...</option>
+      </select>
+      <div *ngIf="captureCode.invalid && (captureCode.dirty || captureCode.touched)" class="p-1">
+        <div class="error-inline" *ngIf="captureCode.errors.required">
+          Capture code is required
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <label for="wildOrCaptive" class="input-caption">WILD/CAPTIVE<sup class="required-star">*</sup></label>
+      <select
+        id="wildOrCaptive"
+        autocomplete="off"
+        data-lpignore="true"
+        name="wildOrCaptive"
+        formControlName="wildOrCaptive"
+        class="input-flex-100"
+      >
+        <option [ngValue]="c.id" *ngFor="let c of uploadEnums.wildOrCaptive">{{ c.display }}</option>
+        <option disabled="disabled" [ngValue]="null">Choose wild or captive...</option>
+      </select>
+      <div *ngIf="wildOrCaptive.invalid && (wildOrCaptive.dirty || wildOrCaptive.touched)" class="p-1">
+        <div class="error-inline" *ngIf="wildOrCaptive.errors.required">
+          WILD/CAPTIVE is required
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-3">
+      <label for="statusCode" class="input-caption d-flex flex-row align-items-center"
+        >STATUS CODE
+        <i [tooltip]="'Status of bird at release'" containerClass="white-tooltip" class="ml-2 material-icons-round question-tooltip "
+          >help_outline</i
+        ></label
+      >
+      <select id="statusCode" autocomplete="off" data-lpignore="true" name="statusCode" formControlName="statusCode" class="input-flex-100">
+        <option [ngValue]="s.id" *ngFor="let s of uploadEnums.statusCode">{{ s.display }}</option>
+        <option [ngValue]="null">Choose a status code...</option>
+      </select>
+    </div>
+    <div class="col-4">
+      <label for="condition" class="input-caption d-flex flex-row align-items-center"
+        >CONDITION
+        <i
+          [tooltip]="'Condition of bird at release, only applicable if status of bird is alive'"
+          containerClass="white-tooltip"
+          class="ml-2 material-icons-round question-tooltip "
+          >help_outline</i
+        ></label
+      >
+      <select id="condition" name="condition" formControlName="condition" class="input-flex-100">
+        <option [ngValue]="c.id" *ngFor="let c of uploadEnums.conditionCode">{{ c.display }}</option>
+        <option [ngValue]="null">Choose a condition...</option>
+      </select>
+    </div>
+  </div>
+</div>
+<ng-template #primaryMarkInfo>
+  <div class="d-flex flex-column">
+    <div class="tooltip-header text-bold-18">Example</div>
+    <div class="d-flex flex-column align-items-start tooltip-body p-3">
+      <span>Non-gamebird band = AP-7110</span>
+      <span>Gamebird band = 19-43843</span>
+      <span>Transponder = PIT-9982009104470651</span>
+      <span>Web-tag = WEB-7110</span>
+    </div>
+  </div>
+</ng-template>

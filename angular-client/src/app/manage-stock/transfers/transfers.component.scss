@@ -1,0 +1,101 @@
+@import '../../../palate';
+
+.table-header {
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid $BORDER_GREY;
+  font-weight: bold;
+}
+
+.flex-table-row-20 {
+  width: 20%;
+}
+
+.flex-table-row-10 {
+  width: 10%;
+}
+
+.flex-table-row-5 {
+  width: 5%;
+}
+
+.on-hover:hover {
+  background-color: $ROW_HOVER;
+}
+
+.table-row {
+  padding: 0 0 0 1.5rem;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.green-arrow {
+  color: $LIME_GREEN;
+}
+
+.text-regular-11 {
+  font-size: 11px;
+  font-weight: normal;
+  color: $LIGHT_TEXT;
+}
+
+.text-regular-15 {
+  font-size: 15px;
+  font-weight: normal;
+  color: $TEXT;
+}
+
+.text-blue-regular-17 {
+  font-size: 17px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+}
+
+.text-blue-regular-24 {
+  font-size: 24px;
+  font-weight: normal;
+  color: $ACCENT_BLUE;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hiddenDiv {
+  visibility: hidden;
+  text-align: center;
+}
+
+.on-hover:hover .hiddenDiv {
+  visibility: visible;
+}
+
+.band-edit {
+  background-color: $ROW_HOVER;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.nested-table-row {
+  padding: 1rem 0;
+  border-bottom: 1px solid $BORDER_GREY;
+}
+
+.text-regular-us-16 {
+  font-size: 15px;
+  font-weight: normal;
+  text-decoration: underline;
+  color: $LIGHT_TEXT;
+}
+
+.inViewMode {
+  visibility: visible !important;
+  background-color: $ROW_HOVER;
+  border-left: 1px solid $BORDER_GREY;
+  border-bottom: 1px solid $ROW_HOVER;
+  padding: 1rem 0;
+  margin: -1rem 0;
+}
+
+.total-bands {
+  margin: 0.5rem 0;
+  padding-left: 10rem;
+}

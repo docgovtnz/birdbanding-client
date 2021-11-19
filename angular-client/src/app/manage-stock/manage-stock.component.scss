@@ -1,0 +1,45 @@
+@import '../../palate';
+
+.status-box {
+  background-color:pink;
+  padding: 0.25rem 1rem;
+  border-radius: 3px;
+
+  &-grey {
+    @extend .status-box;
+    background-color: $BOX_GREY;
+  }
+  &-green {
+    @extend .status-box;
+    background-color: $BOX_GREEN;
+  }
+  &-red {
+    @extend .status-box;
+    background-color: $BOX_RED;
+  }
+  &-yellow {
+    @extend .status-box;
+    background-color: $BOX_YELLOW;
+  }
+  &-orange {
+    @extend .status-box;
+    background-color: $BOX_ORANGE;
+  }
+  &-blue {
+    @extend .status-box;
+    background-color: $BOX_BLUE;
+  }
+  &-lightblue {
+    @extend .status-box;
+    background-color: $BOX_LIGHTBLUE;
+  }
+  &-purple {
+    @extend .status-box;
+    background-color: $BOX_PURPLE;
+  }
+  &-darkgrey {
+    @extend .status-box;
+    background-color: $BOX_DARKGREY;
+  }
+}
+

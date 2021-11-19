@@ -1,0 +1,29 @@
+@import 'src/palate';
+@import 'src/text-styles';
+
+.bird-link > i {
+  color: $ACCENT_BLUE;
+}
+
+.icon-column {
+  min-width: 150px;
+}
+
+.export-modal {
+  max-width: 754px;
+}
+
+
+.event_codes {
+  width: 20%;
+  margin: 0 20px 0 20px;
+}
+
+.sedit-check-box {
+  background-color: #ffffff;
+  border: 1px solid #c0c5cb;
+  border-radius: 4px;
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}

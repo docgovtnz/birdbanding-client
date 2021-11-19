@@ -1,0 +1,5 @@
+
+# Intellij IDEA files should not be committed (source code must be agnostic of IDE technologies)
+*.iml
+.idea
+.vs

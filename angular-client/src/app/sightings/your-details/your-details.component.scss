@@ -1,0 +1,45 @@
+@import 'src/app/sightings/sightings-styles';
+@import 'src/palate';
+
+.head-two {
+  @extend %head-two-shared;
+}
+
+.background {
+  @extend %sightings-background-shared;
+}
+
+.head-four {
+  @extend %head-4-shared;
+}
+
+.head-five {
+  @extend %head-5-shared;
+}
+
+.head {
+  @extend %head;
+}
+
+.question {
+  @extend %question;
+}
+
+.flex-input {
+  @extend %flexible-input;
+}
+
+.tiny-text {
+  color: $TABLE_TEXT;
+  font-size: 12px;
+}
+
+.big-green-button {
+  @extend %big-green-button;
+  width: 100%;
+}
+
+.clear-green-button {
+  @extend %clear-green-button;
+  width: 100%;
+}

@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg align-content-lg-end d-flex ">
+  <div class="mr-xl-5 mr-1 d-flex flex-direction-row align-items-center">
+    <a class="d-flex navbar-brand" href="https://www.doc.govt.nz">
+      <span class="doc-logo">Department of Conservation | Te Papa Atawhai</span>
+    </a>
+    <a class="banding-logo ml-4" routerLink="/">Bird Banding </a>
+  </div>
+  <div class="collapse navbar-collapse d-flex justify-content-center align-items-center nav-height" id="navbarsExampleDefault">
+    <ul *ngIf="isLoggedIn" class="navbar-nav  d-flex justify-content-between flex-grow-8 nav-height align-items-center">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/data-uploads" routerLinkActive="active">Data Uploads</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/view-data" routerLinkActive="active">View Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/manage-stock" routerLinkActive="active">Stock</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/projects" aria-disabled="true" routerLinkActive="active">Projects</a>
+      </li>
+      <li class="nav-item" *ngIf="person?.isAdmin">
+        <a class="nav-link" routerLink="/people" aria-disabled="true" routerLinkActive="active">People</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/sightings" aria-disabled="true" routerLinkActive="active">Sightings</a>
+      </li>
+    </ul>
+  </div>
+  <div class="ml-2 d-flex ">
+    <ul class="navbar-nav  nav-height align-items-center w-100 ">
+      <li *ngIf="isLoggedIn" class="nav-item mr-2 d-flex align-items-center">
+        <a class="nav-link" routerLink="/help">
+          <i class="material-icons-round feedback-icon mr-1">contact_support</i><span class="visible-xxl">Help</span>
+        </a>
+      </li>
+
+      <li class="nav-item align-items-center  falcon-login-button">
+        <app-person-badge [buttonTemplate]="login"></app-person-badge>
+        <ng-template #login>
+          <a class="btn btn-primary  mr-3" [ngClass]="{ disabled: !loginUrl }" [href]="loginUrl" role="button">Login</a>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</nav>

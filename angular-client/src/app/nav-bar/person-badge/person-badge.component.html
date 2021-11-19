@@ -1,0 +1,44 @@
+<div class="d-flex flex-row align-items-center  wrapper">
+  <div
+    class="d-flex flex-row align-items-center badge-wrapper"
+    dropdownToggle
+    dropdown
+    data-display="static"
+    #dropdown="bs-dropdown"
+    [autoClose]="true"
+    aria-controls="basic-link-dropdown"
+    *ngIf="loggedIn; else login"
+  >
+    <div class=" d-flex flex-direction-row align-items-center ml-2 vertical-divide-left ">
+      <div class="visible-xxl initialBox mx-3">{{ personInitials }}</div>
+      <div class="d-flex flex-column">
+        <div class="white text-regular-18 mr-4">{{ personIdentity.firstName }}</div>
+        <div *ngIf="personIdentity.isAdmin" class="white text-regular-13">Admin</div>
+      </div>
+    </div>
+    <div class="btn-group nav-link">
+      <i class="material-icons-round white-icon">more_vert</i>
+    </div>
+    <ul
+      id="dropdown-triggers-manual"
+      *dropdownMenu
+      class="dropdown-menu dropdown-menu-right"
+      role="menu"
+      aria-labelledby="button-triggers-manual"
+    >
+      <li role="menuitem">
+        <div class="d-flex dropdown-item">
+          <a routerLink="/people-view/{{ personIdentity.userId }}" aria-disabled="true" routerLinkActive="active">View profile</a>
+        </div>
+      </li>
+      <li role="menuitem">
+        <div class="d-flex dropdown-item">
+          <a routerLink="" (click)="logOut()" routerLinkActive="active">Log out</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<ng-template #login>
+  <ng-container *ngTemplateOutlet="buttonTemplate"> </ng-container>
+</ng-template>

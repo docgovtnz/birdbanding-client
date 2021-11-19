@@ -1,0 +1,23 @@
+@import 'src/palate';
+
+%logo {
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: transparent;
+  display: inline-block;
+  white-space: normal;
+}
+
+.doc-logo {
+  @extend %logo;
+  background-image: url('../../assets/images/DOC_logo_horizontal_RGB_White_Text_1.svg');
+  width: 155px;
+  height: 57px;
+}
+
+.visible-xxl {
+  display: none;
+  @media (min-width: $EXTRA_EXTRA_LARGE_SCREEN) {
+    display: inline-block;
+  }
+}

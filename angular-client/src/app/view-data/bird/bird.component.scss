@@ -1,0 +1,96 @@
+@import 'src/palate';
+
+.left-border {
+  border-left: solid 1px #c0c5cb;
+  padding: 1rem;
+}
+
+.small-top-header {
+  color: $BORDER_GREY;
+  size: 14px;
+  text-transform: uppercase;
+}
+.bold-header {
+  color: $TEXT;
+  font-size: 34px;
+  font-weight: bold;
+  width: 100%;
+  display: inline-flex;
+  flex: 0 1 auto;
+}
+
+.little-blue-spinner {
+  display: inline-block;
+  vertical-align: middle;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border-left: solid 3px $ACCENT_BLUE;
+  border-top: solid 3px $ACCENT_BLUE;
+  animation: roll 1s infinite;
+  transform: rotate(30deg);
+}
+
+.friendly-name{
+  border: none;
+  color: $TEXT;
+  font-size: 34px;
+  font-weight: bold;
+  padding:0px;
+  background-color: transparent;
+  width:100%;
+}
+
+.edit-button{
+   vertical-align: top;
+   color: $ACCENT_BLUE;
+}
+
+.readonly:focus-visible{
+    outline:none;
+    border: none;
+    cursor: default;
+}
+
+.friendly-name:focus{
+    outline: none;
+    border: none;
+}
+
+
+.bird-card-label {
+  text-transform: uppercase;
+
+  font-weight: bold;
+  font-size: 14px;
+  color: #6b7785;
+  white-space: normal;
+}
+
+.btn-link {
+  color: $ACCENT_BLUE;
+  text-decoration: none;
+}
+
+.bird-card-content {
+  font-weight: normal;
+  font-size: 16px;
+  white-space: normal;
+}
+
+.left-table-cell {
+  margin-left: 1.5em;
+}
+
+.unimplmented {
+  text-decoration: line-through;
+}
+
+.top-card {
+  height: 100%;
+}
+
+.friendly-name-column{
+  flex-flow: column wrap;
+  flex: 1 0 auto;
+}

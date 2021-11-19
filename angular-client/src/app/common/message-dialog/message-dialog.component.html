@@ -1,0 +1,24 @@
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left" data-cy="modalTitle">{{ actionMessage.title }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{ actionMessage.messageText }}</p>
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <button
+          class="btn mr-2"
+          [id]="actionBtn.label"
+          [ngClass]="actionBtn.styleClasses"
+          (click)="onAction(actionBtn.label)"
+          *ngFor="let actionBtn of actionMessage.actionButtons"
+        >
+          {{ actionBtn.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,26 @@
+@import 'src/app/projects/projects-styles';
+
+@import 'src/text-styles';
+
+.btn-link {
+  color: $ACCENT_BLUE;
+
+  &:hover {
+    background-color: $HOVER_BLUE;
+    text-decoration: none;
+  }
+}
+
+.back {
+  cursor: pointer;
+}
+
+.person-link {
+  color: $ACCENT_BLUE;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.add-member-modal {
+  max-width: 900px;
+}

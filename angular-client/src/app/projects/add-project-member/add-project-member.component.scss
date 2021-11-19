@@ -1,0 +1,16 @@
+@import 'src/app/projects/projects-styles';
+@import 'src/palate';
+@import 'src/text-styles';
+
+:host ::ng-deep .dropdown-item.active {
+  background-color: $ACCENT_BLUE;
+}
+
+.certificate-placeholder {
+  height: 400px;
+}
+
+.reset-button {
+  color: $TEXT;
+  margin: 0 0 0 -50px;
+}

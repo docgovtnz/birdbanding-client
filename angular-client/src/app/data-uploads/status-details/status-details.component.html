@@ -1,0 +1,19 @@
+<div style="width:40%">
+  <select id="statusDetails" name="statusDetails" class="input-flex w-100" (change)="newStatusDetailValue($event)">
+    <option id="0">Add a status...</option>
+    <option [value]="sd" *ngFor="let sd of this.availableStatusDetails">{{ sd }}</option>
+  </select>
+
+
+  <div [formGroup]="statusDetailsForm">
+    <div formArrayName="statusDetailValues" class="status-detail-values">
+      <div *ngFor="let char of statusDetailValuesForm.controls; index as i" class="status-detail-row">
+          <ng-container [formGroupName]="i">
+              <label class="status-detail-name">{{char.value}}</label>
+              <div><i class="material-icons-round status-detail-remove" (click)="removeStatusDetailValue(char.value)">close</i></div>
+          </ng-container>
+       
+      </div>
+    </div>
+  </div>
+</div>

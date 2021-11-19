@@ -1,0 +1,30 @@
+@import './src/palate';
+@import '../nav-styles';
+.navbar {
+  height: 100px;
+  background-color: $DOC_GREEN;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.transparent-button {
+  background-color: transparent;
+  color: $WHITE;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border: $WHITE solid 4px;
+  border-radius: 4px;
+}
+
+.right-buttons {
+  height: 100px;
+}
+
+.back-link {
+  color: $WHITE;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: transparent;
+  text-decoration: none;
+}

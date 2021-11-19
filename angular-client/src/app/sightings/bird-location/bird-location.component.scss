@@ -1,0 +1,37 @@
+@import 'src/app/sightings/sightings-styles';
+
+.head-two {
+  @extend %head-two-shared;
+}
+
+.background {
+  @extend %sightings-background-shared;
+}
+
+.head-four {
+  @extend %head-4-shared;
+}
+
+.head-five {
+  @extend %head-5-shared;
+}
+
+.head {
+  @extend %head;
+}
+
+.question {
+  @extend %question;
+}
+
+.flex-input {
+  @extend %flexible-input;
+}
+
+.big-green-button {
+  @extend %big-green-button;
+}
+
+.clear-green-button {
+  @extend %clear-green-button;
+}

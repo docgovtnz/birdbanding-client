@@ -1,0 +1,27 @@
+@import '../../../palate';
+@import 'src/text-styles';
+
+.display-row {
+  border-bottom: solid 1px $BORDER_GREY;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: $DOC_GREEN;
+  font-size: 17px;
+}
+
+.spin {
+  font-size: 45px;
+  color: $ACCENT_BLUE;
+  animation: roll 3s infinite;
+  transform: rotate(30deg);
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

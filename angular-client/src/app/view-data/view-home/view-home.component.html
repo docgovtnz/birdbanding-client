@@ -1,0 +1,8 @@
+<div>
+  <app-search-landing></app-search-landing>
+  <app-loading-spinner loadingText="Loading banding data..." *ngIf="isLoading"></app-loading-spinner>
+
+  <div class="mx-5" *ngIf="!isLoading && hasResultsToDisplay">
+    <app-event-data-table></app-event-data-table>
+  </div>
+</div>

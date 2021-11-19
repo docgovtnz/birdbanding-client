@@ -1,0 +1,49 @@
+<div *ngIf="searchVisible; else showSearchButton" class="mt-3 mx-5">
+  <div class="row m-0 text-bold-16">
+    <div
+      [ngClass]="{
+        'tab-active': !advanceSearch
+      }"
+      class="tab"
+      (click)="toggleAdvancedSearch(false)"
+      role="tab"
+    >
+      Basic search
+    </div>
+    <div
+      [ngClass]="{
+        'tab-active': advanceSearch
+      }"
+      class="tab ml-3"
+      (click)="toggleAdvancedSearch(true)"
+      role="tab"
+    >
+      Advanced search
+    </div>
+  </div>
+  <div class="search-wrapper  mb-3  pr-xl-1 p-sm-1">
+    <app-search-data
+      [people]="people"
+      [projects]="projects"
+      [species]="species"
+      [speciesGroups]="speciesGroups"
+      [viewDataEnums]="viewDataEnums"
+      (hideSearchOutput)="hideSearch()"
+      *ngIf="!advanceSearch"
+    ></app-search-data>
+    <app-advanced-search
+      [people]="people"
+      [projects]="projects"
+      [species]="species"
+      [speciesGroups]="speciesGroups"
+      [viewDataEnums]="viewDataEnums"
+      (hideSearchOutput)="hideSearch()"
+      *ngIf="advanceSearch"
+    ></app-advanced-search>
+  </div>
+</div>
+<ng-template #showSearchButton>
+  <button type="button" class="btn btn-link ml-5" (click)="showSearch()">
+    <i class="material-icons-round mr-1">keyboard_arrow_down</i> SHOW SEARCH
+  </button>
+</ng-template>
